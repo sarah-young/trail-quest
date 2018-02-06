@@ -1,0 +1,47 @@
+Day One:
+
+AM:
+I'm currently looking for data to be used in the trail selector. I'm finding that when data exists, there isn't usually an API.
+I'm hopeful that I can use the API for recreation.gov, but I've come across some broken links that has dead-ended a couple branches of my search.
+
+Current list:
+[X] Transit & Trails - good data, but very limited (just the Bay Area)
+[✔️] Recreation.gov - looking at this currently; data may be limited.
+[X] Hiking Project - looking at this currently; data may not be available?
+[X] ARCGIS - looks promising??? 
+
+Current available data:
+
+API documentation: https://usda.github.io/RIDB/#Trails
+Forest Service Trails: GET https://ridb.recreation.gov/api/v1/trails/USFS/
+FWS Trails: GET https://ridb.recreation.gov/api/v1/trails/FWS/
+
+Pagination example: GET https://ridb.recreation.gov/api/v1/recareas?offset=100&limit=25
+
+
+PM:
+
+I found data on through the recreation.gov API and I've been able to pull information about trails from the USFS & FWS.
+
+I want to see if there's a way to:
+1A.) Link pages to pages with more information (dogs, wildlife, etc)
+1B.) Link pages to a Google Search
+2.) Show the trails outlined on a Google Map
+
+NEW STRATEGY: Use Yelp API as it includes all the information that I want.
+STRETCH GOAL: Use image analyzing API in conjunction with Yelp API to give user more information about the trail. 
+
+YELP info: GET https://api.yelp.com/v3/businesses/search?term=delis&latitude=37.786882&longitude=-122.399972
+# Business search
+Yelp reviews: 
+GET https://api.yelp.com/v3/businesses/north-india-restaurant-san-francisco/reviews
+
+
+Filters needed: 
+* Name needs to have "Trail" in the title
+* Open space
+* Beach
+* Creek
+
+
+
