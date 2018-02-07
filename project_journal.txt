@@ -1,3 +1,56 @@
+
+
+
+Day Three:
+
+AM:
+
+
+
+Mentor meeting journal (Day 2 continued...)
+
+Put together search.py. Search logic and API configuration works!!!
+
+Day Two: 
+
+AM: 
+
+Decided against using Yelp API due to lack of things like trail length.
+Today, I'm looking at Hiking Project that is working today (yay!).
+In addition, I may want to use USFS data as they have interesting things like map coordinates. 
+
+My goals for the day:
+
+> seed database
+> figure out logic for calculating zip code from lat/long of a trail
+
+Next steps after this will be creating the web framework for this:
+> user enters zip code, trail(s) returned
+
+
+Phase 3 brainstorming #phasethree
+
+Verifying location from photo geotag?
+https://www.howtogeek.com/211427/how-to-see-exactly-where-a-photo-was-taken-and-keep-your-location-private/
+
+
+PM: 
+
+JSONified starting data. I'm not sure if I need to create a database or if I should request from the API from the web app. (Asking ed staff)
+
+Answer from ed staff: Information should be stored in addition to the json strings (separate table).
+
+Next steps:
+> Seeding data
+>> This will be done as the users review and upload information about the trail due to unknown API constraints.
+
+> Figuring out how to unpack the return from Google Map's geocode API.
+>> Need the location lat/long (buried in a long json return)
+
+
+~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+
+
 Day One:
 
 AM:
@@ -42,6 +95,7 @@ Filters needed:
 * Open space
 * Beach
 * Creek
+
 
 
 
