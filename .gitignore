@@ -1,4 +1,7 @@
+secrets.sh
 secrets.py
 env/
 *.pyc
 .DS_Store
+Redundant/
+

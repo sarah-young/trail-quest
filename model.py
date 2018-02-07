@@ -2,12 +2,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from requests import sessions
 from flask import Flask
-import api_practice
 import json
 import secrets
 
-app = Flask(__name__)
-app.secret_key = "SECRETSECRETSECRET"
 
 db = SQLAlchemy()
 
@@ -138,11 +135,16 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
 
-connect_to_db(app)
+# connect_to_db(app)
 
-db.create_all()
+# db.create_all()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
+    # As a convenience, if we run this module interactively, it will leave
+    # you in a state of being able to work with the database directly.
+
+    from server import app
     connect_to_db(app)
     print "Connected to DB."
 

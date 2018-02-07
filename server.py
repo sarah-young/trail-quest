@@ -1,7 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import secrets
-import requests
+import functions
+from flask import Flask, redirect, request, render_template, session, url_for
 from flask_debugtoolbar import DebugToolbarExtension
+from jinja2 import StrictUndefined
 
 from model import connect_to_db
 
@@ -9,38 +11,39 @@ app = Flask(__name__)
 
 app.secret_key = "SECRETSECRETSECRET"
 
-@app.route('/homepage')
-def search_for_trails():
-	"""Take in user input and search for trails based on location & distance from location"""
 
-	gm_api_key = secrets.GOOGLE_MAPS_API_KEY
-	hp_api_key = secrets.HIKING_PROJECT_API_KEY
+@app.route('/')
+def display_trail_form():
+	"""Displays form that takes in user input"""
+
+	return render_template('/homepage.html')
 
 
+@app.route('trail_selector')
+def search_with_user_data():
+	"""Take im data and pass to relevant functions"""
+
+	address = request.args.get("address")
 	city = request.args.get("city")
-	state = requests.args.get('state')
-	distance = requests.args.get('distance')
+	state = request.args.get("state")
+	travel_distance = request.args.get('travel_distance')
+	# trek_length = 
 
-	geocode_request = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address="+city+state+"&key="+gm_api_key)
-	json_geocode = geocode_request.json()
-	lat,lng = json_geocode['results'][0].get('geometry').get('location').values()
-	lat = str(lat)
-	lng = str(lng)
+	return redirect ('/trails', select_trails = select_trails)
 
-	trail_request = requests.get("https://www.hikingproject.com/data/get-trails?lat="+lat+"&lon="+lng+"&maxDistance="+distance+"&minLength=1&key="+hp_api_key)
+@app.route('/trails')
+def display_selected_trails(select_trails):
+	"""Display trails selected by select_three_trails"""
 
-	trail_packet = trail_request.json()
 
-	trail_data = trail_packet["trails"]
-
-	return render_template('trailselector.html', trail_data=trail_data)
+	return render_template('/trails.html')
 
 
 if __name__ == "__main__":
     app.debug = True
-    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
     DebugToolbarExtension(app)
-    connect_to_db(app)
-    app.run()
+    app.run(host='0.0.0.0')
+
+
 
 

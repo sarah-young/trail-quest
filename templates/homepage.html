@@ -1,10 +1,24 @@
-<form action='/hompage'>
-  City:<br>
-  <input type="text" name="city"><br>
-  State:<br>
-  <input type="text" name="state"><br>
-  Radius:<br>
-  <input type="text" name = "distance">
-<input type="submit">
+{% extends 'base.html' %}
+{% block title %}
+Homepage
+{% endblock %}
 
-</form>
+{% block content %}
+	<h2></h2>
+
+	<form action='/trails'>
+
+		City:<br>
+	    <input type="text" name="city"><br>
+	  
+	    State:<br>
+	    <input type="text" name="state"><br>
+	  
+	    Radius:<br>
+	    <input type="text" name = "radius">
+
+	    <input type="submit">
+
+	</form>
+
+{% endblock %}
