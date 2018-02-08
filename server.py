@@ -44,6 +44,18 @@ def display_selected_trails():
 	return render_template('/trails.html', selected_trails=selected_trails)
 
 
+@app.route('/trek')
+def show_trail_location():
+	"""Displays trail location on map and more information about the trail."""
+
+	chosen_trail = request.args.get("chosen_trail")
+	session['chosen_trail'] = chosen_trail
+	trek = session['chosen_trail']
+	# saving to session to allow for use on other pages & saving in database
+
+	return render_template('/trek.html', trek=trek)
+
+
 if __name__ == "__main__":
     app.debug = True
     DebugToolbarExtension(app)

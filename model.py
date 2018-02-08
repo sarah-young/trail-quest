@@ -43,7 +43,9 @@ class Trail(db.Model):
 
 
 class User(db.Model):
-	"""Trail Quest user database"""
+	"""Trail Quest user database
+	Phase 2
+	"""
 
 	__tablename__ = "users"
 

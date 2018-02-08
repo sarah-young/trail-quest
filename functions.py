@@ -75,11 +75,6 @@ def select_three_trails(trails):
 		return selected_trails
 
 
-def start_trek():
-	"""Takes user selection"""
-	pass
-
-
 def add_trail_to_db():
 	"""Adds user selected trail to db"""
 
@@ -88,6 +83,15 @@ def add_trail_to_db():
 	# if it isn't, add to database
 
 	pass
+
+
+def start_trek():
+	"""Takes user selection"""
+
+	pass
+
+
+
 
 
 ########TESTS & STUFF##########
