@@ -8,7 +8,7 @@ gm_api_key = secrets.GOOGLE_MAPS_API_KEY
 hp_api_key = secrets.HIKING_PROJECT_API_KEY
 
 
-def find_lat_lng(city, state, address=None):
+def find_lat_lng(city, state):
 	"""
 	Find lat/long for address given by user. 
 
@@ -26,7 +26,7 @@ def find_lat_lng(city, state, address=None):
 	return coordinates
 
 
-def find_trails(coordinates):
+def find_trails(coordinates, radius):
 	"""Find trails based on GPS coordinates from find_lat_lng
 	
 	Uses Hiking Project API
@@ -73,6 +73,21 @@ def select_three_trails(trails):
 		selected_trails.append(third_trail)
 
 		return selected_trails
+
+
+def start_trek():
+	"""Takes user selection"""
+	pass
+
+
+def add_trail_to_db():
+	"""Adds user selected trail to db"""
+
+	# Check to see if trail is in database
+	# if it is, pass
+	# if it isn't, add to database
+
+	pass
 
 
 ########TESTS & STUFF##########

@@ -4,21 +4,22 @@ Homepage
 {% endblock %}
 
 {% block content %}
+
 	<h2></h2>
-
-	<form action='/trails'>
-
+	<h4>Let's get trekkin'. Fill out the boxes below to start.</h4>
+	<form action='/trail_selector'>
+		<i><h4>Find trails near...</h4></i>
 		City:<br>
 	    <input type="text" name="city"><br>
 	  
 	    State:<br>
 	    <input type="text" name="state"><br>
 	  
-	    Radius:<br>
-	    <input type="text" name = "radius">
+	   <!--  Distance from address:<br>
+	    <input type="text" name = "radius"> -->
 
 	    <input type="submit">
-
+	    <br><br><br>
 	</form>
 
 {% endblock %}

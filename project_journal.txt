@@ -3,9 +3,19 @@
 
 Day Three:
 
-AM:
+AM: 
 
+Set up Flask, server.py, and created a functions folder.
 
+PM:
+
+Jinja pages work! Flask debugged! Given a city & state the app will display three trails. 
+
+Lacking: 
+
+> Database for selected trails.
+
+#########################
 
 Mentor meeting journal (Day 2 continued...)
 

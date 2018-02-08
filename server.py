@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import secrets
 import functions
 from flask import Flask, redirect, request, render_template, session, url_for
@@ -19,24 +19,29 @@ def display_trail_form():
 	return render_template('/homepage.html')
 
 
-@app.route('trail_selector')
+@app.route('/trail_selector')
 def search_with_user_data():
 	"""Take im data and pass to relevant functions"""
 
-	address = request.args.get("address")
 	city = request.args.get("city")
 	state = request.args.get("state")
-	travel_distance = request.args.get('travel_distance')
+	radius = '25'
 	# trek_length = 
 
-	return redirect ('/trails', select_trails = select_trails)
+	coordinates = functions.find_lat_lng(city,state)
+	trails = functions.find_trails(coordinates, radius)
+	session['selected_trails'] = functions.select_three_trails(trails)
+
+	return redirect('/trails')
 
 @app.route('/trails')
-def display_selected_trails(select_trails):
+def display_selected_trails():
 	"""Display trails selected by select_three_trails"""
+	 #selected_trails=selected_trails
 
+	selected_trails = session['selected_trails']
 
-	return render_template('/trails.html')
+	return render_template('/trails.html', selected_trails=selected_trails)
 
 
 if __name__ == "__main__":
