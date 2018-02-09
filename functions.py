@@ -83,6 +83,7 @@ def add_trails_to_db(trails):
 	"""Adds user selected trail to db"""
 
 	for trail in trails:
+		print len(trails)
 		print trail['name']
 		print type(trail)
 		trail_object = model.Trail(trail_id = trail['id'],
@@ -98,11 +99,11 @@ def add_trails_to_db(trails):
 
 		trail_status = model.db.session.query(model.Trail).filter(model.Trail.trail_id==trail['id']).first()
 		if trail_status == None:
-			model.db.session.add(trail)
+			model.db.session.add(trail_object)
 			model.db.session.commit()
-			return "<Added trail %s to database>" % trail['id']
+			print "<Added trail %s to database>" % trail['id']
 		else:
-			return "<Trail %s is already in the database>"
+			print "<Trail %s is already in the database>"
 
 
 

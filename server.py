@@ -6,6 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 
 from model import connect_to_db
+import model
 
 app = Flask(__name__)
 
@@ -25,7 +26,7 @@ def search_with_user_data():
 
 	city = request.args.get("city")
 	state = request.args.get("state")
-	radius = '1'
+	radius = '25'
 	# trek_length = 
 
 	coordinates = functions.find_lat_lng(city,state)
@@ -53,11 +54,13 @@ def display_selected_trails():
 def show_trail_location():
 	"""Displays trail location on map and more information about the trail."""
 
-	chosen_trail = request.args.get("chosen_trail")
-	session['chosen_trail'] = chosen_trail
-	trek = session['chosen_trail']
+	chosen_trail_id = request.args.get("trail_id")
+	print "*******TRAIL ID: ",chosen_trail_id,"**********"
+	chosen_trail_object = model.Trail.query.filter_by(trail_id=chosen_trail_id).first()
+	print type(chosen_trail_object)
+	session['chosen_trail_object'] = chosen_trail_object
+	trek = session['chosen_trail_object']
 	# saving to session to allow for use on other pages & saving in database
-
 
 	return render_template('/trek.html', trek=trek)
 

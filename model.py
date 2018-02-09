@@ -5,7 +5,6 @@ from flask import Flask
 import json
 import secrets
 
-app = Flask(__name__)
 
 db = SQLAlchemy()
 
@@ -165,16 +164,22 @@ def connect_to_db(app):
     db.init_app(app)
 
 
-# db.create_all()
-
-
 if __name__ == "__main__":
-    # As a convenience, if we run this module interactively, it will leave
-    # you in a state of being able to work with the database directly.
-
+    # app.debug = True
+    # DebugToolbarExtension(app)
     from server import app
     connect_to_db(app)
-    print "Connected to DB."
+    db.create_all()
+    # app.run(host='0.0.0.0')
+
+
+# if __name__ == "__main__":
+#     # As a convenience, if we run this module interactively, it will leave
+#     # you in a state of being able to work with the database directly.
+
+#     from server import app
+#     connect_to_db(app)
+#     print "Connected to DB."
 
 
 
