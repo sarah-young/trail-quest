@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+Your adventure begins!
+{% endblock %}
+{% block content %}
+	<h3>Carpe Diem! Start your adventure.</h3>
+	<i><h4>Trek details coming soon...</h4></i>
+
+	{{ trek['name'] }}
+	<img src="{{ trek['imgMedium'] }}">
+	{{ trek['length'] }}
+		
+
+{% endblock %}
+
+
+<!-- Add conditions information and reference trail from ID after trail object is logged in data base -->
+<!-- Trail conditions API: https://www.hikingproject.com/data/get-conditions?ids=7000108,7002175,7005207,7001726,7005428&key=200216496-ee00d24940619fecc34652d5000f6247 -->
+
+
+
+
+
+
