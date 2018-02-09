@@ -6,7 +6,14 @@
     <script src="http://code.jquery.com/jquery.js"></script>
 </head>
 <body>
+
     <h1>Trail Quest 🌲 ⛰️</h1>
+    
+    <ul>
+  {% for message in get_flashed_messages() %}
+    <li>{{ message }}</li>
+  {% endfor %}
+</ul>
     {% block content %} {% endblock %}
 <footer>
 	Trail Quest Ⓒ 2018 Sarah Young

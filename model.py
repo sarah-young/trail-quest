@@ -5,6 +5,7 @@ from flask import Flask
 import json
 import secrets
 
+app = Flask(__name__)
 
 db = SQLAlchemy()
 
@@ -38,6 +39,10 @@ class Trail(db.Model):
 	trail_location = db.Column(db.String(100))
 	# Will calculate ascent & descent with trail_high_alt & trail_low_alt
 
+	reviews = db.relationship('Review')
+	treks = db.relationship('Trek')
+	trail_badges = db.relationship('TrailBadge')
+
 	def __repr__(self):
 		return "<Trail name: %s Trail_length: %s >" % (self.trail_name, self.trail_length)
 
@@ -53,6 +58,10 @@ class User(db.Model):
 	user_name = db.Column(db.String(50), nullable=False)
 	user_password = db.Column(db.String(50), nullable=False)
 
+	reviews = db.relationship('Review')
+	trek = db.relationship('Trek')
+	merit = db.relationship('Merit')
+
 	def __repr__(self):
 		return "<User id: %s User name: %s >" % (self.user_id, self.user_name)
 
@@ -63,9 +72,12 @@ class Review(db.Model):
 	__tablename__ = "reviews"
 
 	review_id = db.Column(db.Integer, primary_key=True)
-	trail_id = db.Column(db.String, db.ForeignKey('trails.trail_id'))
+	trail_id = db.Column(db.Integer, db.ForeignKey('trails.trail_id'))
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-	review = db.Column(db.UnicodeText)
+	review_text = db.Column(db.UnicodeText)
+
+	trails = db.relationship('Trail')
+	users = db.relationship('User')
 
 	def __repr__(self):
 		return "<Review id: %s Review: %s >" % (self.review_id, self.review)
@@ -81,8 +93,16 @@ class Trek(db.Model):
 
 	trek_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+	# user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 	trail_id = db.Column(db.Integer, db.ForeignKey('trails.trail_id'))
+	# trail_id = db.Column(db.Integer, db.ForeignKey('trails.trail_id'))
 	trek_date = db.Column(db.DateTime)
+	# trek_date would not be filled in until the trek is completed.
+
+	trails = db.relationship('Trail')
+	# trail relationship
+	users = db.relationship('User')
+	# user relationship
 
 	def __repr__(self):
 		return "<Trek id: %s, Trek date: %s >" % (self.trek_id, self.trek_date)
@@ -96,6 +116,8 @@ class Badge(db.Model):
 	badge_id = db.Column(db.Integer, primary_key=True)
 	badge_name = db.Column(db.String(50))
 	badge_description = db.Column(db.UnicodeText)
+
+	merits = db.relation('Merit')
 
 	def __repr__(self):
 		return "< Badge id: %s Badge name: %s >" % (self.badge_id, self.badge_name)
@@ -111,6 +133,9 @@ class Merit(db.Model):
 	badge_id = db.Column(db.Integer, db.ForeignKey('badges.badge_id'))
 	merit_date = db.Column(db.DateTime)
 
+	badges = db.relationship('Badge')
+	users = db.relationship('User')
+
 	def __repr__(self):
 		return "< Merit id: %s Badge: %s User %s >" % (self.merit_id, self.badge_id, self.user_id) 
 
@@ -121,9 +146,11 @@ class TrailBadge(db.Model):
 	__tablename__ = "trail_badges"
 
 	tb_id = db.Column(db.Integer, autoincrement=True, primary_key=True) 
-	trail_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-	badge_id = db.Column(db.Integer, db.ForeignKey('badge_id')) 
+	trail_id = db.Column(db.Integer, db.ForeignKey('trails.trail_id'))
+	badge_id = db.Column(db.Integer, db.ForeignKey('badges.badge_id')) 
 
+	trails = db.relationship('Trail')
+	badges = db.relationship('Badge')
 
 	def __repr__(self):
 		return "< Trail/Badge object id: %s >" % (self.tb_id)
@@ -137,7 +164,6 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
 
-# connect_to_db(app)
 
 # db.create_all()
 

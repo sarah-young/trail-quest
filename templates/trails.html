@@ -6,19 +6,20 @@ Select Your Trail
 
 	<ul>
 	  {% for trail in selected_trails %}
-	<form action='/trek'>
-	    <li>Trail: {{ trail['name'] }}</li>
-	    <li>Trail length: {{ trail['length'] }}</li>
-	    <li>Difficulty: {{ trail['difficulty'] }}</li>
-	    <li><img src="{{ trail['imgMedium'] }}"></li>
-	    <input type="submit" value="I want to go to there!" name="chosen_trail">
-	</form>
+		<form action="/trek">
+
+		    <li>Trail: {{ trail.name }}</li>
+		    <li>Trail length: {{ trail.length }}</li>
+		    <li>Difficulty: {{ trail.difficulty }}</li>
+		    <li><img src="{{ trail.imgMedium }}"></li>
+		    <li>Trail ID: {{ trail.id }}</li><br>
+		    <input type="hidden" value="{{ trail.id }}" name="trail_id"> 
+		    <input type="submit" value= 'I want to go to there!' name="chosen_trail">
+		</form>
 	  {% endfor %}
 	</ul>
 
 {% endblock %}
-
-
 
 
 

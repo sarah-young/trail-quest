@@ -3,10 +3,14 @@
 import secrets
 import requests
 import random
+import model
+#from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 
 gm_api_key = secrets.GOOGLE_MAPS_API_KEY
 hp_api_key = secrets.HIKING_PROJECT_API_KEY
 
+#db = SQLAlchemy()
 
 def find_lat_lng(city, state):
 	"""
@@ -75,21 +79,30 @@ def select_three_trails(trails):
 		return selected_trails
 
 
-def add_trail_to_db():
+def add_trails_to_db(trails):
 	"""Adds user selected trail to db"""
 
-	# Check to see if trail is in database
-	# if it is, pass
-	# if it isn't, add to database
+	for trail in trails:
+		print trail['name']
+		print type(trail)
+		trail_object = model.Trail(trail_id = trail['id'],
+					  trail_name = trail['name'],
+					  trailhead_latitude = trail['latitude'],
+					  trailhead_longitude = trail['longitude'],
+					  trail_length = trail['length'],
+					  trail_difficulty = trail['difficulty'],
+					  trail_description = trail['summary'],
+					  trail_high_alt = trail['high'],
+					  trail_low_alt = trail['low'],
+					  trail_location = trail['location'])
 
-	pass
-
-
-def start_trek():
-	"""Takes user selection"""
-
-	pass
-
+		trail_status = model.db.session.query(model.Trail).filter(model.Trail.trail_id==trail['id']).first()
+		if trail_status == None:
+			model.db.session.add(trail)
+			model.db.session.commit()
+			return "<Added trail %s to database>" % trail['id']
+		else:
+			return "<Trail %s is already in the database>"
 
 
 
