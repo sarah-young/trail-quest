@@ -4,12 +4,32 @@ Your adventure begins!
 {% endblock %}
 {% block content %}
 	<h3>Carpe Diem! Start your adventure.</h3>
-	<i><h4>Trek details coming soon...</h4></i>
 
-	{{ trek.name }}
-	<img src="{{ trek['imgMedium'] }}">
-	{{ trek['length'] }}
-		
+	<div id="trail-details">
+		Trail name: {{ trek.trail_name }} <br>
+		Trail length: {{ trek.trail_length }} Difficulty: {{ trek.trail_difficulty }}
+	</div>
+
+
+	{% if trail_conditions %}
+		<div id="trail-conditions">Trail conditions today: 
+			As of {{ trail_conditions[3] }} {{ trail_conditions[0] }} Status:<br>
+			{{ trail_conditions[2] }} {{ trail_conditions[1] }} 
+		</div>
+	{% endif %}
+
+	<div id='trail-description'>
+	Description: {{ trek.trail_description }}
+	</div>
+
+	<div id="trail-picture"><img src="{{ trek.trail_picture }}"></div>
+
+<!-- 	<iframe
+	  width="450"
+	  height="250"
+	  frameborder="0" style="border:0"
+	  src= "{{ trail_map }}" >
+	</iframe> -->
 
 {% endblock %}
 

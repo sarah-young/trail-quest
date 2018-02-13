@@ -36,6 +36,7 @@ class Trail(db.Model):
 	trail_high_alt = db.Column(db.Float, nullable=True)
 	trail_low_alt = db.Column(db.Float, nullable=True)
 	trail_location = db.Column(db.String(100))
+	trail_picture = db.Column(db.String(300))
 	# Will calculate ascent & descent with trail_high_alt & trail_low_alt
 
 	reviews = db.relationship('Review')

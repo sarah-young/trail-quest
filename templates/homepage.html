@@ -8,18 +8,48 @@ Homepage
 	<h2></h2>
 	<h4>Let's get trekkin'. Fill out the boxes below to start.</h4>
 	<form action='/trail_selector'>
+		
 		<i><h4>Find trails near...</h4></i>
 		City:<br>
-	    <input type="text" name="city" required><br>
+	    	<input type="text" name="city" required><br>
 	  
 	    State:<br>
-	    <input type="text" name="state" required><br>
+	    	<input type="text" name="state" required><br>
 	  
-	   <!--  Distance from address:<br>
-	    <input type="text" name = "radius"> -->
+	    Distance from <span id="city"></span> <span id="state"></span>:<br>
+	    <i>(defaults to 25 miles if not selected)</i><br>
+	    	<input type="text" name = "radius"> <br>
 
-	    <input type="submit">
-	    <br><br><br>
+	    Trail length:<br>
+	    <i>(in miles)</i><br>
+		    <div class="slidecontainer">	
+	 	 		<input type="range" min="1" max="30" value="15" class="slider" id="myRange">
+	 	 		<span id="trek_length"></span>
+			</div>
+
+			<script>
+
+					var slider = document.getElementById("myRange");
+					var output = document.getElementById("trail-length");
+					output.innerHTML = slider.value; // Display the default slider value
+
+					// Update the current slider value (each time you drag the slider handle)
+					slider.oninput = function() {
+					    output.innerHTML = this.value;
+					    						}
+			</script>
+
+			
+	    Difficulty rating:
+		    <select>
+			  <option value="no-preference" name="trail_difficulty">No preference</option>
+			  <option value="easy" name="trail_difficulty">Easy</option>
+			  <option value="moderate" name="trail_difficulty">Moderate</option>
+			  <option value="difficult" name="trail_difficulty">Difficult</option>
+			</select><br>
+
+	    	<input type="submit">
+	    	<br><br><br>
 	</form>
 
-{% endblock %}
+{% endblock %}	
