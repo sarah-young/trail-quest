@@ -12,8 +12,7 @@ Your adventure begins!
 
 
 	{% if trail_conditions %}
-		<div id="trail-conditions">Trail conditions today: 
-			As of {{ trail_conditions[3] }} {{ trail_conditions[0] }} Status:<br>
+		<div id="trail-conditions">Trail conditions as of {{ trail_conditions[3] }} {{ trail_conditions[0] }} Status:<br>
 			{{ trail_conditions[2] }} {{ trail_conditions[1] }} 
 		</div>
 	{% endif %}

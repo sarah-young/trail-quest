@@ -93,6 +93,7 @@ def add_trails_to_db(trails):
 		print "LENGTH OF TRAILS: ", len(trails)
 		print "TRAIL NAME: ", trail['name']
 		print "TYPE: ", type(trail)
+		# trail_difficulty = trail_difficulty_conversion(trail['difficulty'])
 		trail_object = model.Trail(trail_id = trail['id'],
 					  trail_name = trail['name'],
 					  trailhead_latitude = trail['latitude'],
@@ -168,32 +169,38 @@ def filter_trek_difficulty(trails_filtered_by_length, trail_difficulty):
 
 	Called in select_three_trails()"""
 
-	list_of_trails = []
 
-	for trail in trails_filtered_by_length: 
-	# don't filter by difficulty, just re
-		if trail_difficulty != "no-preference":
-			list_of_trails = trails_filtered_by_length
+	if trail_difficulty == "no-preference":
+	# don't filter by difficulty --this list is the list we want to return.
+		list_of_trails = trails_filtered_by_length
+		return list_of_trails
 
-		else:
+	else:
 
-			difficulty = trail_difficulty_conversion(trail['difficulty'])
-			print "TRAIL DIFFICULTY: ", trail['difficulty']
+		list_of_trails = []
+
+		for trail in trails_filtered_by_length: 
+			
+			trail_difficulty_rating = trail['difficulty']
+			# from trail object, passed to conversion function
+			print trail_difficulty_rating
+			difficulty = trail_difficulty_conversion(trail_difficulty_rating)
+
 			print "DIFFICULTY: ", difficulty
 
-			if difficulty == "easy" or "easy/intermediate" and trail_difficulty == "easy":
+			if (difficulty == "easy" or difficulty == "easy/intermediate") and trail_difficulty == "easy":
 				list_of_trails.append(trail)
 
-			elif difficulty == "intermediate" or "easy/intermediate" or "intermediate/difficult" and trail_difficulty == "moderate":
+			elif (difficulty == "intermediate" or difficulty == "easy/intermediate" or difficulty == "intermediate/difficult") and trail_difficulty == "moderate":
 				list_of_trails.append(trail)
 
-			elif difficult == "intermediate/difficult" or "difficult" or "very difficult" and trail_difficulty == "difficult":
+			elif (difficulty == "intermediate/difficult" or difficulty == "difficult" or difficulty == "very difficult") and trail_difficulty == "difficult":
 				list_of_trails.append(trail)	
 
-	return list_of_trails
+		return list_of_trails
 
 
-def trail_difficulty_conversion(trail_difficulty):
+def trail_difficulty_conversion(trail_difficulty_rating):
 	"""Take API's trail difficulty selection and return easy, moderate, difficult.
 
 	Called in filter_trek_difficulty() """
@@ -202,35 +209,32 @@ def trail_difficulty_conversion(trail_difficulty):
 	#trail['difficulty'] comes from API
 	# handles one trail at a time
 
-	if trail_difficulty == "green":
+	if trail_difficulty_rating == "green":
 		difficulty = "easy"
 
-	elif trail_difficulty == "greenBlue":
+	elif trail_difficulty_rating == "greenBlue":
 		difficulty = "easy/intermediate"
 	
-	elif trail_difficulty == "blue":
+	elif trail_difficulty_rating == "blue":
 		difficulty = "intermediate"
 
-	elif trail_difficulty == "blueBlack":
+	elif trail_difficulty_rating == "blueBlack":
 		difficulty = "intermediate/difficult"
 
 
-	elif trail_difficulty == "black":
+	elif trail_difficulty_rating == "black":
 		difficulty = "difficult"
 		
-	elif trail_difficulty == "dblack":
+	elif trail_difficulty_rating == "dblack":
 		difficulty = "very difficult"
 
 	return difficulty
 
 
-def get_map(lat, lng):
+def get_map(trails, city, state):
 	"""Gets map information based on coordinates"""
 
-	# map_based_on_coordinates = "https://www.google.com/maps/embed/v1/view?key="+satellite_map_api_key+"&center="+lat+","+lng+"&zoom=18&maptype=satellite"
-	# view only map; no markers seemingly available &  no dirxns
-
-	pass
+	return google_map_object
 
 	#return map_based_on_coordinates
 

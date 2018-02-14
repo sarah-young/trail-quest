@@ -33,10 +33,12 @@ def search_with_user_data():
 	trek_length = request.args.get("trek_length")
 	print "TREK LENGTH: ", trek_length
 	trail_difficulty = request.args.get("trail_difficulty")
-	print "DIFFICULTY: ", trail_difficulty
+	print "DIFFICULTY SELECTED: ", trail_difficulty
 
 	coordinates = functions.find_lat_lng(city,state)
 	print "COORDINATES: ", coordinates
+
+	session["coordinates"] = coordinates
 
 	if coordinates == None:
 		flash("Hmm. No trails were found. Try another location?")
@@ -55,12 +57,11 @@ def search_with_user_data():
 
 	trails = functions.filter_trek_difficulty(trails, trail_difficulty)
 	print "TRAILS AFTER DIFFICULTY FILTER: ", trails
-	
+
 	session['selected_trails'] = functions.select_three_trails(trails)
 	print "SESSION: selected_trails: ", session['selected_trails']
 
 	session['location'] = (city, state,)
-
 
 	return redirect('/trails')
 
@@ -73,8 +74,15 @@ def display_selected_trails():
 	city, state = session['location']
 	print "CITY/STATE: ", city, state
 
-	return render_template('/trails.html', selected_trails=selected_trails, city=city, state=state)
+	google_maps_api_key = secrets.SATELLITE_MAP_GM_API_KEY
 
+	coordinates = session['coordinates'] # lat / long from Google Maps API call 
+	lat, lng = coordinates
+	lat = float(lat)
+	lng = float(lng)
+
+	return render_template('/trails.html', selected_trails=selected_trails, city=city, state=state, api_key=google_maps_api_key, city_latitude=lat, city_longitude=lng)
+	# passing selected_trails list, city, state, api key for google maps, and lat/long for map
 
 @app.route('/trek')
 def show_trail_location():
