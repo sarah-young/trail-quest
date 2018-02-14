@@ -31,11 +31,11 @@ def find_lat_lng(city, state):
 		return coordinates
 
 	except:
+
 		return None
 
 
-
-def find_trails(coordinates, radius):
+def find_trails(coordinates, radius='25'):
 	"""Find trails based on GPS coordinates from find_lat_lng
 	
 	Uses Hiking Project API
@@ -53,34 +53,34 @@ def find_trails(coordinates, radius):
 	return trails
 
 
-def select_three_trails(trails, trek_length, trail_difficulty):
-	"""Selects three random trails from trail_packet from find_trails"""
+def select_three_trails(trails):
+	"""Selects three random trails from trail_packet from find_trails
 
-	trail_list = []
+	
+	"""
 
-	for trail in trails: 
-		if trail.trail_length <= trek_length:
-			if trail.trail_difficulty == difficulty:
-				trail_list.append(trail)
+	print "***PRINT TRAIL TYPE*** ", type(trails)
 
-	if len(trail_list) == 0:
+
+
+	if len(trails) == 0:
 		return None	
 		# return something that prompts server.py route to add a flash message
 
-	elif len(trail_list) < 4:
-		selected_trails = trail_list
-		# give message on route side that states user may want to widen search criteria
+	elif len(trails) < 4:
+		selected_trails = trails
+		# TODO: give message on route side that states user may want to widen search criteria
 
 		return selected_trails
 
-	elif len(trail_list) >=4:
+	elif len(trails) >=4:
 		selected_trails = []
-		random.shuffle(trail_list)
-		first_trail = trail_list.pop()
+		random.shuffle(trails)
+		first_trail = trails.pop()
 		selected_trails.append(first_trail)
-		second_trail = trail_list.pop()
+		second_trail = trails.pop()
 		selected_trails.append(second_trail)
-		third_trail = trail_list.pop()
+		third_trail = trails.pop()
 		selected_trails.append(third_trail)
 
 		return selected_trails
@@ -90,9 +90,9 @@ def add_trails_to_db(trails):
 	"""Adds user selected trail to db"""
 
 	for trail in trails:
-		print len(trails)
-		print trail['name']
-		print type(trail)
+		print "LENGTH OF TRAILS: ", len(trails)
+		print "TRAIL NAME: ", trail['name']
+		print "TYPE: ", type(trail)
 		trail_object = model.Trail(trail_id = trail['id'],
 					  trail_name = trail['name'],
 					  trailhead_latitude = trail['latitude'],
@@ -123,11 +123,11 @@ def get_trail_conditions(trail_id):
 	json_conditions = conditions_request.json()
 	fetch = json_conditions["0"]
 	trail_name_by_id = fetch.get("name")#.values()
-	print trail_name_by_id
+	print "TRAIL NAME BY ID: ", trail_name_by_id
 	trail_status_details =fetch.get("conditionStatus")#.values()
-	print trail_status_details
+	print "TRAIL STATUS DETAILS: ", trail_status_details
 	trail_status_color = fetch.get("conditionColor")#.values()
-	print trail_status_color
+	print "TRAIL STATUS COLOR: ", trail_status_color
 	trail_status_date = fetch.get("conditionDate")
 
 	if trail_status_date.startswith("1970"):
@@ -143,6 +143,85 @@ def get_trail_conditions(trail_id):
 	trail_deets = (trail_name_by_id, trail_status_details, trail_status_color, trail_status_date,)
 
 	return trail_deets
+
+
+
+
+def filter_trek_length(trails, trek_length):
+	"""Take trail list-object & filter for trails by trek length
+
+	Called in select_three_trails()"""
+
+	trail_list = []
+
+	for trail in trails: 
+		if trail['length'] <= trek_length:
+		# filters out trails that are too long
+		# only appends trails to trail_list that are the same as the user's preference
+			trail_list.append(trail)
+
+	return trail_list
+
+
+def filter_trek_difficulty(trails_filtered_by_length, trail_difficulty):
+	"""Take trail list-object & filter trails by difficulty
+
+	Called in select_three_trails()"""
+
+	list_of_trails = []
+
+	for trail in trails_filtered_by_length: 
+	# don't filter by difficulty, just re
+		if trail_difficulty != "no-preference":
+			list_of_trails = trails_filtered_by_length
+
+		else:
+
+			difficulty = trail_difficulty_conversion(trail['difficulty'])
+			print "TRAIL DIFFICULTY: ", trail['difficulty']
+			print "DIFFICULTY: ", difficulty
+
+			if difficulty == "easy" or "easy/intermediate" and trail_difficulty == "easy":
+				list_of_trails.append(trail)
+
+			elif difficulty == "intermediate" or "easy/intermediate" or "intermediate/difficult" and trail_difficulty == "moderate":
+				list_of_trails.append(trail)
+
+			elif difficult == "intermediate/difficult" or "difficult" or "very difficult" and trail_difficulty == "difficult":
+				list_of_trails.append(trail)	
+
+	return list_of_trails
+
+
+def trail_difficulty_conversion(trail_difficulty):
+	"""Take API's trail difficulty selection and return easy, moderate, difficult.
+
+	Called in filter_trek_difficulty() """
+	
+	# trail_difficulty comes from user, difficulty is conversion from 'attribute' on trail object
+	#trail['difficulty'] comes from API
+	# handles one trail at a time
+
+	if trail_difficulty == "green":
+		difficulty = "easy"
+
+	elif trail_difficulty == "greenBlue":
+		difficulty = "easy/intermediate"
+	
+	elif trail_difficulty == "blue":
+		difficulty = "intermediate"
+
+	elif trail_difficulty == "blueBlack":
+		difficulty = "intermediate/difficult"
+
+
+	elif trail_difficulty == "black":
+		difficulty = "difficult"
+		
+	elif trail_difficulty == "dblack":
+		difficulty = "very difficult"
+
+	return difficulty
 
 
 def get_map(lat, lng):

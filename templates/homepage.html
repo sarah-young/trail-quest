@@ -16,21 +16,21 @@ Homepage
 	    State:<br>
 	    	<input type="text" name="state" required><br>
 	  
-	    Distance from <span id="city"></span> <span id="state"></span>:<br>
+	    Distance from <span id="city" name=></span> <span id="state"></span>:<br>
 	    <i>(defaults to 25 miles if not selected)</i><br>
-	    	<input type="text" name = "radius"> <br>
+	    	<input type="text" name ="radius"><br>
 
 	    Trail length:<br>
 	    <i>(in miles)</i><br>
 		    <div class="slidecontainer">	
-	 	 		<input type="range" min="1" max="30" value="15" class="slider" id="myRange">
+	 	 		<input type="range" min="1" max="30" value="15" class="slider" id="trek_length_selection" name="trek_length">
 	 	 		<span id="trek_length"></span>
 			</div>
 
 			<script>
 
-					var slider = document.getElementById("myRange");
-					var output = document.getElementById("trail-length");
+					var slider = document.getElementById("trek_length_selection");
+					var output = document.getElementById("trek_length");
 					output.innerHTML = slider.value; // Display the default slider value
 
 					// Update the current slider value (each time you drag the slider handle)
@@ -41,11 +41,11 @@ Homepage
 
 			
 	    Difficulty rating:
-		    <select>
-			  <option value="no-preference" name="trail_difficulty">No preference</option>
-			  <option value="easy" name="trail_difficulty">Easy</option>
-			  <option value="moderate" name="trail_difficulty">Moderate</option>
-			  <option value="difficult" name="trail_difficulty">Difficult</option>
+		    <select name="trail_difficulty">
+			  <option value="no-preference">No preference</option>
+			  <option value="easy">Easy</option>
+			  <option value="moderate">Moderate</option>
+			  <option value="difficult">Difficult</option>
 			</select><br>
 
 	    	<input type="submit">

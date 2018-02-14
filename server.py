@@ -25,25 +25,42 @@ def search_with_user_data():
 	"""Take im data and pass to relevant functions"""
 
 	city = request.args.get("city")
+	print "CITY: ", city
 	state = request.args.get("state")
+	print "STATE: ", state
 	radius = request.args.get("radius")
+	print "RADIUS: ", radius
 	trek_length = request.args.get("trek_length")
-	difficulty = request.args.get("difficulty")
-
+	print "TREK LENGTH: ", trek_length
+	trail_difficulty = request.args.get("trail_difficulty")
+	print "DIFFICULTY: ", trail_difficulty
 
 	coordinates = functions.find_lat_lng(city,state)
+	print "COORDINATES: ", coordinates
+
 	if coordinates == None:
 		flash("Hmm. No trails were found. Try another location?")
 		return render_template('/homepage.html')
+
 	trails = functions.find_trails(coordinates, radius)
+	# Hiking API gets called here!
+
 	if len(trails) == 0:
 		flash("Hmm. No trails were found. Try another location?")
 		return render_template('/homepage.html')
 
 	trails_to_db = functions.add_trails_to_db(trails)
-	session['selected_trails'] = functions.select_three_trails(trails)
-	session['location'] = (city, state,)
+	trails = functions.filter_trek_length(trails, trek_length)
+	print "TRAILS AFTER LENGTH FILTER: ", trails
+
+	trails = functions.filter_trek_difficulty(trails, trail_difficulty)
+	print "TRAILS AFTER DIFFICULTY FILTER: ", trails
 	
+	session['selected_trails'] = functions.select_three_trails(trails)
+	print "SESSION: selected_trails: ", session['selected_trails']
+
+	session['location'] = (city, state,)
+
 
 	return redirect('/trails')
 
@@ -52,7 +69,9 @@ def display_selected_trails():
 	"""Display trails selected by select_three_trails"""
 
 	selected_trails = session['selected_trails']
+	print "SELECTED TRAILS: ", selected_trails
 	city, state = session['location']
+	print "CITY/STATE: ", city, state
 
 	return render_template('/trails.html', selected_trails=selected_trails, city=city, state=state)
 
