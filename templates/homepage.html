@@ -18,7 +18,23 @@ Homepage
 	  
 	    Distance from <span id="city" name=></span> <span id="state"></span>:<br>
 	    <i>(defaults to 25 miles if not selected)</i><br>
-	    	<input type="text" name ="radius"><br>
+	    <div class="slidecontainer">	
+	 	 		<input type="range" min="1" max="200" value="10" class="slider" id="radius-selection" name="radius">
+	 	 		<span id="radius"></span>
+			</div>
+			<script>
+
+					var slider1 = document.getElementById("radius-selection");
+					var output1 = document.getElementById("radius");
+					output1.innerHTML = slider1.value; // Display the default slider value
+
+					// Update the current slider value (each time you drag the slider handle)
+					slider1.oninput = function() {
+					    output1.innerHTML = this.value;
+					    						}
+			</script>
+
+
 
 	    Trail length:<br>
 	    <i>(in miles)</i><br>
@@ -29,13 +45,13 @@ Homepage
 
 			<script>
 
-					var slider = document.getElementById("trek_length_selection");
-					var output = document.getElementById("trek_length");
-					output.innerHTML = slider.value; // Display the default slider value
+					var slider2 = document.getElementById("trek_length_selection");
+					var output2 = document.getElementById("trek_length");
+					output2.innerHTML = slider2.value; // Display the default slider value
 
 					// Update the current slider value (each time you drag the slider handle)
-					slider.oninput = function() {
-					    output.innerHTML = this.value;
+					slider2.oninput = function() {
+					    output2.innerHTML = this.value;
 					    						}
 			</script>
 

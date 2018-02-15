@@ -39,6 +39,9 @@ def search_with_user_data():
 	print "COORDINATES: ", coordinates
 
 	session["coordinates"] = coordinates
+	radius_to_meters = int(radius) * 1609.34 
+	session["radius"] = radius_to_meters
+	# convert radius to meters for use on google map!
 
 	if coordinates == None:
 		flash("Hmm. No trails were found. Try another location?")
@@ -80,8 +83,9 @@ def display_selected_trails():
 	lat, lng = coordinates
 	lat = float(lat)
 	lng = float(lng)
+	radius_in_meters = session['radius']
 
-	return render_template('/trails.html', selected_trails=selected_trails, city=city, state=state, api_key=google_maps_api_key, city_latitude=lat, city_longitude=lng)
+	return render_template('/trails.html', selected_trails=selected_trails, city=city, state=state, api_key=google_maps_api_key, city_latitude=lat, city_longitude=lng, radius=radius_in_meters)
 	# passing selected_trails list, city, state, api key for google maps, and lat/long for map
 
 @app.route('/trek')

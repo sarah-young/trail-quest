@@ -1,4 +1,4 @@
- <link rel="stylesheet" href="/static/css/styles.css">
+
 
 
 {% extends 'base.html' %}
@@ -8,7 +8,7 @@ Select Your Trail
 {% block content %}
 
 
-<div>Trails near {{ city }}, {{ state }}:</div>
+<div>Trails within {{ radius/1609.34 }} miles of {{ city }}, {{ state }}:</div>
 	<ul>
 	  {% for trail in selected_trails %}
 		<form action="/trek">
@@ -20,9 +20,12 @@ Select Your Trail
 		    {% if trail.imgMedium %}
 		    <img src="{{ trail.imgMedium }}">
 		    {% endif %}
-		    <input type="hidden" value="{{ trail.id }}" name="trail_id"> 
-		    <input type="submit" value= 'I want to go to there!' name="chosen_trail">
-		</form>
+		    
+        <input type="hidden" value="{{ trail.id }}" name="trail_id"> 
+		     <!-- passes trail id via URL  -->
+        <input type="submit" value= 'I want to go to there!' name="chosen_trail">
+		
+    </form>
 
 
 
@@ -31,18 +34,78 @@ Select Your Trail
 	
  <div id="map"></div>
     <script>
-      function initMap() {
-        var location = {lat: 72, lng: 122 }; //latitude and longitude for city
-        console.log(location);
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: location
-        });
-        var marker = new google.maps.Marker({
-          position: location,
-          map: map
-        });
-      }
+
+    // Google Map centered on lat/long for city selected
+    function initMap() {
+    var location = {lat: {{ city_latitude}}, lng: {{ city_longitude }} }; //latitude and longitude for city
+      console.log(location);
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: location
+    });
+    var marker = new google.maps.Marker({
+      position: location,
+      map: map
+    });
+
+    var trailsJSON = {{ selected_trails|tojson }}; //converting python list to js array!
+    console.log(trailsJSON);
+
+    for (let i = 0; i < trailsJSON.length; i += 1) {
+    console.log(trailsJSON[i]);
+    trailsJSON[i].latitude
+    trailsJSON[i].longitude
+    // add an empty arrary append to it??? 
+
+    }
+
+
+    // var unpacked = trailsJSON['0']; //FIXME: Update this so it loops through the array and gets each latitude/longitude
+    // console.log(unpacked); // creates trail objects with attributes 
+    // var latitudeGet = unpacked.latitude
+    // console.log(latitudeGet)
+    // var longitudeGet = unpacked.longitude
+
+
+
+
+    // Unpacking JS map...
+
+
+
+
+    // Radius for user inputted distance
+    var circle = new google.maps.Circle({
+      map: map,
+      radius: {{ radius }},    // 10 miles in metres // Make this dynamic so it links to the radius input by the user
+      fillColor: '#b8f77e'
+
+      });
+
+      // Function for adorable marker drop :3
+      function drop() {
+        for (var i =0; i < markerArray.length; i++) {
+        setTimeout(function() {
+        addMarkerMethod();
+                              }, i * 200);
+                                                    }
+                        }
+        circle.bindTo('center', marker, 'position');
+        };
+
+      // Function to add 'bounce' to markers
+
+      function toggleBounce() {
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+        };
+
+
+
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT4L9G5iunkBWCBwqqm6Qdt7-0hG34L6Y&callback=initMap">
