@@ -52,25 +52,21 @@ Select Your Trail
     var trailsJSON = {{ selected_trails|tojson }}; //converting python list to js array!
     console.log(trailsJSON);
 
+    let trailMarker, html; // adding marker as a variable in the namespace 
+
+
     for (let i = 0; i < trailsJSON.length; i += 1) {
     console.log(trailsJSON[i]);
-    trailsJSON[i].latitude
-    trailsJSON[i].longitude
-    // add an empty arrary append to it??? 
 
+    trailMarker = new google.maps.Marker({
+                    position: new google.maps.LatLng(trailsJSON[i].latitude, trailsJSON[i].longitude),
+                    map: map,
+                    title: 'Trail: ' + trailsJSON[i].name,
+                    icon: '/static/img/hikingIcon.png'
+                });
     }
 
-
-    // var unpacked = trailsJSON['0']; //FIXME: Update this so it loops through the array and gets each latitude/longitude
-    // console.log(unpacked); // creates trail objects with attributes 
-    // var latitudeGet = unpacked.latitude
-    // console.log(latitudeGet)
-    // var longitudeGet = unpacked.longitude
-
-
-
-
-    // Unpacking JS map...
+    // add HTML & infowindow!
 
 
 
@@ -79,8 +75,8 @@ Select Your Trail
     var circle = new google.maps.Circle({
       map: map,
       radius: {{ radius }},    // 10 miles in metres // Make this dynamic so it links to the radius input by the user
-      fillColor: '#b8f77e'
-
+      fillColor: '#b394d1',
+      strokeWeight: .1
       });
 
       // Function for adorable marker drop :3
