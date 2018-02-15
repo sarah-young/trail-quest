@@ -7,7 +7,7 @@ Homepage
 
 	<h2></h2>
 	<h4>Let's get trekkin'. Fill out the boxes below to start.</h4>
-	<form action='/trail_selector'>
+	<form action='/trail_selector' id="trailSelector">
 		
 		<i><h4>Find trails near...</h4></i>
 		City:<br>
@@ -19,20 +19,9 @@ Homepage
 	    Distance from <span id="city" name=></span> <span id="state"></span>:<br>
 	    <i>(defaults to 25 miles if not selected)</i><br>
 	    <div class="slidecontainer">	
-	 	 		<input type="range" min="1" max="200" value="10" class="slider" id="radius-selection" name="radius">
+	 	 		<input type="range" min="1" max="25" value="5" class="slider" id="radius-selection" name="radius">
 	 	 		<span id="radius"></span>
 			</div>
-			<script>
-
-					var slider1 = document.getElementById("radius-selection");
-					var output1 = document.getElementById("radius");
-					output1.innerHTML = slider1.value; // Display the default slider value
-
-					// Update the current slider value (each time you drag the slider handle)
-					slider1.oninput = function() {
-					    output1.innerHTML = this.value;
-					    						}
-			</script>
 
 
 
@@ -42,18 +31,6 @@ Homepage
 	 	 		<input type="range" min="1" max="30" value="15" class="slider" id="trek_length_selection" name="trek_length">
 	 	 		<span id="trek_length"></span>
 			</div>
-
-			<script>
-
-					var slider2 = document.getElementById("trek_length_selection");
-					var output2 = document.getElementById("trek_length");
-					output2.innerHTML = slider2.value; // Display the default slider value
-
-					// Update the current slider value (each time you drag the slider handle)
-					slider2.oninput = function() {
-					    output2.innerHTML = this.value;
-					    						}
-			</script>
 
 			
 	    Difficulty rating:
@@ -67,5 +44,34 @@ Homepage
 	    	<input type="submit">
 	    	<br><br><br>
 	</form>
+
+	<button type="button" id="asynchrousClick">Click Me!</button>
+
+	<script>
+
+	//Creating asynchronous call for form #yay
+	document.getElementById("asynchrousClick").addEventListener("click", function() {
+		let formData = new FormData(document.getElementById('trailSelector'));
+		console.log(formData);
+		$.ajax({
+			url: "/trails_asychronous",
+			type: "GET",
+			data: formData,
+			processData: false,
+			success: function(response){
+				var k=response;
+				console.log(response)
+
+// Next steps: changing innerHTML in divs by ID to display information
+// #maybeIdonthatejavascript???
+
+			}
+		});
+	});
+
+	</script>
+
+			<script src='../static/homepage.js' type="text/javascript">					
+			</script>
 
 {% endblock %}	

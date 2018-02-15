@@ -5,6 +5,7 @@
 <!--     <script src="https://maps.googleapis.com/maps/api/js"></script> -->
     <link rel="stylesheet" href="/static/css/styles.css">
     <script src="http://code.jquery.com/jquery.js"></script>
+
 </head>
 <body>
 
@@ -12,7 +13,7 @@
     
     <ul>
   {% for message in get_flashed_messages() %}
-    <li>{{ message }}</li>
+   <p>{{ message }}</p>
   {% endfor %}
 </ul>
     {% block content %} {% endblock %}

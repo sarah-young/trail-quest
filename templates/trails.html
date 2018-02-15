@@ -1,6 +1,3 @@
-
-
-
 {% extends 'base.html' %}
 {% block title %}
 Select Your Trail
@@ -9,109 +6,102 @@ Select Your Trail
 
 
 <div>Trails within {{ radius/1609.34 }} miles of {{ city }}, {{ state }}:</div>
-	<ul>
-	  {% for trail in selected_trails %}
-		<form action="/trek">
+<ul>
+ {% for trail in selected_trails %}
+ <form action="/trek">
 
-		    <li>Trail: {{ trail.name }}</li>
-		    <li>Trail length: {{ trail.length }}</li>
-		    <li>Difficulty: {{ trail.difficulty }}</li>
-		    </ul>
-		    {% if trail.imgMedium %}
-		    <img src="{{ trail.imgMedium }}">
-		    {% endif %}
-		    
-        <input type="hidden" value="{{ trail.id }}" name="trail_id"> 
-		     <!-- passes trail id via URL  -->
-        <input type="submit" value= 'I want to go to there!' name="chosen_trail">
-		
-    </form>
+  <li>Trail: {{ trail.name }}</li>
+  <li>Trail length: {{ trail.length }}</li>
+  <li>Difficulty: {{ trail.difficulty }}</li>
+</ul>
+{% if trail.imgMedium %}
+<img src="{{ trail.imgMedium }}">
+{% endif %}
 
+<input type="hidden" value="{{ trail.id }}" name="trail_id"> 
+<!-- passes trail id via URL  -->
+<input type="submit" value= 'I want to go to there!' name="chosen_trail">
 
+</form>
 
 
-	  {% endfor %}
-	
- <div id="map"></div>
+{% endfor %}
+
+<div id="map"></div>
+
+
+
+
     <script>
+      // Google Map centered on lat/long for city selected
+  function initMap() {
 
-    // Google Map centered on lat/long for city selected
-    function initMap() {
-    var location = {lat: {{ city_latitude}}, lng: {{ city_longitude }} }; //latitude and longitude for city
+      console.log('here');
+      var location = {lat: {{ city_latitude }}, lng: {{ city_longitude }} }; //latitude and longitude for city
       console.log(location);
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: location
-    });
-    var marker = new google.maps.Marker({
-      position: location,
-      map: map
-    });
-
-    var trailsJSON = {{ selected_trails|tojson }}; //converting python list to js array!
-    console.log(trailsJSON);
-
-    let trailMarker, html; // adding marker as a variable in the namespace 
-
-
-    for (let i = 0; i < trailsJSON.length; i += 1) {
-    console.log(trailsJSON[i]);
-
-    trailMarker = new google.maps.Marker({
-                    position: new google.maps.LatLng(trailsJSON[i].latitude, trailsJSON[i].longitude),
-                    map: map,
-                    title: 'Trail: ' + trailsJSON[i].name,
-                    icon: '/static/img/hikingIcon.png'
-                });
-    }
-
-    // add HTML & infowindow! Something like below... 
-
-    // var infoWindow = new google.maps.InfoWindow({
-    //     width: 150
-    // }
-
-    //   html = ('<div class="window-content">' +
-    //                   '<img src="/static/img/hikingIcon" alt="hiker" style="width:150px;" class="thumbnail">' +
-    //                   '<p><b>Trail: </b>' + trailsJSON[i].name + '</p>' +
-    //                   '<p><b>Trail length: </b>' + trailsJSON[i].length + '</p>' +
-    //                   '<p><b>Description: </b>' + trailsJSON[i].summary + '</p>' +
-    //             '</div>');
-
-
-    //  bindInfoWindow(marker, map, infoWindow, html);
-    //  );
-
-
-    // Radius for user inputted distance
-    var circle = new google.maps.Circle({
-      map: map,
-      radius: {{ radius }},    // 10 miles in metres // Make this dynamic so it links to the radius input by the user
-      fillColor: '#b394d1',
-      strokeWeight: .1
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: location
       });
 
-      // Function for adorable marker drop :3
-      function drop() {
-        for (var i =0; i < markerArray.length; i++) {
-        setTimeout(function() {
-        addMarkerMethod();
-                              }, i * 200);
-                                                    }
-                        }
-        circle.bindTo('center', marker, 'position');
-        };
 
-      // Function to add 'bounce' to markers
+      var marker = new google.maps.Marker({
+        position: location,
+        map: map
+      });
 
-      function toggleBounce() {
-        if (marker.getAnimation() !== null) {
-          marker.setAnimation(null);
-        } else {
-          marker.setAnimation(google.maps.Animation.BOUNCE);
+
+      var trailsJSON = {{ selected_trails|tojson }}; //converting python list to js array!
+      console.log(trailsJSON);
+      
+
+      let trailMarker, html; // adding marker as a variable in the namespace 
+
+
+      for (let i = 0; i < trailsJSON.length; i += 1) {
+        console.log(trailsJSON[i]);
+
+        trailMarker = new google.maps.Marker({
+          position: new google.maps.LatLng(trailsJSON[i].latitude, trailsJSON[i].longitude),
+          map: map,
+          title: 'Trail: ' + trailsJSON[i].name,
+          icon: '/static/img/hikingIcon.png',
+          animation: google.maps.Animation.DROP,
+        });
+      }
+
+
+      // Radius for user inputted distance
+      var circle = new google.maps.Circle({
+        map: map,
+        radius: {{ radius }},    // 10 miles in metres // Make this dynamic so it links to the radius input by the user
+        fillColor: '#b394d1',
+        strokeWeight: .1
+      });
+
+        // Function for adorable marker drop :3
+        function drop() {
+          for (var i =0; i < trailsJSON.length; i++) {
+            setTimeout(function() {
+              addMarkerMethod();
+            }, i * 200);
+          }
         }
+        circle.bindTo('center', marker, 'position');
+      };
+
+        // Function to add 'bounce' to markers
+
+        function toggleBounce() {
+          if (trailMarker.getAnimation() !== null) {
+            trailMarker.setAnimation(null);
+          } else {
+            trailMarker.setAnimation(google.maps.Animation.BOUNCE);
+          }
         };
+
+
 
 
 
@@ -121,8 +111,7 @@ Select Your Trail
     </script>
 
 
-
-{% endblock %}
+  {% endblock %}
 
 
 

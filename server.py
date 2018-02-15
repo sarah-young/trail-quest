@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, jsonify
 import secrets
 import functions
 from flask import Flask, redirect, request, render_template, session, url_for, flash
@@ -67,6 +67,23 @@ def search_with_user_data():
 	session['location'] = (city, state,)
 
 	return redirect('/trails')
+
+@app.route('/trails_asychronous')
+def asynchronous_info_load():
+	selected_trails = session['selected_trails']
+	print "SELECTED TRAILS: ", selected_trails
+	city, state = session['location']
+	print "CITY/STATE: ", city, state
+
+	google_maps_api_key = secrets.SATELLITE_MAP_GM_API_KEY
+
+	coordinates = session['coordinates'] # lat / long from Google Maps API call 
+	lat, lng = coordinates
+	lat = float(lat)
+	lng = float(lng)
+	radius_in_meters = session['radius']
+
+	return jsonify(selected_trails)
 
 @app.route('/trails')
 def display_selected_trails():
