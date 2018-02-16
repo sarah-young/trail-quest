@@ -11,10 +11,10 @@ Homepage
 		
 		<i><h4>Find trails near...</h4></i>
 		City:<br>
-	    	<input type="text" name="city" required><br>
+	    	<input type="text" name="city" id="cityname" required><br>
 	  
 	    State:<br>
-	    	<input type="text" name="state" required><br>
+	    	<input type="text" name="state" id="statename" required><br>
 	  
 	    Distance from <span id="city" name=></span> <span id="state"></span>:<br>
 	    <i>(defaults to 25 miles if not selected)</i><br>
@@ -34,79 +34,79 @@ Homepage
 
 			
 	    Difficulty rating:
-		    <select name="trail_difficulty">
+		    <select name="trail_difficulty" id="traildifficulty">
 			  <option value="no-preference">No preference</option>
 			  <option value="easy">Easy</option>
 			  <option value="moderate">Moderate</option>
 			  <option value="difficult">Difficult</option>
 			</select><br>
 
-	    	<input type="submit">
+	    	<input type="submit"</input>	    	
 	    	<br><br><br>
 	</form>
 
-	<button type="button" id="asynchrousClick">Click Me!</button>
-
-	<div id="trails">
-
-	</div>
-
-
-
-
-
-
-
+	<button type="button" id="asynchronousClick">Click Me!</button>
 
 	<script>
 
-	//Creating asynchronous call for form #yay
-	document.getElementById("asynchrousClick").addEventListener("click", function() {
-		let formData = new FormData(document.getElementById('trailSelector'));
-		console.log(formData);
-		$.ajax({
-			url: "/trails_asychronous",
-			type: "GET",
-			data: formData,
-			processData: false,
-			success: function(response){
-				var k=response;
-				console.log(`Response: `, response)
-				let trailDetails, trailName, trailPicture, trailLength, trailDifficulty;
+//Creating asynchronous call for form #yay
+document.getElementById("asynchronousClick").addEventListener("click", function() {
+	// How do I add new data to this variable? Does not refresh.
+	let formData = new $('#trailSelector').serializeArray();
+	let data = {"city": document.getElementById("cityname"),
+				"state": document.getElementById("statename"),
+				"radius": document.getElementById("radius-selection"),
+				"traillength": document.getElementById("trek_length_selection"),
+				"traildifficulty": document.getElementById("traildifficulty")
+				 }
+	// Build a dictionary (above) and call the values from the form above (add IDs to the form...)
+	//  Try it with or without formData?? 
+	console.log(formData)
+	$.ajax({
+		url: "/trails_asychronous",
+		type: "POST",
+		data: $('#trailSelector').serialize(),
+		// data: { 'data' : formData}, // might need to be { 'data': formData }??????
+		processData: false,
+		cache: false,
+		success: function(response){
+			console.log(`Response: `, response);
 
-				for (let i = 0; i < k.length; i += 1) {
-			    	trailName = k[i].name
-			    	console.log(trailName);
-			    	trailDetails = k[i].summary
-			    	console.log(trailDetails);
-			    	trailPicture = k[i].imgSmall
-			    	console.log(trailPicture);
-			    	trailLength = k[i].length
-			    	console.log(trailLength);
-			    	trailDifficulty = k[i].difficulty
-			    	console.log(trailDifficulty);
-			    	};
-				}
-			})
-    	});
+		}
+
+	});
+});
 
 
 
 
 
 
-	
+			// let trailDetails, trailName, trailPicture, trailLength, trailDifficulty;
 
-	
+			// for (let i = 0; i < k.length; i += 1) {
+		 //    	trailName = k[i].name
+		 //    	console.log(trailName);
+		 //    	trailDetails = k[i].summary
+		 //    	console.log(trailDetails);
+		 //    	trailPicture = k[i].imgSmall
+		 //    	console.log(trailPicture);
+		 //    	trailLength = k[i].length
+		 //    	console.log(trailLength);
+		 //    	trailDifficulty = k[i].difficulty
+		 //    	console.log(trailDifficulty);	
+
+		    	// document.getElementById("selectedtrails1").innerHTML = trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" + trailDetails + "<br>" + "<img src=" + trailPicture + ">";
+		    	// }
+		
+		
 
 
 
 
 
-	// document.getElementById("trails").innerHTML = ;
 
-// Next steps: changing innerHTML in divs by ID to display information
-// #maybeIdonthatejavascript???
+
 
 
 

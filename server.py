@@ -20,9 +20,9 @@ def display_trail_form():
 	return render_template('/homepage.html')
 
 
-@app.route('/trail_selector')
+@app.route('/trail_selector') # change back to this if doesn't work
 def search_with_user_data():
-	"""Take im data and pass to relevant functions"""
+	"""Take in data and pass to relevant functions"""
 
 	city = request.args.get("city")
 	print "CITY: ", city
@@ -66,23 +66,71 @@ def search_with_user_data():
 
 	session['location'] = (city, state,)
 
-	return redirect('/trails')
+	return redirect('/trails') # change back to this if doesn't work
 
-@app.route('/trails_asychronous')
+@app.route('/trails_asychronous', methods=['POST'])
 def asynchronous_info_load():
+
+	# import pdb; pdb.set_trace()
+	# HELPER FUNCTION?!?
+
+	# loop through iterable to get de
+
+	print "REQUEST FORM DATA: ", request.form.get("data")
+
+	city = request.form.get("city")
+
+	print "CITY: ", city
+	state = request.form.get("state")
+	print "STATE: ", state
+	radius = request.form.get("radius")
+	print "RADIUS: ", radius
+	trek_length = request.form.get("trek_length")
+	print "TREK LENGTH: ", trek_length
+	trail_difficulty = request.form.get("trail_difficulty")
+	print "DIFFICULTY SELECTED: ", trail_difficulty
+
+	coordinates = functions.find_lat_lng(city,state)
+	print "COORDINATES: ", coordinates
+
+	session["coordinates"] = coordinates
+	radius_to_meters = int(radius) * 1609.34 
+	session["radius"] = radius_to_meters
+	# convert radius to meters for use on google map!
+
+	if coordinates == None:
+		flash("Hmm. No trails were found. Try another location?")
+		return render_template('/homepage.html')
+
+	trails = functions.find_trails(coordinates, radius)
+	# Hiking API gets called here!
+
+	if len(trails) == 0:
+		flash("Hmm. No trails were found. Try another location?")
+		return render_template('/homepage.html')
+
+	trails_to_db = functions.add_trails_to_db(trails)
+	trails = functions.filter_trek_length(trails, trek_length)
+	print "TRAILS AFTER LENGTH FILTER: ", trails
+
+	trails = functions.filter_trek_difficulty(trails, trail_difficulty)
+	print "TRAILS AFTER DIFFICULTY FILTER: ", trails
+
+	session['selected_trails'] = functions.select_three_trails(trails)
+	print "SESSION: selected_trails: ", session['selected_trails']
+
 	selected_trails = session['selected_trails']
-	print "SELECTED TRAILS: ", selected_trails
-	city, state = session['location']
-	print "CITY/STATE: ", city, state
+
+	session['location'] = (city, state,)
 
 	google_maps_api_key = secrets.SATELLITE_MAP_GM_API_KEY
 
-	coordinates = session['coordinates'] # lat / long from Google Maps API call 
+	coordinates = session['coordinates'] # lat/long from Google Maps API call 
 	lat, lng = coordinates
 	lat = float(lat)
 	lng = float(lng)
 	radius_in_meters = session['radius']
-
+	
 	return jsonify(selected_trails)
 
 @app.route('/trails')
