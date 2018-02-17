@@ -228,6 +228,9 @@ def trail_difficulty_conversion(trail_difficulty_rating):
 	elif trail_difficulty_rating == "dblack":
 		difficulty = "very difficult"
 
+	else:
+		difficulty = "unknown"
+		
 	return difficulty
 
 

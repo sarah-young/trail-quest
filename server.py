@@ -20,53 +20,53 @@ def display_trail_form():
 	return render_template('/homepage.html')
 
 
-@app.route('/trail_selector') # change back to this if doesn't work
-def search_with_user_data():
-	"""Take in data and pass to relevant functions"""
+# @app.route('/trail_selector') # change back to this if doesn't work
+# def search_with_user_data():
+# 	"""Take in data and pass to relevant functions"""
 
-	city = request.args.get("city")
-	print "CITY: ", city
-	state = request.args.get("state")
-	print "STATE: ", state
-	radius = request.args.get("radius")
-	print "RADIUS: ", radius
-	trek_length = request.args.get("trek_length")
-	print "TREK LENGTH: ", trek_length
-	trail_difficulty = request.args.get("trail_difficulty")
-	print "DIFFICULTY SELECTED: ", trail_difficulty
+# 	city = request.args.get("city")
+# 	print "CITY: ", city
+# 	state = request.args.get("state")
+# 	print "STATE: ", state
+# 	radius = request.args.get("radius")
+# 	print "RADIUS: ", radius
+# 	trek_length = request.args.get("trek_length")
+# 	print "TREK LENGTH: ", trek_length
+# 	trail_difficulty = request.args.get("trail_difficulty")
+# 	print "DIFFICULTY SELECTED: ", trail_difficulty
 
-	coordinates = functions.find_lat_lng(city,state)
-	print "COORDINATES: ", coordinates
+# 	coordinates = functions.find_lat_lng(city,state)
+# 	print "COORDINATES: ", coordinates
 
-	session["coordinates"] = coordinates
-	radius_to_meters = int(radius) * 1609.34 
-	session["radius"] = radius_to_meters
-	# convert radius to meters for use on google map!
+# 	session["coordinates"] = coordinates
+# 	radius_to_meters = int(radius) * 1609.34 
+# 	session["radius"] = radius_to_meters
+# 	# convert radius to meters for use on google map!
 
-	if coordinates == None:
-		flash("Hmm. No trails were found. Try another location?")
-		return render_template('/homepage.html')
+# 	if coordinates == None:
+# 		flash("Hmm. No trails were found. Try another location?")
+# 		return render_template('/homepage.html')
 
-	trails = functions.find_trails(coordinates, radius)
-	# Hiking API gets called here!
+# 	trails = functions.find_trails(coordinates, radius)
+# 	# Hiking API gets called here!
 
-	if len(trails) == 0:
-		flash("Hmm. No trails were found. Try another location?")
-		return render_template('/homepage.html')
+# 	if len(trails) == 0:
+# 		flash("Hmm. No trails were found. Try another location?")
+# 		return render_template('/homepage.html')
 
-	trails_to_db = functions.add_trails_to_db(trails)
-	trails = functions.filter_trek_length(trails, trek_length)
-	print "TRAILS AFTER LENGTH FILTER: ", trails
+# 	trails_to_db = functions.add_trails_to_db(trails)
+# 	trails = functions.filter_trek_length(trails, trek_length)
+# 	print "TRAILS AFTER LENGTH FILTER: ", trails
 
-	trails = functions.filter_trek_difficulty(trails, trail_difficulty)
-	print "TRAILS AFTER DIFFICULTY FILTER: ", trails
+# 	trails = functions.filter_trek_difficulty(trails, trail_difficulty)
+# 	print "TRAILS AFTER DIFFICULTY FILTER: ", trails
 
-	session['selected_trails'] = functions.select_three_trails(trails)
-	print "SESSION: selected_trails: ", session['selected_trails']
+# 	session['selected_trails'] = functions.select_three_trails(trails)
+# 	print "SESSION: selected_trails: ", session['selected_trails']
 
-	session['location'] = (city, state,)
+# 	session['location'] = (city, state,)
 
-	return redirect('/trails') # change back to this if doesn't work
+# 	return redirect('/trails') # change back to this if doesn't work
 
 @app.route('/trails_asychronous', methods=['POST'])
 def asynchronous_info_load():
@@ -130,6 +130,7 @@ def asynchronous_info_load():
 	lat = float(lat)
 	lng = float(lng)
 	radius_in_meters = session['radius']
+
 	
 	return jsonify(selected_trails)
 
@@ -146,8 +147,8 @@ def display_selected_trails():
 
 	coordinates = session['coordinates'] # lat / long from Google Maps API call 
 	lat, lng = coordinates
-	lat = float(lat)
-	lng = float(lng)
+	city_latitude = float(lat)
+	city_longitude = float(lng)
 	radius_in_meters = session['radius']
 
 	return render_template('/trails.html', selected_trails=selected_trails, city=city, state=state, api_key=google_maps_api_key, city_latitude=lat, city_longitude=lng, radius=radius_in_meters)

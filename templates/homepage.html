@@ -47,12 +47,19 @@ Homepage
 
 	<button type="button" id="asynchronousClick">Click Me!</button>
 
-	<script>
+	<div id="selectedtrails1"></div>
+
+	<div id="selectedtrails2"></div>
+
+	<div id="selectedtrails3"></div>
+
+
+<script>
 
 //Creating asynchronous call for form #yay
 document.getElementById("asynchronousClick").addEventListener("click", function() {
 	// How do I add new data to this variable? Does not refresh.
-	let formData = new $('#trailSelector').serializeArray();
+	// let formData = new $('#trailSelector').serializeArray();
 	let data = {"city": document.getElementById("cityname"),
 				"state": document.getElementById("statename"),
 				"radius": document.getElementById("radius-selection"),
@@ -61,60 +68,53 @@ document.getElementById("asynchronousClick").addEventListener("click", function(
 				 }
 	// Build a dictionary (above) and call the values from the form above (add IDs to the form...)
 	//  Try it with or without formData?? 
-	console.log(formData)
+	// console.log(formData)
+	//is the above needed? 
 	$.ajax({
 		url: "/trails_asychronous",
 		type: "POST",
 		data: $('#trailSelector').serialize(),
-		// data: { 'data' : formData}, // might need to be { 'data': formData }??????
+		// I'm not sure why this works, but it does????
 		processData: false,
-		cache: false,
+		cache: true,
 		success: function(response){
-			console.log(`Response: `, response);
-
-		}
-
-	});
-});
-
-
-
-
-
-
-			// let trailDetails, trailName, trailPicture, trailLength, trailDifficulty;
-
-			// for (let i = 0; i < k.length; i += 1) {
-		 //    	trailName = k[i].name
-		 //    	console.log(trailName);
-		 //    	trailDetails = k[i].summary
-		 //    	console.log(trailDetails);
-		 //    	trailPicture = k[i].imgSmall
-		 //    	console.log(trailPicture);
-		 //    	trailLength = k[i].length
-		 //    	console.log(trailLength);
-		 //    	trailDifficulty = k[i].difficulty
-		 //    	console.log(trailDifficulty);	
-
-		    	// document.getElementById("selectedtrails1").innerHTML = trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" + trailDetails + "<br>" + "<img src=" + trailPicture + ">";
-		    	// }
+			console.log('Response: ', response);
+			console.log('Data: ', data);
 		
+			if (response == null) {
+				document.getElementById("selectedtrails1").innerHTML = "Hmm, no trails are available. Maybe try another search?";
+				}
+
+			else {
+				let trailDetails, trailName, trailPicture, trailLength, trailDifficulty;
+
+				for (let i = 0; i < response.length; i += 1) {
+				    	trailName = response[i].name
+				    	console.log("here")
+				    	console.log(response[i])
+				    	console.log(trailName);
+				    	trailDetails = response[i].summary
+				    	console.log(trailDetails);
+				    	trailPicture = response[i].imgSmall
+				    	console.log(trailPicture);
+				    	trailLength = response[i].length
+				    	console.log(trailLength);
+				    	trailDifficulty = response[i].difficulty
+				    	console.log(trailDifficulty);
+
+			    		document.getElementById("selectedtrails" + (i + 1)).innerHTML = ("Trail Name: " +trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" + trailDetails + "<br>" + "<img src=" + trailPicture+ ">" + "<br> <button type='button' id='trail'" + (i + 1) + ">Select</button>"); 
+
+			    	};
+
+			    }
+			}
+		})
+
+})
+		    
 		
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	</script>
+</script>
 
 			<script src='../static/homepage.js' type="text/javascript">					
 			</script>
