@@ -8,17 +8,17 @@ Homepage
 	<h2></h2>
 	<h4>Let's get trekkin'. Fill out the boxes below to start.</h4>
 	<form action='/trail_selector' id="trailSelector">
-		
+
 		<i><h4>Find trails near...</h4></i>
 		City:<br>
 	    	<input type="text" name="city" id="cityname" required><br>
-	  
+
 	    State:<br>
 	    	<input type="text" name="state" id="statename" required><br>
-	  
+
 	    Distance from <span id="city" name=></span> <span id="state"></span>:<br>
 	    <i>(defaults to 25 miles if not selected)</i><br>
-	    <div class="slidecontainer">	
+	    <div class="slidecontainer">
 	 	 		<input type="range" min="1" max="25" value="5" class="slider" id="radius-selection" name="radius">
 	 	 		<span id="radius"></span>
 			</div>
@@ -27,12 +27,12 @@ Homepage
 
 	    Trail length:<br>
 	    <i>(in miles)</i><br>
-		    <div class="slidecontainer">	
+		    <div class="slidecontainer">
 	 	 		<input type="range" min="1" max="30" value="15" class="slider" id="trek_length_selection" name="trek_length">
 	 	 		<span id="trek_length"></span>
 			</div>
 
-			
+
 	    Difficulty rating:
 		    <select name="trail_difficulty" id="traildifficulty">
 			  <option value="no-preference">No preference</option>
@@ -41,7 +41,7 @@ Homepage
 			  <option value="difficult">Difficult</option>
 			</select><br>
 
-	    	<input type="submit"</input>	    	
+	    	<input type="submit"</input>
 	    	<br><br><br>
 	</form>
 
@@ -53,7 +53,7 @@ Homepage
 
 	<div id="selectedtrails3"></div>
 
-
+	<div id="map"></div>
 <script>
 
 //Creating asynchronous call for form #yay
@@ -67,9 +67,9 @@ document.getElementById("asynchronousClick").addEventListener("click", function(
 				"traildifficulty": document.getElementById("traildifficulty")
 				 }
 	// Build a dictionary (above) and call the values from the form above (add IDs to the form...)
-	//  Try it with or without formData?? 
+	//  Try it with or without formData??
 	// console.log(formData)
-	//is the above needed? 
+	//is the above needed?
 	$.ajax({
 		url: "/trails_asychronous",
 		type: "POST",
@@ -78,20 +78,18 @@ document.getElementById("asynchronousClick").addEventListener("click", function(
 		processData: false,
 		cache: true,
 		success: function(response){
-			console.log('Response: ', response);
-			console.log('Data: ', data);
-		
+		console.log('Response: ', response);
+		console.log('Data: ', data);
+
 			if (response == null) {
 				document.getElementById("selectedtrails1").innerHTML = "Hmm, no trails are available. Maybe try another search?";
 				}
 
 			else {
-				let trailDetails, trailName, trailPicture, trailLength, trailDifficulty;
+				let trailDetails, trailName, trailPicture, trailLength, trailDifficulty, trailLat, trailLng, radiusInMeters;
 
 				for (let i = 0; i < response.length; i += 1) {
 				    	trailName = response[i].name
-				    	console.log("here")
-				    	console.log(response[i])
 				    	console.log(trailName);
 				    	trailDetails = response[i].summary
 				    	console.log(trailDetails);
@@ -102,21 +100,28 @@ document.getElementById("asynchronousClick").addEventListener("click", function(
 				    	trailDifficulty = response[i].difficulty
 				    	console.log(trailDifficulty);
 
-			    		document.getElementById("selectedtrails" + (i + 1)).innerHTML = ("Trail Name: " +trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" + trailDetails + "<br>" + "<img src=" + trailPicture+ ">" + "<br> <button type='button' id='trail'" + (i + 1) + ">Select</button>"); 
+			    		document.getElementById("selectedtrails" + (i + 1)).innerHTML = ("Trail Name: " +trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" + trailDetails + "<br>" + "<img src=" + trailPicture+ ">" + "<br> <button type='button' id='trail'" + (i + 1) + ">Select</button>");
 
 			    	};
+
+
+
+
+
 
 			    }
 			}
 		})
 
 })
-		    
-		
 
 </script>
 
-			<script src='../static/homepage.js' type="text/javascript">					
+
+
+
+
+			<script src='../static/homepage.js' type="text/javascript">
 			</script>
 
-{% endblock %}	
+{% endblock %}
