@@ -52,19 +52,17 @@ Homepage
 	<div id="map"></div>
 <script>
 
-//Creating asynchronous call for form #yay
-document.getElementById("asynchronousClick").addEventListener("click", function() {
+ $('#asynchronousClick').on('click', getTrails);
+
+function getTrails(evt) {
 
 		let data = {"city": document.getElementById("cityname"),
 								"state": document.getElementById("statename"),
 								"radius": document.getElementById("radius-selection"),
 								"traillength": document.getElementById("trek_length_selection"),
 								"traildifficulty": document.getElementById("traildifficulty")
-		}
-	// Build a dictionary (above) and call the values from the form above (add IDs to the form...)
-	//  Try it with or without formData??
-	// console.log(formData)
-	//is the above needed?
+		} // end of data object
+
 			$.ajax({
 				url: "/trails_asychronous",
 				type: "POST",
@@ -74,6 +72,7 @@ document.getElementById("asynchronousClick").addEventListener("click", function(
 				success: function(response) {
 					displayTrails(response);
 					initMap(response);
+					markerPlacement(response);
 					// Calling displayTrails function to display three trails
 					// Calling initMap function to display Google Map
 				}, // end of response function
@@ -82,7 +81,7 @@ document.getElementById("asynchronousClick").addEventListener("click", function(
 					console.log(error);
 			  } // end of error handling function
 			 }); // end of AJAX deets section
-		}); //end of annonymous inline function for event listener
+		}; //end of function getTrails
 
 function displayTrails(response) {
 
@@ -92,7 +91,7 @@ function displayTrails(response) {
 		infoForUser = "Hmm, no trails are available. Maybe try another search?";
 	} //end of if statement
 
-	else if (response.length == 0) {
+	else if (response.length < 1) {
 		infoForUser = "Hmm, no trails are available. Maybe try a wider radius?";
 	} //end of if/else statement
 
@@ -138,48 +137,41 @@ function initMap(response) {
 	  var marker = new google.maps.Marker({
 	    position: location,
 	    map: map
-	  });
+		}); // end of marker statement
+			// markerPlacement(response);
+		let trailMarker; // adding marker as a variable in the namespace
+
+		for (let j = 0; j < response.length; j += 1) {
+			trailMarker = new google.maps.Marker({
+			position: new google.maps.LatLng(response[j].latitude, response[j].longitude),
+			map: map,
+			title: 'Trail: ' + response[j].name,
+			icon: '/static/img/hikingIcon.png',
+			animation: google.maps.Animation.DROP,
+			});
+		} // end of trailMarker for loop
+		console.log('Here: radius');
+		let circle = new google.maps.Circle({ // circle for user chosen radius on map
+			map: map,
+			radius: response[0].radius_in_meters,
+			fillColor: '#b394d1',
+			strokeWeight: .1
+		}); // end of circle statement
+		circle.bindTo('center', marker, 'position');
+		drop(response);
 } //end of initMap function
-
-					      // var trailsJSON =  selected_trails|tojson ; //converting python list to js array!
-					      // console.log(trailsJSON);
-								// I don't think this is needed anymore as JSON is being handled on front-end instead of back-end
-
-					      // let trailMarker, html; // adding marker as a variable in the namespace
-
-								// TODO: refactor to work on front end without trailsJSON
-					      // for (let i = 0; i < trailsJSON.length; i += 1) {
-					      //   console.log(trailsJSON[i]);
-								//
-					      //   trailMarker = new google.maps.Marker({
-					      //     position: new google.maps.LatLng(trailsJSON[i].latitude, trailsJSON[i].longitude),
-					      //     map: map,
-					      //     title: 'Trail: ' + trailsJSON[i].name,
-					      //     icon: '/static/img/hikingIcon.png',
-					      //     animation: google.maps.Animation.DROP,
-					      //   });
-					      // }
-
-
-					      // Radius for user inputted distance
-					      // var circle = new google.maps.Circle({
-					      //   map: map,
-					      //   radius: {{ radius }},    // 10 miles in metres // Make this dynamic so it links to the radius input by the user
-					      //   fillColor: '#b394d1',
-					      //   strokeWeight: .1
-					      // });
 
 					        // Function for adorable marker drop :3
 								// TODO: Refactor to work without trailsJSON
-					      //   function drop() {
-					      //     for (var i =0; i < trailsJSON.length; i++) {
-					      //       setTimeout(function() {
-					      //         addMarkerMethod();
-					      //       }, i * 200);
-					      //     }
-					      //   }
-					      //   circle.bindTo('center', marker, 'position');
-					      // };
+function drop(response) {
+  for (var k = 0; k < response.length; k++) {
+    setTimeout(function() {
+      addMarkerMethod();
+    }, k * 200);
+  }
+}
+
+
 
 					        // Function to add 'bounce' to markers
 
