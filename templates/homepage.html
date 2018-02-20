@@ -37,22 +37,21 @@ Homepage
 			  <option value="difficult">Difficult</option>
 			</select><br>
 
-	    	<input type="submit"</input>
-	    	<br><br><br>
+
+
 	</form>
 
 	<button type="button" id="asynchronousClick">Click Me!</button>
 
-	<div id="selectedtrails1"></div>
-
-	<div id="selectedtrails2"></div>
-
-	<div id="selectedtrails3"></div>
-
 	<div id="map"></div>
+
+	<div id="trek"></div>
+
 <script>
 
- $('#asynchronousClick').on('click', getTrails);
+$('#asynchronousClick').on('click', getTrails);
+
+// When button clicked, trail selected and more information displayed.
 
 function getTrails(evt) {
 
@@ -70,11 +69,14 @@ function getTrails(evt) {
 				processData: false,
 				cache: true,
 				success: function(response) {
-					displayTrails(response);
-					initMap(response);
-					markerPlacement(response);
+					// displayTrails(response);
 					// Calling displayTrails function to display three trails
+					// Extracts trail id to call rest of information from Database
+					initMap(response);
 					// Calling initMap function to display Google Map
+					// Ideally replace response with the trail object from the database
+					markerPlacement(response);
+					// Ideally replace response with the trail object from the database
 				}, // end of response function
 
 			  error: function(error) {
@@ -83,58 +85,25 @@ function getTrails(evt) {
 			 }); // end of AJAX deets section
 		}; //end of function getTrails
 
-function displayTrails(response) {
-
-	let infoForUser = document.getElementById("selectedtrails1").innerHTML
-
-	if (response == null) {
-		infoForUser = "Hmm, no trails are available. Maybe try another search?";
-	} //end of if statement
-
-	else if (response.length < 1) {
-		infoForUser = "Hmm, no trails are available. Maybe try a wider radius?";
-	} //end of if/else statement
-
-
-  else {
-		let trailDetails, trailName, trailPicture, trailLength, trailDifficulty;
-
-		for (let i = 0; i < response.length; i += 1) {
-		    	trailName = response[i].name
-		    	console.log(trailName);
-		    	trailDetails = response[i].summary
-		    	console.log(trailDetails);
-		    	trailPicture = response[i].imgSmall
-		    	console.log(trailPicture);
-		    	trailLength = response[i].length
-		    	console.log(trailLength);
-		    	trailDifficulty = response[i].difficulty
-		    	console.log(trailDifficulty);
-
-	    		document.getElementById("selectedtrails" + (i + 1)).innerHTML =
-					("Trail Name: " +trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" +
-					trailDetails + "<br>" + "<img src=" + trailPicture+ ">" + "<br> <button type='button' id='trail'"
-					+ (i + 1) + ">Select</button>");
-		} //for loop
-	} //end of else statement
-} //end of function
-
-
 function initMap(response) {
 		console.log(response);
 		console.log("Here");
 		let trailLong = response[0].city_long;
 		let trailLat = response[0].city_lat;
+		let infoWindow = new google.maps.InfoWindow({
+        width: 150
+		});
+		let html;
 		console.log(trailLong);
 		console.log(trailLat);
 		// lat and lng are not coming through as integers :(
-	  var location = {lat: trailLat, lng: trailLong}; //latitude and longitude for city
-	  var map = new google.maps.Map(document.getElementById('map'), {
-	    zoom: 10,
+	  let location = {lat: trailLat, lng: trailLong}; //latitude and longitude for city
+	  let map = new google.maps.Map(document.getElementById('map'), {
+	    zoom: 8,
 	    center: location
 		}); // end of jQuery statement
 
-	  var marker = new google.maps.Marker({
+	  let marker = new google.maps.Marker({
 	    position: location,
 	    map: map
 		}); // end of marker statement
@@ -149,6 +118,11 @@ function initMap(response) {
 			icon: '/static/img/hikingIcon.png',
 			animation: google.maps.Animation.DROP,
 			});
+			html = ('<div class="window-content">' +
+              '<img src="'+response[j].imgSmall+'" alt="trailimage" style="width:100%;" class="thumbnail">' +
+              '<p><b>Trail name: </b>' + response[j].name + '</p>' +
+              '</div>');
+			bindInfoWindow(trailMarker, map, infoWindow, html);
 		} // end of trailMarker for loop
 		console.log('Here: radius');
 		let circle = new google.maps.Circle({ // circle for user chosen radius on map
@@ -159,28 +133,34 @@ function initMap(response) {
 		}); // end of circle statement
 		circle.bindTo('center', marker, 'position');
 		drop(response);
+		toggleBounce();
 } //end of initMap function
 
-					        // Function for adorable marker drop :3
-								// TODO: Refactor to work without trailsJSON
-function drop(response) {
-  for (var k = 0; k < response.length; k++) {
+function drop(response) { //marker animation for REASONS
+  for (let k = 0; k < response.length; k++) {
     setTimeout(function() {
-      addMarkerMethod();
     }, k * 200);
   }
-}
+} //end of drop function
 
+function toggleBounce() { //cute BOUNCE when markers drop <3
+	if (trailMarker.getAnimation() !== null) {
+		trailMarker.setAnimation(null);
+	} //end of if
+	else {
+		trailMarker.setAnimation(google.maps.Animation.BOUNCE);
+	} //end of else
+} //end of toggleBounce function
 
+function bindInfoWindow(trailMarker, map, infoWindow, html) { //infoWindow for each trail; might do away with text outside this!
+        google.maps.event.addListener(trailMarker, 'click', function () {
+            infoWindow.close();
+            infoWindow.setContent(html);
+            infoWindow.open(map, trailMarker);
+        });
+} //end of bindInfoWindow function
 
-					        // Function to add 'bounce' to markers
-
-					        // function toggleBounce() {
-					        //   if (trailMarker.getAnimation() !== null) {
-					        //     trailMarker.setAnimation(null);
-					        //   } else {
-					        //     trailMarker.setAnimation(google.maps.Animation.BOUNCE);
-					        //   }
+google.maps.event.addDomListener(window, 'load', initMap);
 
 </script>
 <script async defer

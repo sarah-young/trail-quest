@@ -15,11 +15,11 @@ satellite_map_api_key =secrets.SATELLITE_MAP_GM_API_KEY
 
 def find_lat_lng(city, state):
 	"""
-	Find lat/long for address given by user. 
+	Find lat/long for address given by user.
 
 	Uses Google Maps API & Hiking Project API.
-	
-	Information passed from HTML form to this function. 
+
+	Information passed from HTML form to this function.
 
 	"""
 	try:
@@ -37,7 +37,7 @@ def find_lat_lng(city, state):
 
 def find_trails(coordinates, radius='25'):
 	"""Find trails based on GPS coordinates from find_lat_lng
-	
+
 	Uses Hiking Project API
 
 	"""
@@ -47,7 +47,7 @@ def find_trails(coordinates, radius='25'):
 	trail_request = requests.get("https://www.hikingproject.com/data/get-trails?lat="+lat+"&lon="+lng+"&maxDistance="+radius+"&minLength=1&key="+hp_api_key)
 	# Requesting trails near GPS coordinate from Hiking Project API
 	trail_packet = trail_request.json()
-	# 
+	#
 	trails = trail_packet["trails"]
 
 	return trails
@@ -56,7 +56,7 @@ def find_trails(coordinates, radius='25'):
 def select_three_trails(trails):
 	"""Selects three random trails from trail_packet from find_trails
 
-	
+
 	"""
 
 	print "***PRINT TRAIL TYPE*** ", type(trails)
@@ -64,7 +64,7 @@ def select_three_trails(trails):
 
 
 	if len(trails) == 0:
-		return None	
+		return None
 		# return something that prompts server.py route to add a flash message
 
 	elif len(trails) < 4:
@@ -93,13 +93,14 @@ def add_trails_to_db(trails):
 		print "LENGTH OF TRAILS: ", len(trails)
 		print "TRAIL NAME: ", trail['name']
 		print "TYPE: ", type(trail)
-		# trail_difficulty = trail_difficulty_conversion(trail['difficulty'])
+		trail_difficulty = trail_difficulty_conversion(trail['difficulty'])
+
 		trail_object = model.Trail(trail_id = trail['id'],
 					  trail_name = trail['name'],
 					  trailhead_latitude = trail['latitude'],
 					  trailhead_longitude = trail['longitude'],
 					  trail_length = trail['length'],
-					  trail_difficulty = trail['difficulty'],
+					  trail_difficulty = trail_difficulty,
 					  trail_description = trail['summary'],
 					  trail_high_alt = trail['high'],
 					  trail_low_alt = trail['low'],
@@ -155,7 +156,7 @@ def filter_trek_length(trails, trek_length):
 
 	trail_list = []
 
-	for trail in trails: 
+	for trail in trails:
 		if trail['length'] <= trek_length:
 		# filters out trails that are too long
 		# only appends trails to trail_list that are the same as the user's preference
@@ -179,8 +180,8 @@ def filter_trek_difficulty(trails_filtered_by_length, trail_difficulty):
 
 		list_of_trails = []
 
-		for trail in trails_filtered_by_length: 
-			
+		for trail in trails_filtered_by_length:
+
 			trail_difficulty_rating = trail['difficulty']
 			# from trail object, passed to conversion function
 			print trail_difficulty_rating
@@ -195,7 +196,7 @@ def filter_trek_difficulty(trails_filtered_by_length, trail_difficulty):
 				list_of_trails.append(trail)
 
 			elif (difficulty == "intermediate/difficult" or difficulty == "difficult" or difficulty == "very difficult") and trail_difficulty == "difficult":
-				list_of_trails.append(trail)	
+				list_of_trails.append(trail)
 
 		return list_of_trails
 
@@ -204,7 +205,7 @@ def trail_difficulty_conversion(trail_difficulty_rating):
 	"""Take API's trail difficulty selection and return easy, moderate, difficult.
 
 	Called in filter_trek_difficulty() """
-	
+
 	# trail_difficulty comes from user, difficulty is conversion from 'attribute' on trail object
 	#trail['difficulty'] comes from API
 	# handles one trail at a time
@@ -214,7 +215,7 @@ def trail_difficulty_conversion(trail_difficulty_rating):
 
 	elif trail_difficulty_rating == "greenBlue":
 		difficulty = "easy/intermediate"
-	
+
 	elif trail_difficulty_rating == "blue":
 		difficulty = "intermediate"
 
@@ -224,13 +225,13 @@ def trail_difficulty_conversion(trail_difficulty_rating):
 
 	elif trail_difficulty_rating == "black":
 		difficulty = "difficult"
-		
+
 	elif trail_difficulty_rating == "dblack":
 		difficulty = "very difficult"
 
 	else:
 		difficulty = "unknown"
-		
+
 	return difficulty
 
 
@@ -262,5 +263,3 @@ def get_map(trails, city, state):
 # test_list = []
 # test1 = select_three_trails(test_list)
 # print test1
-
-
