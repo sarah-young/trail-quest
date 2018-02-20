@@ -41,7 +41,7 @@ Homepage
 
 	</form>
 
-	<button type="button" id="asynchronousClick">Click Me!</button>
+	<button type="button" id="asynchronousClick">Show me trails!</button>
 
 	<div id="map"></div>
 
@@ -50,7 +50,6 @@ Homepage
 <script>
 
 $('#asynchronousClick').on('click', getTrails);
-
 // When button clicked, trail selected and more information displayed.
 
 function getTrails(evt) {
@@ -69,8 +68,6 @@ function getTrails(evt) {
 				processData: false,
 				cache: true,
 				success: function(response) {
-					// displayTrails(response);
-					// Calling displayTrails function to display three trails
 					// Extracts trail id to call rest of information from Database
 					initMap(response);
 					// Calling initMap function to display Google Map
@@ -97,7 +94,8 @@ function initMap(response) {
 		console.log(trailLong);
 		console.log(trailLat);
 		// lat and lng are not coming through as integers :(
-	  let location = {lat: trailLat, lng: trailLong}; //latitude and longitude for city
+	  let location = {lat: trailLat, lng: trailLong};
+		//latitude and longitude for city
 	  let map = new google.maps.Map(document.getElementById('map'), {
 	    zoom: 8,
 	    center: location
@@ -121,7 +119,8 @@ function initMap(response) {
 			html = ('<div class="window-content">' +
               '<img src="'+response[j].imgSmall+'" alt="trailimage" style="width:100%;" class="thumbnail">' +
               '<p><b>Trail name: </b>' + response[j].name + '</p>' +
-              '</div>');
+							'<p>'+ '<button type="button" id="chosentrail" name="'+ response[j].id + '">Add trail to My Trails</button>'
+              + '</div>');
 			bindInfoWindow(trailMarker, map, infoWindow, html);
 		} // end of trailMarker for loop
 		console.log('Here: radius');
