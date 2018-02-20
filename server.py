@@ -119,17 +119,16 @@ def asynchronous_info_load():
 
  	selected_trails = functions.select_three_trails(trails)
 	print "SELECTED TRAILS OBJECT TYPE: ", type(selected_trails)
+	print
 	lat, lng = coordinates
 	lat = float(lat)
 	lng = float(lng)
 
-	selected_trails[0]["city_lat"] = lat
-	selected_trails[0]["city_long"] = lng
+	selected_trails[0]["city_lat"] = float(lat)
+	selected_trails[0]["city_long"] = float(lng)
 	selected_trails[0]["radius_in_meters"] = radius_to_meters
+	print "SELECTED TRAILS: ", selected_trails
 	session['radius'] = radius_to_meters
-	print "SELECTED TRAILS 1st: ", selected_trails[0]
-	print "SELECTED TRAILS 2nd: ", selected_trails[1]
-	print "SELECTED TRAILS 3rd: ", selected_trails[2]
 	# Keeping for now to see if this works with other routes... Not sure if this is needed.
 
 	return jsonify(selected_trails)

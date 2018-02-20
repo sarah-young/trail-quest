@@ -72,15 +72,9 @@ document.getElementById("asynchronousClick").addEventListener("click", function(
 				processData: false,
 				cache: true,
 				success: function(response) {
-					console.log('Response: ', response);
-					console.log('Data: ', data);
-					// let trailLat = response[0].city_lat
-					// console.log(trailLat);
-					// let trailLng = response[0].city_lng
-					// console.log(trailLng);
 					displayTrails(response);
+					initMap(response);
 					// Calling displayTrails function to display three trails
-					// initMap(trailLat, trailLng);
 					// Calling initMap function to display Google Map
 				}, // end of response function
 
@@ -118,28 +112,34 @@ function displayTrails(response) {
 		    	trailDifficulty = response[i].difficulty
 		    	console.log(trailDifficulty);
 
-	    		document.getElementById("selectedtrails" + (i + 1)).innerHTML = ("Trail Name: " +trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" + trailDetails + "<br>" + "<img src=" + trailPicture+ ">" + "<br> <button type='button' id='trail'" + (i + 1) + ">Select</button>");
-					// shorten this!!! commas, etc.
+	    		document.getElementById("selectedtrails" + (i + 1)).innerHTML =
+					("Trail Name: " +trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" +
+					trailDetails + "<br>" + "<img src=" + trailPicture+ ">" + "<br> <button type='button' id='trail'"
+					+ (i + 1) + ">Select</button>");
 		} //for loop
 	} //end of else statement
 } //end of function
 
 
-// function initMap(trailLat, trailLng) {
-// 				console.log(trailLat);
-// 				console.log(trailLng);
-// 	      var location = {lat: trailLat, lng: trailLng}; //latitude and longitude for city
-//
-// 	      var map = new google.maps.Map(document.getElementById('map'), {
-// 	        zoom: 10,
-// 	        center: location
-// }); //end of main map function
-//
-// 	      var marker = new google.maps.Marker({
-// 	        position: location,
-// 	        map: map
-// 	      });
-// 			} //end of initMap function
+function initMap(response) {
+		console.log(response);
+		console.log("Here");
+		let trailLong = response[0].city_long;
+		let trailLat = response[0].city_lat;
+		console.log(trailLong);
+		console.log(trailLat);
+		// lat and lng are not coming through as integers :(
+	  var location = {lat: trailLat, lng: trailLong}; //latitude and longitude for city
+	  var map = new google.maps.Map(document.getElementById('map'), {
+	    zoom: 10,
+	    center: location
+		}); // end of jQuery statement
+
+	  var marker = new google.maps.Marker({
+	    position: location,
+	    map: map
+	  });
+} //end of initMap function
 
 					      // var trailsJSON =  selected_trails|tojson ; //converting python list to js array!
 					      // console.log(trailsJSON);
@@ -191,9 +191,9 @@ function displayTrails(response) {
 					        //   }
 
 </script>
-<!-- <script async defer
+<script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT4L9G5iunkBWCBwqqm6Qdt7-0hG34L6Y&callback=initMap">
-</script> -->
+</script>
 
 			<script src='../static/homepage.js' type="text/javascript">
 			</script>
