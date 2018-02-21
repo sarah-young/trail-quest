@@ -1,0 +1,41 @@
+
+
+// FROM homepage.html
+// function displayTrails(response) {
+//
+// 	let infoForUser = document.getElementById("selectedtrails1").innerHTML
+//
+// 	if (response == null) {
+// 		infoForUser = "Hmm, no trails are available. Maybe try another search?";
+// 	} //end of if statement
+//
+// 	else if (response.length < 1) {
+// 		infoForUser = "Hmm, no trails are available. Maybe try a wider radius?";
+// 	} //end of if/else statement
+//
+//
+//   else {
+// 		let trailDetails, trailName, trailPicture, trailLength, trailDifficulty;
+//
+// 		for (let i = 0; i < response.length; i += 1) {
+// 					trailID = response[i].id
+// 					console.log(trailID);
+// 					trailName = response[i].name
+// 		    	console.log(trailName);
+// 		    	trailDetails = response[i].summary
+// 		    	console.log(trailDetails);
+// 		    	trailPicture = response[i].imgSmall
+// 		    	console.log(trailPicture);
+// 		    	trailLength = response[i].length
+// 		    	console.log(trailLength);
+// 		    	trailDifficulty = response[i].difficulty
+// 		    	console.log(trailDifficulty);
+//
+//
+// 	    		document.getElementById("selectedtrails" + (i + 1)).innerHTML =
+// 					("Trail Name: " +trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" +
+// 					trailDetails + "<br>" + "<img src=" + trailPicture+ ">" + "<br> <button type='button' id='trail'"
+// 					+ (i + 1) + ">Select</button>");
+// 		} //for loop
+// 	} //end of else statement
+// } //end of function

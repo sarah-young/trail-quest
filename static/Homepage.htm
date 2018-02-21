@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:5000/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>
+Homepage
+</title>
+<!--     <script src="https://maps.googleapis.com/maps/api/js"></script> -->
+    <link rel="stylesheet" href="./Homepage_files/styles.css">
+    <script src="./Homepage_files/jquery.js"></script>
+
+<link rel="stylesheet" href="./Homepage_files/toolbar.css" type="text/css"></head>
+<body>
+
+    <h1>Trail Quest 🌲 ⛰️</h1>
+    
+    <ul>
+  
+</ul>
+    
+
+	<h2></h2>
+	<h4>Let's get trekkin'. Fill out the boxes below to start.</h4>
+	<form action="http://localhost:5000/trail_selector" id="trailSelector">
+		
+		<i><h4>Find trails near...</h4></i>
+		City:<br>
+	    	<input type="text" name="city" required=""><br>
+	  
+	    State:<br>
+	    	<input type="text" name="state" required=""><br>
+	  
+	    Distance from <span id="city" name=""></span> <span id="state"></span>:<br>
+	    <i>(defaults to 25 miles if not selected)</i><br>
+	    <div class="slidecontainer">	
+	 	 		<input type="range" min="1" max="25" value="5" class="slider" id="radius-selection" name="radius">
+	 	 		<span id="radius">5</span>
+			</div>
+
+
+
+	    Trail length:<br>
+	    <i>(in miles)</i><br>
+		    <div class="slidecontainer">	
+	 	 		<input type="range" min="1" max="30" value="15" class="slider" id="trek_length_selection" name="trek_length">
+	 	 		<span id="trek_length">15</span>
+			</div>
+
+			
+	    Difficulty rating:
+		    <select name="trail_difficulty">
+			  <option value="no-preference">No preference</option>
+			  <option value="easy">Easy</option>
+			  <option value="moderate">Moderate</option>
+			  <option value="difficult">Difficult</option>
+			</select><br>
+
+	    	<input type="submit">
+	    	<br><br><br>
+	</form>
+
+	<button type="button" id="asynchrousClick">Click Me!</button>
+
+	<div id="selectedtrails1">Soberanes Canyon Loop<br>blueBlack<br>4.7<br>This loop is lightly trafficked and features a nice waterfall.<br><img src="./Homepage_files/7022678_small_1473275759.jpg"></div>
+
+	<br>
+
+	<div id="selectedtrails2">
+
+
+
+
+	</div>
+
+	<br>
+
+	<div id="selectedtrails3">
+
+
+
+
+	</div>
+
+	<script>
+//Creating asynchronous call for form #yay
+document.getElementById("asynchrousClick").addEventListener("click", function() {
+	let formData = new FormData(document.getElementById('trailSelector'));
+	console.log(formData);
+	$.ajax({
+		url: "/trails_asychronous",
+		type: "GET",
+		data: formData,
+		processData: false,
+		cache: false,
+		success: function(response){
+			var k=response;
+			console.log(`Response: `, response)
+			let trailDetails, trailName, trailPicture, trailLength, trailDifficulty;
+
+			for (let i = 0; i < k.length; i += 1) {
+		    	trailName = k[i].name
+		    	console.log(trailName);
+		    	trailDetails = k[i].summary
+		    	console.log(trailDetails);
+		    	trailPicture = k[i].imgSmall
+		    	console.log(trailPicture);
+		    	trailLength = k[i].length
+		    	console.log(trailLength);
+		    	trailDifficulty = k[i].difficulty
+		    	console.log(trailDifficulty);	
+
+		    	// document.getElementById("selectedtrails1").innerHTML = trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" + trailDetails + "<br>" + "<img src=" + trailPicture + ">";
+		    	};
+			}
+		})
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</script>
+
+			<script src="./Homepage_files/homepage.js" type="text/javascript">					
+			</script>
+
+
+<footer>
+	Trail Quest Ⓒ 2018 Sarah Young
+</footer>
+<div id="flDebug" style="">
+  <script type="text/javascript">var DEBUG_TOOLBAR_STATIC_PATH = '/_debug_toolbar/static/'</script>
+  <script type="text/javascript" src="./Homepage_files/jquery(1).js"></script>
+  <script type="text/javascript" src="./Homepage_files/jquery.tablesorter.js"></script>
+  <script type="text/javascript" src="./Homepage_files/toolbar.js"></script>
+
+  <div style="display: none;" id="flDebugToolbar">
+    <ol id="flDebugPanelList">
+      
+      <li><a id="flHideToolBarButton" href="http://localhost:5000/#" title="Hide Toolbar">Hide »</a></li>
+      
+
+      
+      <li id="flDebugVersionPanel">
+        
+        <a href="http://localhost:5000/" title="Versions" class="flDebugVersionPanel">
+        
+
+        Versions
+        <br><small>Flask 0.12.2</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugTimerPanel">
+        
+        <a href="http://localhost:5000/" title="Resource Usage" class="flDebugTimerPanel">
+        
+
+        Time
+        <br><small>CPU: 0.00ms (1.35ms)</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugHeaderPanel">
+        
+        <a href="http://localhost:5000/" title="HTTP Headers" class="flDebugHeaderPanel">
+        
+
+        HTTP Headers
+        
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugRequestVarsPanel">
+        
+        <a href="http://localhost:5000/" title="Request Vars" class="flDebugRequestVarsPanel">
+        
+
+        Request Vars
+        
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugConfigVarsPanel">
+        
+        <a href="http://localhost:5000/" title="Config" class="flDebugConfigVarsPanel">
+        
+
+        Config
+        
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugTemplatePanel">
+        
+        <a href="http://localhost:5000/" title="Templates" class="flDebugTemplatePanel">
+        
+
+        Templates
+        <br><small>1 rendered</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugSQLAlchemyPanel">
+        
+        <div class="contentless">
+        
+
+        SQLAlchemy
+        <br><small>0 queries</small>
+
+        
+        </div>
+        
+        
+      </li>
+      
+      <li id="flDebugLoggingPanel">
+        
+        <a href="http://localhost:5000/" title="Log Messages" class="flDebugLoggingPanel">
+        
+
+        Logging
+        <br><small>0 messages</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugRouteListPanel">
+        
+        <a href="http://localhost:5000/" title="Route List" class="flDebugRouteListPanel">
+        
+
+        Route List
+        <br><small>12 routes</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugProfilerPanel">
+        
+        <a href="http://localhost:5000/" title="Profiler not active" class="flDebugProfilerPanel">
+        
+
+        Profiler
+        <br><small>in-active</small>
+
+        
+        </a>
+        
+        
+        <span class="switch inactive" title="Enable or disable the panel"></span>
+        
+      </li>
+      
+    </ol>
+  </div>
+  <div style="" id="flDebugToolbarHandle">
+    <a title="Show Toolbar" id="flShowToolBarButton" href="http://localhost:5000/#">«</a>
+  </div>
+  
+    
+    <div id="flDebugVersionPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/" class="flDebugClose">Close</a>
+        <h3>Versions</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <h4>Installed Packages</h4>
+
+<p>
+  Installation paths relative to:
+</p>
+<pre>/usr/lib/python2.7/dist-packages
+</pre>
+
+<table>
+  <thead>
+    <tr>
+      <th>Package</th>
+      <th>Version</th>
+      <th>Installed Path</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      <tr class="flDebugOdd">
+        <td>argparse</td>
+        <td>1.2.1</td>
+        <td>/usr/lib/python2.7</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>backports-abc</td>
+        <td>0.5</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>backports.shutil-get-terminal-size</td>
+        <td>1.0.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>bleach</td>
+        <td>2.1.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>blinker</td>
+        <td>1.4</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>certifi</td>
+        <td>2018.1.18</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>chardet</td>
+        <td>3.0.4</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>click</td>
+        <td>6.7</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>configparser</td>
+        <td>3.5.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>decorator</td>
+        <td>4.1.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>entrypoints</td>
+        <td>0.2.3</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>enum34</td>
+        <td>1.1.6</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Flask</td>
+        <td>0.12.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Flask-DebugToolbar</td>
+        <td>0.10.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Flask-SQLAlchemy</td>
+        <td>2.3.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Flask-WTF</td>
+        <td>0.8</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>functools32</td>
+        <td>3.2.3.post2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>future</td>
+        <td>0.16.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>html5lib</td>
+        <td>1.0.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>idna</td>
+        <td>2.6</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>ipykernel</td>
+        <td>4.7.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>ipython</td>
+        <td>5.5.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>ipython-genutils</td>
+        <td>0.2.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>itsdangerous</td>
+        <td>0.24</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Jinja2</td>
+        <td>2.10</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jsonschema</td>
+        <td>2.6.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jupyter-client</td>
+        <td>5.2.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jupyter-core</td>
+        <td>4.4.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>MarkupSafe</td>
+        <td>1.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>mistune</td>
+        <td>0.8.3</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>nbconvert</td>
+        <td>5.3.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>nbformat</td>
+        <td>4.4.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>notebook</td>
+        <td>5.2.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>oauthlib</td>
+        <td>2.0.6</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pandocfilters</td>
+        <td>1.4.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pathlib2</td>
+        <td>2.3.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pexpect</td>
+        <td>4.3.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pickleshare</td>
+        <td>0.7.4</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pip</td>
+        <td>9.0.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>prompt-toolkit</td>
+        <td>1.0.15</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>psycopg2</td>
+        <td>2.6.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>ptyprocess</td>
+        <td>0.5.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Pygments</td>
+        <td>2.2.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Python</td>
+        <td>2.7.12</td>
+        <td>/usr/lib/python2.7/lib-dynload</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>python-dateutil</td>
+        <td>2.6.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>python-twitter</td>
+        <td>3.3</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pyzmq</td>
+        <td>16.0.3</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>requests</td>
+        <td>2.18.4</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>requests-oauthlib</td>
+        <td>0.8.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>scandir</td>
+        <td>1.6</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>setuptools</td>
+        <td>20.7.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>simplegeneric</td>
+        <td>0.8.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>singledispatch</td>
+        <td>3.4.0.3</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>six</td>
+        <td>1.11.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SQLAlchemy</td>
+        <td>1.2.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>terminado</td>
+        <td>0.8.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>testpath</td>
+        <td>0.3.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>tornado</td>
+        <td>4.5.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>traitlets</td>
+        <td>4.3.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>urllib3</td>
+        <td>1.22</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>virtualenv</td>
+        <td>15.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>wcwidth</td>
+        <td>0.1.7</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>webencodings</td>
+        <td>0.5.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Werkzeug</td>
+        <td>0.14.1</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>wheel</td>
+        <td>0.24.0</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>wsgiref</td>
+        <td>0.1.2</td>
+        <td>/usr/lib/python2.7</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>WTForms</td>
+        <td>1.0.2</td>
+        <td>/usr/local/lib/python2.7/dist-packages</td>
+      </tr>
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugTimerPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/" class="flDebugClose">Close</a>
+        <h3>Resource Usage</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <table>
+  <colgroup>
+    <col style="width:20%">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Resource</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      <tr class="flDebugOdd">
+        <td>User CPU time</td>
+        <td>0.000 msec</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>System CPU time</td>
+        <td>0.000 msec</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Total CPU time</td>
+        <td>0.000 msec</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Elapsed time</td>
+        <td>1.350 msec</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Context switches</td>
+        <td>8 voluntary, 0 involuntary</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugHeaderPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/" class="flDebugClose">Close</a>
+        <h3>HTTP Headers</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_ACCEPT</td>
+        <td>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>HTTP_ACCEPT_ENCODING</td>
+        <td>gzip, deflate, br</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_ACCEPT_LANGUAGE</td>
+        <td>en-US,en;q=0.9</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>HTTP_CACHE_CONTROL</td>
+        <td>max-age=0</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_CONNECTION</td>
+        <td>keep-alive</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>HTTP_HOST</td>
+        <td>localhost:5000</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_USER_AGENT</td>
+        <td>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>QUERY_STRING</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>REMOTE_ADDR</td>
+        <td>10.0.2.2</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>REQUEST_METHOD</td>
+        <td>GET</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SCRIPT_NAME</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>SERVER_NAME</td>
+        <td>0.0.0.0</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SERVER_PORT</td>
+        <td>5000</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>SERVER_PROTOCOL</td>
+        <td>HTTP/1.1</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SERVER_SOFTWARE</td>
+        <td>Werkzeug/0.14.1</td>
+      </tr>
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugRequestVarsPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/" class="flDebugClose">Close</a>
+        <h3>Request Vars</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          
+<h4>View information</h4>
+<table>
+  <thead>
+    <tr>
+      <th>View Function</th>
+      <th>args</th>
+      <th>kwargs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>__main__.display_trail_form</td>
+      <td>[]</td>
+      <td>
+        
+          None
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+<h4>COOKIES Variables</h4>
+
+  
+<table>
+  <colgroup>
+    <col style="width:20%">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="flDebugOdd">
+      <td>'fldt'</td>
+      <td>u'hide'</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>'session'</td>
+      <td>u'.eJy9ll9v2jAUxb-K5-ckxPlDEqQ9dN2mPYxNE12laZoqk5jExbGp4yxLp373XQdooS2bYNMQEgTuPffE3J8OP3GulC64pIY1ePITI4MnX-Fljid4evul_XB91k2vp-HHs5cv8Z2z-eb9xZt-Oouijxefgg-3X37gu293DhYqp4Yrea-Dp0oaplmPHXx-hm2NpgVvYVIYR37sRUm2fYwd3DDBcsOKK6MpF81ghDY5k6A1TokDXmXB7YTXYBdskCzxXZ_AE_n-ZHji3Spm1jqyFWLn85mhxnrAn-VSqk5CT8E2c9w0hCu-WPC8FaaHorloGVRUvKzARpY6mBd4kvhBOI7BNK_LKYN7qqG0MmbVTEajvJDuggvWeHTVwDCee7mqRxVfshE0BuMku6qHpisSJWGQxCmJvOtViQe9WU2FOFKusT2H1cDiKYLQ9rzmzUkebw64FFBv2gJ-0nDsRXEUwUdMlgYOnHjj3cXC51TXTLjz3jUVc2eMOuicCr5QWnJqpZQsN1ouCYiXBVZMdaDk-w6WtLaLM1NzpqlkDTTLXkl0YTcO2sG6vlQDC2R9ZXcV3rV1TbVdh4uKN2hYUJSrVhSobRiiqKmUNmhT9gKUTL-yk7bCrd49ra7rPDgaLsuVVtew9MNhDaqjzWaNmq1HNx88usPXA4NbKII0jP8PFetJT7h4JWi-vIeDkNjf0kHCiCSn0BGRLPPv6YhJGGQkHp9Mx1pus3eH1I6hY0dwoOM5zSPp2EjeHHC5R0eQZmSHjsBLn8EDXYIQ69ElF4KW7A-IpFGUPMPIK16iWavXaKB3VCzQlGpqKiUPgRLvg8IsIRrwAGLyylqCwbJEHTcVAnxRBf4aB81bM1x-56xrUE2X0GHQd6Z7pFlHbTyV3gNSbxksqmYFegfHdyRaw1qO5rx0m1aviXLB2cKtt7e2yxdJ4uD_8AWTyJ_5SoPwPn38bJydmj7po_RJ4uxv0ifdT5-nasemT_okffY1T0if9HH6PCj-Jn0iL_ln6RMfTp_3Sq32mQofwsdaeBQ_AuotVALWwojexpFdnCUwQWWBFmtAGoglyXOGOthbvYB7_0cQDbv3NJ-sK_tH8BcvuFaD.DWexjA.fFZwVHjsx-wHsscdnimO8sMQ7zY'</td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+<h4>SESSION Variables</h4>
+
+  
+<table>
+  <colgroup>
+    <col style="width:20%">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="flDebugOdd">
+      <td>u'selected_trails'</td>
+      <td>[{u'high': 698, u'imgSmall': u'https://cdn-files.apstatic.com/hike/7022679_small_1473275814.jpg', u'imgMedium': u'https://cdn-files.apstatic.com/hike/7022679_medium_1473275814.jpg', u'ascent': 681, u'id': 7023656, u'descent': -83, u'imgSqSmall': u'https://cdn-files.apstatic.com/hike/7022679_sqsmall_1473275814.jpg', u'location': u'Carmel-by-the-Sea, California', u'stars': 3, u'latitude': 36.4544, u'conditionStatus': u'Unknown', u'type': u'Trail', u'low': 100, u'starVotes': 1, u'difficulty': u'blue', u'conditionDetails': None, u'conditionDate': u'1970-01-01 00:00:00', u'name': u'Soberanes Canyon Trail', u'url': u'https://www.hikingproject.com/trail/7023656/soberanes-canyon-trail', u'imgSmallMed': u'https://cdn-files.apstatic.com/hike/7022679_smallMed_1473275814.jpg', u'longitude': -121.924, u'summary': u'This trail could use a short summary!', u'length': 1.6}, {u'high': 1150, u'imgSmall': u'https://cdn-files.apstatic.com/hike/7041990_small_1513291564.jpg', u'imgMedium': u'https://cdn-files.apstatic.com/hike/7041990_medium_1513291564.jpg', u'ascent': 2835, u'id': 7013417, u'descent': -2835, u'imgSqSmall': u'https://cdn-files.apstatic.com/hike/7041990_sqsmall_1513291564.jpg', u'location': u'Carmel Valley Village, California', u'stars': 5, u'latitude': 36.2891, u'conditionStatus': u'Unknown', u'type': u'Featured Hike', u'low': 100, u'starVotes': 1, u'difficulty': u'blueBlack', u'conditionDetails': None, u'conditionDate': u'1970-01-01 00:00:00', u'name': u'Big Sur Trail Half Marathon', u'url': u'https://www.hikingproject.com/trail/7013417/big-sur-trail-half-marathon', u'imgSmallMed': u'https://cdn-files.apstatic.com/hike/7041990_smallMed_1513291564.jpg', u'longitude': -121.8447, u'summary': u'The course is challenging with the hills, but the views make it very rewarding.', u'length': 12.8}, {u'high': 1823, u'imgSmall': u'https://cdn-files.apstatic.com/hike/7022678_small_1473275759.jpg', u'imgMedium': u'https://cdn-files.apstatic.com/hike/7022678_medium_1473275759.jpg', u'ascent': 1752, u'id': 7020969, u'descent': -1751, u'imgSqSmall': u'https://cdn-files.apstatic.com/hike/7022678_sqsmall_1473275759.jpg', u'location': u'Carmel-by-the-Sea, California', u'stars': 3.7, u'latitude': 36.4544, u'conditionStatus': u'Unknown', u'type': u'Featured Hike', u'low': 105, u'starVotes': 3, u'difficulty': u'blueBlack', u'conditionDetails': None, u'conditionDate': u'1970-01-01 00:00:00', u'name': u'Soberanes Canyon Loop', u'url': u'https://www.hikingproject.com/trail/7020969/soberanes-canyon-loop', u'imgSmallMed': u'https://cdn-files.apstatic.com/hike/7022678_smallMed_1473275759.jpg', u'longitude': -121.924, u'summary': u'This loop is lightly trafficked and features a nice waterfall.', u'length': 4.7}]</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>u'radius'</td>
+      <td>35405.479999999996</td>
+    </tr>
+    
+    <tr class="flDebugOdd">
+      <td>u'location'</td>
+      <td>(u'Monterey', u'CA')</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>u'coordinates'</td>
+      <td>('36.6002378', '-121.8946761')</td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+
+
+
+
+<h4>GET Variables</h4>
+
+  <p>No GET data</p>
+
+
+<h4>POST Variables</h4>
+
+  <p>No POST data</p>
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugConfigVarsPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/" class="flDebugClose">Close</a>
+        <h3>Config</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <table>
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            <tr class="flDebugOdd">
+                <td>APPLICATION_ROOT</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>DEBUG</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>DEBUG_TB_ENABLED</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>DEBUG_TB_HOSTS</td>
+                <td><code>()</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>DEBUG_TB_INTERCEPT_REDIRECTS</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>DEBUG_TB_PANELS</td>
+                <td><code>('flask_debugtoolbar.panels.versions.VersionDebugPanel', 'flask_debugtoolbar.panels.timer.TimerDebugPanel', 'flask_debugtoolbar.panels.headers.HeaderDebugPanel', 'flask_debugtoolbar.panels.request_vars.RequestVarsDebugPanel', 'flask_debugtoolbar.panels.config_vars.ConfigVarsDebugPanel', 'flask_debugtoolbar.panels.template.TemplateDebugPanel', 'flask_debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel', 'flask_debugtoolbar.panels.logger.LoggingPanel', 'flask_debugtoolbar.panels.route_list.RouteListDebugPanel', 'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel')</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>EXPLAIN_TEMPLATE_LOADING</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>JSON_AS_ASCII</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>JSON_SORT_KEYS</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>JSONIFY_MIMETYPE</td>
+                <td><code>'application/json'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>JSONIFY_PRETTYPRINT_REGULAR</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>LOGGER_HANDLER_POLICY</td>
+                <td><code>'always'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>LOGGER_NAME</td>
+                <td><code>'__main__'</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>MAX_CONTENT_LENGTH</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>PERMANENT_SESSION_LIFETIME</td>
+                <td><code>datetime.timedelta(31)</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>PREFERRED_URL_SCHEME</td>
+                <td><code>'http'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>PRESERVE_CONTEXT_ON_EXCEPTION</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>PROPAGATE_EXCEPTIONS</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SECRET_KEY</td>
+                <td><code>'SECRETSECRETSECRET'</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SEND_FILE_MAX_AGE_DEFAULT</td>
+                <td><code>datetime.timedelta(0, 43200)</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SERVER_NAME</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SESSION_COOKIE_DOMAIN</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_COOKIE_HTTPONLY</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SESSION_COOKIE_NAME</td>
+                <td><code>'session'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_COOKIE_PATH</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SESSION_COOKIE_SECURE</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_REFRESH_EACH_REQUEST</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_BINDS</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_COMMIT_ON_TEARDOWN</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_DATABASE_URI</td>
+                <td><code>'postgresql:///trailquest'</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_ECHO</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_MAX_OVERFLOW</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_NATIVE_UNICODE</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_POOL_RECYCLE</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_POOL_SIZE</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_POOL_TIMEOUT</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SQLALCHEMY_RECORD_QUERIES</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SQLALCHEMY_TRACK_MODIFICATIONS</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>TEMPLATES_AUTO_RELOAD</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>TESTING</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>TRAP_BAD_REQUEST_ERRORS</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>TRAP_HTTP_EXCEPTIONS</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>USE_X_SENDFILE</td>
+                <td><code>False</code></td>
+            </tr>
+        
+    </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugTemplatePanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/" class="flDebugClose">Close</a>
+        <h3>Templates</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          
+  
+  
+    <h4>/homepage.html</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr class="flDebugOdd">
+          <td>g</td>
+          <td>&lt;flask.g of 'server'&gt;</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>request</td>
+          <td>&lt;Request 'http://localhost:5000/' [GET]&gt;</td>
+        </tr>
+        
+        <tr class="flDebugOdd">
+          <td>session</td>
+          <td>&lt;SecureCookieSession {u'selected_trails': [{u'high': 698, u'imgSmall': u'https://cdn-files.apstatic.com/hike/7022679_small_1473275814.jpg', u'imgMedium': u'https://cdn-files.apstatic.com/hike/7022679_medium_1473275814.jpg', u'ascent': 681, u'id': 7023656, u'descent': -83, u'imgSqSmall': u'https://cdn-files.apstatic.com/hike/7022679_sqsmall_1473275814.jpg', u'location': u'Carmel-by-the-Sea, California', u'stars': 3, u'latitude': 36.4544, u'conditionStatus': u'Unknown', u'type': u'Trail', u'low': 100, u'starVotes': 1, u'difficulty': u'blue', u'conditionDetails': None, u'conditionDate': u'1970-01-01 00:00:00', u'name': u'Soberanes Canyon Trail', u'url': u'https://www.hikingproject.com/trail/7023656/soberanes-canyon-trail', u'imgSmallMed': u'https://cdn-files.apstatic.com/hike/7022679_smallMed_1473275814.jpg', u'longitude': -121.924, u'summary': u'This trail could use a short summary!', u'length': 1.6}, {u'high': 1150, u'imgSmall': u'https://cdn-files.apstatic.com/hike/7041990_small_1513291564.jpg', u'imgMedium': u'https://cdn-files.apstatic.com/hike/7041990_medium_1513291564.jpg', u'ascent': 2835, u'id': 7013417, u'descent': -2835, u'imgSqSmall': u'https://cdn-files.apstatic.com/hike/7041990_sqsmall_1513291564.jpg', u'location': u'Carmel Valley Village, California', u'stars': 5, u'latitude': 36.2891, u'conditionStatus': u'Unknown', u'type': u'Featured Hike', u'low': 100, u'starVotes': 1, u'difficulty': u'blueBlack', u'conditionDetails': None, u'conditionDate': u'1970-01-01 00:00:00', u'name': u'Big Sur Trail Half Marathon', u'url': u'https://www.hikingproject.com/trail/7013417/big-sur-trail-half-marathon', u'imgSmallMed': u'https://cdn-files.apstatic.com/hike/7041990_smallMed_1513291564.jpg', u'longitude': -121.8447, u'summary': u'The course is challenging with the hills, but the views make it very rewarding.', u'length': 12.8}, {u'high': 1823, u'imgSmall': u'https://cdn-files.apstatic.com/hike/7022678_small_1473275759.jpg', u'imgMedium': u'https://cdn-files.apstatic.com/hike/7022678_medium_1473275759.jpg', u'ascent': 1752, u'id': 7020969, u'descent': -1751, u'imgSqSmall': u'https://cdn-files.apstatic.com/hike/7022678_sqsmall_1473275759.jpg', u'location': u'Carmel-by-the-Sea, California', u'stars': 3.7, u'latitude': 36.4544, u'conditionStatus': u'Unknown', u'type': u'Featured Hike', u'low': 105, u'starVotes': 3, u'difficulty': u'blueBlack', u'conditionDetails': None, u'conditionDate': u'1970-01-01 00:00:00', u'name': u'Soberanes Canyon Loop', u'url': u'https://www.hikingproject.com/trail/7020969/soberanes-canyon-loop', u'imgSmallMed': u'https://cdn-files.apstatic.com/hike/7022678_smallMed_1473275759.jpg', u'longitude': -121.924, u'summary': u'This loop is lightly trafficked and features a nice waterfall.', u'length': 4.7}], u'radius': 35405.479999999996, u'location': (u'Monterey', u'CA'), u'coordinates': ('36.6002378', '-121.8946761')}&gt;</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+  
+    
+    <div id="flDebugLoggingPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/" class="flDebugClose">Close</a>
+        <h3>Log Messages</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          
+  <p>No messages logged.</p>
+
+
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugRouteListPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/" class="flDebugClose">Close</a>
+        <h3>Route List</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          <table>
+  <thead>
+    <tr>
+      <th>URL route</th>
+      <th>Endpoint name</th>
+      <th>HTTP methods</th>
+      <th>Is alias</th>
+      <th>Redirect to</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      
+        <tr>
+          <td>/</td>
+          <td>display_trail_form</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/_debug_toolbar/static/&lt;path:filename&gt;</td>
+          <td>_debug_toolbar.static</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/_debug_toolbar/views/sqlalchemy/sql_explain</td>
+          <td>debugtoolbar.sql_select</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/_debug_toolbar/views/sqlalchemy/sql_select</td>
+          <td>debugtoolbar.sql_select</td>
+          <td>GET, HEAD, OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/_debug_toolbar/views/template/&lt;key&gt;</td>
+          <td>debugtoolbar.template_editor</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/_debug_toolbar/views/template/&lt;key&gt;</td>
+          <td>debugtoolbar.template_preview</td>
+          <td>OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/_debug_toolbar/views/template/&lt;key&gt;/save</td>
+          <td>debugtoolbar.save_template</td>
+          <td>OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/static/&lt;path:filename&gt;</td>
+          <td>static</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/trail_selector</td>
+          <td>search_with_user_data</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/trails</td>
+          <td>display_selected_trails</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/trails_asychronous</td>
+          <td>asynchronous_info_load</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/trek</td>
+          <td>show_trail_location</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugProfilerPanel-content" class="panelContent" style="display: none;">
+      <div class="flDebugPanelTitle">
+        <a href="http://localhost:5000/" class="flDebugClose">Close</a>
+        <h3>Profiler not active</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="scroll">
+          The profiler is not activated, activate it to use it
+        </div>
+      </div>
+    </div>
+    
+  
+  <div id="flDebugWindow" class="panelContent" style="display: none;"></div>
+</div>
+
+<span style="border-radius: 3px; text-indent: 20px; width: auto; padding: 0px 4px 0px 0px; text-align: center; font-style: normal; font-variant: normal; font-weight: bold; font-stretch: normal; font-size: 11px; line-height: 20px; font-family: &quot;Helvetica Neue&quot;, Helvetica, sans-serif; color: rgb(255, 255, 255); background: url(&quot;data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMzBweCIgd2lkdGg9IjMwcHgiIHZpZXdCb3g9Ii0xIC0xIDMxIDMxIj48Zz48cGF0aCBkPSJNMjkuNDQ5LDE0LjY2MiBDMjkuNDQ5LDIyLjcyMiAyMi44NjgsMjkuMjU2IDE0Ljc1LDI5LjI1NiBDNi42MzIsMjkuMjU2IDAuMDUxLDIyLjcyMiAwLjA1MSwxNC42NjIgQzAuMDUxLDYuNjAxIDYuNjMyLDAuMDY3IDE0Ljc1LDAuMDY3IEMyMi44NjgsMC4wNjcgMjkuNDQ5LDYuNjAxIDI5LjQ0OSwxNC42NjIiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+PHBhdGggZD0iTTE0LjczMywxLjY4NiBDNy41MTYsMS42ODYgMS42NjUsNy40OTUgMS42NjUsMTQuNjYyIEMxLjY2NSwyMC4xNTkgNS4xMDksMjQuODU0IDkuOTcsMjYuNzQ0IEM5Ljg1NiwyNS43MTggOS43NTMsMjQuMTQzIDEwLjAxNiwyMy4wMjIgQzEwLjI1MywyMi4wMSAxMS41NDgsMTYuNTcyIDExLjU0OCwxNi41NzIgQzExLjU0OCwxNi41NzIgMTEuMTU3LDE1Ljc5NSAxMS4xNTcsMTQuNjQ2IEMxMS4xNTcsMTIuODQyIDEyLjIxMSwxMS40OTUgMTMuNTIyLDExLjQ5NSBDMTQuNjM3LDExLjQ5NSAxNS4xNzUsMTIuMzI2IDE1LjE3NSwxMy4zMjMgQzE1LjE3NSwxNC40MzYgMTQuNDYyLDE2LjEgMTQuMDkzLDE3LjY0MyBDMTMuNzg1LDE4LjkzNSAxNC43NDUsMTkuOTg4IDE2LjAyOCwxOS45ODggQzE4LjM1MSwxOS45ODggMjAuMTM2LDE3LjU1NiAyMC4xMzYsMTQuMDQ2IEMyMC4xMzYsMTAuOTM5IDE3Ljg4OCw4Ljc2NyAxNC42NzgsOC43NjcgQzEwLjk1OSw4Ljc2NyA4Ljc3NywxMS41MzYgOC43NzcsMTQuMzk4IEM4Ljc3NywxNS41MTMgOS4yMSwxNi43MDkgOS43NDksMTcuMzU5IEM5Ljg1NiwxNy40ODggOS44NzIsMTcuNiA5Ljg0LDE3LjczMSBDOS43NDEsMTguMTQxIDkuNTIsMTkuMDIzIDkuNDc3LDE5LjIwMyBDOS40MiwxOS40NCA5LjI4OCwxOS40OTEgOS4wNCwxOS4zNzYgQzcuNDA4LDE4LjYyMiA2LjM4NywxNi4yNTIgNi4zODcsMTQuMzQ5IEM2LjM4NywxMC4yNTYgOS4zODMsNi40OTcgMTUuMDIyLDYuNDk3IEMxOS41NTUsNi40OTcgMjMuMDc4LDkuNzA1IDIzLjA3OCwxMy45OTEgQzIzLjA3OCwxOC40NjMgMjAuMjM5LDIyLjA2MiAxNi4yOTcsMjIuMDYyIEMxNC45NzMsMjIuMDYyIDEzLjcyOCwyMS4zNzkgMTMuMzAyLDIwLjU3MiBDMTMuMzAyLDIwLjU3MiAxMi42NDcsMjMuMDUgMTIuNDg4LDIzLjY1NyBDMTIuMTkzLDI0Ljc4NCAxMS4zOTYsMjYuMTk2IDEwLjg2MywyNy4wNTggQzEyLjA4NiwyNy40MzQgMTMuMzg2LDI3LjYzNyAxNC43MzMsMjcuNjM3IEMyMS45NSwyNy42MzcgMjcuODAxLDIxLjgyOCAyNy44MDEsMTQuNjYyIEMyNy44MDEsNy40OTUgMjEuOTUsMS42ODYgMTQuNzMzLDEuNjg2IiBmaWxsPSIjYmQwODFjIj48L3BhdGg+PC9nPjwvc3ZnPg==&quot;) 3px 50% / 14px 14px no-repeat rgb(189, 8, 28); position: absolute; opacity: 1; z-index: 8675309; display: none; cursor: pointer; border: none; -webkit-font-smoothing: antialiased;">Save</span><span style="width: 24px; height: 24px; background: url(&quot;data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxzdmcgd2lkdGg9IjI0cHgiIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxtYXNrIGlkPSJtIj48cmVjdCBmaWxsPSIjZmZmIiB4PSIwIiB5PSIwIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHJ4PSI2IiByeT0iNiIvPjxyZWN0IGZpbGw9IiMwMDAiIHg9IjUiIHk9IjUiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgcng9IjEiIHJ5PSIxIi8+PHJlY3QgZmlsbD0iIzAwMCIgeD0iMTAiIHk9IjAiIHdpZHRoPSI0IiBoZWlnaHQ9IjI0Ii8+PHJlY3QgZmlsbD0iIzAwMCIgeD0iMCIgeT0iMTAiIHdpZHRoPSIyNCIgaGVpZ2h0PSI0Ii8+PC9tYXNrPjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9IiNmZmYiIG1hc2s9InVybCgjbSkiLz48L3N2Zz4=&quot;) 50% 50% / 14px 14px no-repeat rgba(0, 0, 0, 0.4); position: absolute; opacity: 1; z-index: 8675309; display: none; cursor: pointer; border: none; border-radius: 12px;"></span></body></html>

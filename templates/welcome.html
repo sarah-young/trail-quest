@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}
+Welcome
+{% endblock %}
+
+{% block content %}
+<h3>Register for Trail Quest </h3>
+<h4>Your adventure begins here.</h4>
+
+<form method="POST" action="/register">
+  Email: <input type="email" placeholder="Email" name="user" id=username required><br>
+  Password: <input type="password" placeholder="Password" name="password"
+  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+  title="Must contain at least one number and one uppercase and lowercase letter,
+  and at least 8 or more characters" id="password"required>
+  <br>
+  <button type="submit" name="register" id="register" value="register">Register</button>
+</form>
+
+
+<div id="message">
+  <p>Password must contain the following:</p>
+  <p id="letter" class="invalid">A lowercase letter</p>
+  <p id="capital" class="invalid">A capital (uppercase) letter</p>
+  <p id="number" class="invalid">A number</p>
+  <p id="length" class="invalid">Minimum 8 characters</p>
+</div>
+
+<p>Already a user? Login here.</p>
+<form method="POST" action="/login">
+  Email: <input type="email" placeholder="Email" name="user" id="loginemail" required><br>
+  Password: <input type="password" placeholder="Password" name="password"
+  id="loginpassword" required><br>
+  <button type="submit" name="login" id="login" value="login">Login</button>
+</form>
+
+
+
+<script src="../static/welcome.js" type="text/javascript"></script>
+
+
+{% endblock %}
