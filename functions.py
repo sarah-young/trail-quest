@@ -80,7 +80,6 @@ def select_three_trails(trails):
 
 	if len(trails) == 0:
 		return None
-		# return something that prompts server.py route to add a flash message
 
 	elif len(trails) < 4:
 		selected_trails = trails

@@ -46,15 +46,16 @@ def asynchronous_info_load():
 	radius_to_meters = int(radius) * 1609.34
 
 	if coordinates == None:
-		flash("Hmm. No trails were found. Try another location?")
-		return render_template('/homepage.html')
+		print "!!!LOCATION OR RANGE ERROR!!!"
+		return "FOO"
 
 	trails = functions.find_trails(coordinates, radius)
 	# ***Hiking API gets called here!***
 
 	if len(trails) == 0:
-		flash("Hmm. No trails were found. Try another location?")
-		return render_template('/homepage.html')
+
+		print "!!!LOCATION OR RANGE ERROR!!! NO TRAILS"
+		return "BAR"
 
 	trails_to_db = functions.add_trails_to_db(trails)
 	# Adds all trails from hiking project API to database
@@ -68,6 +69,8 @@ def asynchronous_info_load():
 	print "TRAILS AFTER DIFFICULTY FILTER: ", trails
 
  	selected_trails = functions.select_three_trails(trails)
+		# If selected trails == none, send back STRING which triggers different
+		# in JavaScript
 	print "SELECTED TRAILS OBJECT TYPE: ", type(selected_trails)
 	print
 	lat, lng = coordinates
@@ -79,9 +82,15 @@ def asynchronous_info_load():
 	selected_trails[0]["radius_in_meters"] = radius_to_meters
 	print "SELECTED TRAILS: ", selected_trails
 	session['radius'] = radius_to_meters
+
+	if selected_trails > 1:
+		return jsonify(selected_trails)
 	# Keeping for now to see if this works with other routes... Not sure if this is needed.
 
-	return jsonify(selected_trails)
+	else:
+		print "***LOCATION OR RANGE ERROR***"
+		return "STRING"
+
 
 @app.route('/trails')
 def display_selected_trails():
@@ -152,7 +161,6 @@ def user_login():
 		flash('Please try your login again.')
 		return render_template('/welcome.html')
 
-
 		# add user to session
 		# return render_template('/homepage.html')
 	# if user login is incorrect
@@ -179,7 +187,6 @@ def show_trail_location():
 	chosen_trail = model.Trail.query.filter_by(trail_id=chosen_trail_id).first()
 	# trail_map = functions.get_map(str(chosen_trail.trailhead_latitude), str(chosen_trail.trailhead_longitude))
 	# print trail_map
-	# figuring out which Google Maps API I should use
 	# get trailhead coordinates from trail object for map
 	print "***TYPE***", type(chosen_trail)
 
