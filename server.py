@@ -16,7 +16,10 @@ app.secret_key = "SECRETSECRETSECRET"
 @app.route('/')
 def display_trail_form():
 	"""Displays form that takes in user input"""
-
+	# if session['username']:
+	# 	return render_template('/homepage.html')
+	# else:
+	# 	flash("Please login to begin your adventure.")
 	return render_template('/homepage.html')
 
 @app.route('/trails_asychronous', methods=['POST'])
@@ -136,16 +139,39 @@ def user_login():
 		> Welcome page if user login information is incorrect w/ appropriate
 		flash message.
 	"""
-	# if user login is correct
+	username = request.form.get("loginemail")
+	password = request.form.get("loginpassword")
+	password_check = check_user_credentials(username, password)
+
+	if password_check:
+		flash('Logged in successfully.')
+		session['username'] = "Logged in!"
+		return render_template('/homepage.html')
+		# should this be a redirect???
+	else:
+		flash('Please try your login again.')
+		return render_template('/welcome.html')
+
+
+		# add user to session
 		# return render_template('/homepage.html')
 	# if user login is incorrect
 		# return render_template('/welcome.html')
+
+@app.route('/logout', methods=["POST"])
+def user_logout():
+	"""When logout button is selected:
+	> delete current session key
+	> add flash message
+	> return render_template ('welcome.html')"""
+	pass
 
 @app.route('/trek')
 def show_trail_location():
 	"""Displays trail location on map and more information about the trail."""
 
 	# TODO: Refactor so this works with the one-page app format
+	# FIXME: Question: How do I pass the user_id here? JSON???
 
 	chosen_trail_id = request.args.form.get()
 	trail_conditions = functions.get_trail_conditions(chosen_trail_id)
@@ -157,7 +183,7 @@ def show_trail_location():
 	# get trailhead coordinates from trail object for map
 	print "***TYPE***", type(chosen_trail)
 
-	return render_template('/trek.html', trek=chosen_trail, trail_conditions=trail_conditions) #, trail_map = trail_map)
+	return render_template('/trek.html', trek=chosen_trail, trail_conditions=trail_conditions)
 
 
 if __name__ == "__main__":
