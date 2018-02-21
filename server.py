@@ -103,21 +103,43 @@ def display_selected_trails():
 
 
 @app.route('/welcome')
-def registerUser():
-	"""Show user registration form & ability for users to login.
-
-	Check database to see if user is already enrolled, if not add user."""
-
-	session['password'] = request.form.get("")
-
-
-	password = session['password']
-	username = session['username']
-	
-	add_user_to_database()
-
+def show_registration_page():
+	"""Show user registration form"""
 
 	return render_template('/welcome.html')
+
+@app.route('/register', methods=['POST'])
+def register_user():
+	"""Take entries from registration form, check to see if user is in database.
+
+	If user is not in database, add to database and redirect to login page w/
+	appropriate flash message.
+	If user is in database, redirect to login page w/ appropriate flash message"""
+
+	username = request.form.get("username")
+	password = request.form.get("password")
+
+	a_new_user = functions.add_user_to_database(username, password)
+
+	if a_new_user:
+		flash("Welcome to Trail Quest! Please login.")
+		return render_template('/login.html')
+	else:
+		flash("User already in database. Please login with credentials.")
+		return render_template('/login.html')
+
+@app.route('/login', methods=['POST'])
+def user_login():
+	"""Take user login information, check database, return:
+		> Homepage if user login information is correct w/ appropriate flash
+		message
+		> Welcome page if user login information is incorrect w/ appropriate
+		flash message.
+	"""
+	# if user login is correct
+		# return render_template('/homepage.html')
+	# if user login is incorrect
+		# return render_template('/welcome.html')
 
 @app.route('/trek')
 def show_trail_location():

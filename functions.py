@@ -13,6 +13,22 @@ satellite_map_api_key =secrets.SATELLITE_MAP_GM_API_KEY
 
 #db = SQLAlchemy()
 
+def add_user_to_database(username, password):
+	"""Check to see if user is in database. If they aren't add them."""
+
+	user_name_check = model.db.session.query(model.User).filter(model.User.user_name==username).first()
+
+	if user_name_check == None:
+		user = model.User(user_name = username,
+					  user_password = password)
+		model.db.session.add(user)
+		model.db.session.commit()
+		print "<Added user %s to database>" % username
+		return True
+	else:
+		print "<User %s is already in the database>" % username
+		return False
+
 def find_lat_lng(city, state):
 	"""
 	Find lat/long for address given by user.
@@ -55,7 +71,6 @@ def find_trails(coordinates, radius='25'):
 
 def select_three_trails(trails):
 	"""Selects three random trails from trail_packet from find_trails
-
 
 	"""
 
@@ -107,6 +122,8 @@ def add_trails_to_db(trails):
 					  trail_location = trail['location'],
 					  trail_picture = trail['imgMedium'])
 
+		#FIXME: Should I move this under the if statement for optimization???
+
 		trail_status = model.db.session.query(model.Trail).filter(model.Trail.trail_id==trail['id']).first()
 		if trail_status == None:
 			model.db.session.add(trail_object)
@@ -145,9 +162,6 @@ def get_trail_conditions(trail_id):
 	trail_deets = (trail_name_by_id, trail_status_details, trail_status_color, trail_status_date,)
 
 	return trail_deets
-
-
-
 
 def filter_trek_length(trails, trek_length):
 	"""Take trail list-object & filter for trails by trek length
