@@ -50,6 +50,14 @@ def find_lat_lng(city, state):
 
 		return None
 
+def check_user_credentials(username, password):
+	"""
+	Compare user entered credentials to credentials in database!
+	
+	"""
+
+
+
 
 def find_trails(coordinates, radius='25'):
 	"""Find trails based on GPS coordinates from find_lat_lng

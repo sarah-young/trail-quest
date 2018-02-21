@@ -16,11 +16,14 @@ app.secret_key = "SECRETSECRETSECRET"
 @app.route('/')
 def display_trail_form():
 	"""Displays form that takes in user input"""
-	# if session['username']:
-	# 	return render_template('/homepage.html')
-	# else:
-	# 	flash("Please login to begin your adventure.")
-	return render_template('/homepage.html')
+
+	if session.get('username'):
+	# check to see if username is in the session --if not, login page!
+		return render_template('/homepage.html')
+	else:
+		flash("Please login to begin your adventure.")
+		return render_template('/welcome.html')
+		# This should be complete?
 
 @app.route('/trails_asychronous', methods=['POST'])
 def asynchronous_info_load():
@@ -134,7 +137,8 @@ def register_user():
 	a_new_user = functions.add_user_to_database(username, password)
 
 	if a_new_user:
-		flash("Welcome to Trail Quest! Please login.")
+
+		flash("Thanks for registering for Trail Quest! Please login.")
 		return render_template('/login.html')
 	else:
 		flash("User already in database. Please login with credentials.")
@@ -151,20 +155,16 @@ def user_login():
 	username = request.form.get("loginemail")
 	password = request.form.get("loginpassword")
 	password_check = check_user_credentials(username, password)
+	# TODO: Make function to check deets
 
 	if password_check:
 		flash('Logged in successfully.')
-		session['username'] = "Logged in!"
+		session['user_id'] = user.user_id
 		return render_template('/homepage.html')
-		# should this be a redirect???
+
 	else:
 		flash('Please try your login again.')
 		return render_template('/welcome.html')
-
-		# add user to session
-		# return render_template('/homepage.html')
-	# if user login is incorrect
-		# return render_template('/welcome.html')
 
 @app.route('/logout', methods=["POST"])
 def user_logout():
@@ -180,6 +180,7 @@ def show_trail_location():
 
 	# TODO: Refactor so this works with the one-page app format
 	# FIXME: Question: How do I pass the user_id here? JSON???
+
 
 	chosen_trail_id = request.args.form.get()
 	trail_conditions = functions.get_trail_conditions(chosen_trail_id)
