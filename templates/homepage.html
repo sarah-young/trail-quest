@@ -51,6 +51,39 @@ Homepage
 
 $('#asynchronousClick').on('click', getTrails);
 // When button clicked, trail selected and more information displayed.
+// $('#chosentrail').on('click',getTrek);
+
+// function getTrek(evt) {
+//
+// 	let data = {"trail_id":document.getElementByName("chosentrail")} //end of data
+//
+// 	$.ajax({
+// 		url: "/trek",
+// 		type: "POST",
+// 		data: $('#chosentrail').serialize(),
+// 		processData: false,
+// 		cache: true,
+// 		sucess: function(response) {
+// 			console.log(response);
+// 			showTrek(response);
+// 		}, //end of sucess response
+// 		error: function(error) {
+// 			console.log(error);
+// 		} //end of error response
+// 	}); //end of AJAX element
+// } //end of getTrek function
+
+// function showTrek(response) {
+//
+// 	document.getElementById("trek").innerHTML =
+// 	(("Testing"));
+// }
+//
+// 	// =
+// 	// (("Trail Name: " + trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" +
+// 	// 	trailDetails + "<br>" + "<img src=" + trailPicture+ ">"))
+// 	// 	// look at trek info in server.py
+// }
 
 function getTrails(evt) {
 

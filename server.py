@@ -101,13 +101,31 @@ def display_selected_trails():
 	return render_template('/trails.html', selected_trails=selected_trails, city=city, state=state, api_key=google_maps_api_key, city_latitude=lat, city_longitude=lng, radius=radius_in_meters)
 	# passing selected_trails list, city, state, api key for google maps, and lat/long for map
 
+
+@app.route('/welcome')
+def registerUser():
+	"""Show user registration form & ability for users to login.
+
+	Check database to see if user is already enrolled, if not add user."""
+
+	session['password'] = request.form.get("")
+
+
+	password = session['password']
+	username = session['username']
+	
+	add_user_to_database()
+
+
+	return render_template('/welcome.html')
+
 @app.route('/trek')
 def show_trail_location():
 	"""Displays trail location on map and more information about the trail."""
 
 	# TODO: Refactor so this works with the one-page app format
 
-	chosen_trail_id = request.args.get("trail_id")
+	chosen_trail_id = request.args.form.get()
 	trail_conditions = functions.get_trail_conditions(chosen_trail_id)
 	# calls Hiking Project API to get trail conditions for specific hike
 	chosen_trail = model.Trail.query.filter_by(trail_id=chosen_trail_id).first()
