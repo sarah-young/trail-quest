@@ -5,7 +5,7 @@ import requests
 import random
 import model
 #from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
+from flask import Flask, session
 
 gm_api_key = secrets.GOOGLE_MAPS_API_KEY
 hp_api_key = secrets.HIKING_PROJECT_API_KEY
@@ -53,11 +53,18 @@ def find_lat_lng(city, state):
 def check_user_credentials(username, password):
 	"""
 	Compare user entered credentials to credentials in database!
-	
+
 	"""
+	user = model.db.session.query(model.User).filter(model.User.user_name==username).first()
 
-
-
+	if user:
+		if user.user_password == password:
+			print "BLUEBERRIES!!!!"
+			return user
+		else:
+			return False
+	else:
+		return False
 
 def find_trails(coordinates, radius='25'):
 	"""Find trails based on GPS coordinates from find_lat_lng

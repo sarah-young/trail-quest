@@ -153,11 +153,12 @@ def user_login():
 		flash message.
 	"""
 	username = request.form.get("loginemail")
+	print username
 	password = request.form.get("loginpassword")
-	password_check = check_user_credentials(username, password)
-	# TODO: Make function to check deets
+	print password
+	user = functions.check_user_credentials(username, password)
 
-	if password_check:
+	if user:
 		flash('Logged in successfully.')
 		session['user_id'] = user.user_id
 		return render_template('/homepage.html')
