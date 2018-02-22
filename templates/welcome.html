@@ -12,7 +12,7 @@ Welcome
   Password: <input type="password" placeholder="Password" name="password"
   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
   title="Must contain at least one number and one uppercase and lowercase letter,
-  and at least 8 or more characters" id="password"required>
+  and at least 8 or more characters" id="password" required>
   <br>
   <button type="submit" name="register" id="register" value="register">Register</button>
 </form>
@@ -26,13 +26,13 @@ Welcome
   <p id="length" class="invalid">Minimum 8 characters</p>
 </div>
 
-<h3>Already a user? Login here.</h3>
-<form method="POST" action="/login">
-  Email: <input type="email" placeholder="Email" name="user" id="loginemail" required><br>
-  Password: <input type="password" placeholder="Password" name="password"
-  id="loginpassword" required><br>
-  <button type="submit" name="login" id="login" value="login">Login</button>
-</form>
+<h3>Already a user? Login here.</p>
+  <form method="POST" action="/login">
+    Email: <input type="email" placeholder="Email" name="loginemail" id="loginemail" required><br>
+    Password: <input type="password" placeholder="Password" name="loginpassword"
+    id="loginpassword" required><br>
+    <button type="submit" name="login" id="login" value="login">Login</button>
+  </form>
 
 
 
