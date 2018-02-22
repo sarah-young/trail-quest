@@ -167,13 +167,13 @@ def user_login():
 		flash('Please try your login again.')
 		return render_template('/welcome.html')
 
-@app.route('/logout', methods=["POST"])
+@app.route('/logout')
 def user_logout():
-	"""When logout button is selected:
-	> delete current session key
-	> add flash message
-	> return render_template ('welcome.html')"""
-	pass
+	"""Log users out of trail quest"""
+
+	del session['user_id']
+	flash("Logged Out.")
+	return redirect("/welcome")
 
 @app.route('/trek')
 def show_trail_location():
@@ -181,18 +181,9 @@ def show_trail_location():
 
 	# TODO: Refactor so this works with the one-page app format
 	# FIXME: Question: How do I pass the user_id here? JSON???
+	
 
-
-	chosen_trail_id = request.args.form.get()
-	trail_conditions = functions.get_trail_conditions(chosen_trail_id)
-	# calls Hiking Project API to get trail conditions for specific hike
-	chosen_trail = model.Trail.query.filter_by(trail_id=chosen_trail_id).first()
-	# trail_map = functions.get_map(str(chosen_trail.trailhead_latitude), str(chosen_trail.trailhead_longitude))
-	# print trail_map
-	# get trailhead coordinates from trail object for map
-	print "***TYPE***", type(chosen_trail)
-
-	return render_template('/trek.html', trek=chosen_trail, trail_conditions=trail_conditions)
+	pass
 
 
 if __name__ == "__main__":

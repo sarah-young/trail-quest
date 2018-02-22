@@ -44,7 +44,7 @@ function getTrails(evt) {
 					if (response === "FOO") {
 						console.log('COORDINATES ERROR');
 						let noCoordinates = document.getElementById("map");
-						noCoordinates.innerHTML = "Hmm, no trails were found. Please check that the location is correct & is in the United States."
+						noCoordinates.innerHTML = "Hmm, no trails were found. Please check that the location is correct & in the United States."
 					}
 					else if (response === "BAR") {
 						console.log('RANGE OR LOCATION ERROR');
@@ -102,8 +102,7 @@ function initMap(input) {
 			html = ('<div class="window-content">' +
               '<img src="'+input[j].imgSmall+'" alt="trailimage" style="width:100%;" class="thumbnail">' +
               '<p><b>Trail name: </b>' + input[j].name + '</p>' + '<p>' + input[j].summary + '</p>' +
-							'<p>'+ '<button type="button" id="chosentrail" name="'+ input[j].id + '">Add trail to My Trails</button>'
-              + '</div>');
+							'<p>'+'<button type="button" id="chosentrail" name="'+ input[j].id + '>Add trail to My Trails</button>' + '</div>');
 			bindInfoWindow(trailMarker, map, infoWindow, html);
 		} // end of trailMarker for loop
 		console.log('Here: radius');

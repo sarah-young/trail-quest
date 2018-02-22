@@ -8,9 +8,17 @@
 
 </head>
 <body>
+{% if session['user_id'] %}
+
+    <form method="POST" action='/logout'>
+    <button type="submit" name="userlogout" id="userlogout" value="logout">Logout</button>
+    </form>
+<!--TODO: Create login route :)   -->
+
+
+{% endif %}
 
     <h1>Trail Quest 🌲 ⛰️</h1>
-
 
     <ul>
   {% for message in get_flashed_messages() %}
