@@ -167,7 +167,7 @@ def user_login():
 		flash('Please try your login again.')
 		return render_template('/welcome.html')
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def user_logout():
 	"""Log users out of trail quest"""
 
@@ -181,7 +181,7 @@ def show_trail_location():
 
 	# TODO: Refactor so this works with the one-page app format
 	# FIXME: Question: How do I pass the user_id here? JSON???
-	
+
 
 	pass
 
