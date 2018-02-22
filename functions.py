@@ -268,26 +268,11 @@ def get_map(trails, city, state):
 
 	return google_map_object
 
-	#return map_based_on_coordinates
+def show_logout_button():
+	"""Returns logic prompt frontend to show logout button when user is logged in"""
 
-	# "0": {
- #        "id": 7000108,
- #        "name": "Angels Landing",
- #        "url": "https:\/\/www.hikingproject.com\/trail\/7000108\/angels-landing",
- #        "urlConditionsHistory": "https:\/\/www.hikingproject.com\/trail\/7000108\/angels-landing?modal=trail-conditions-modal",
- #        "urlConditionsUpdate": "https:\/\/www.hikingproject.com\/trail\/7000108\/angels-landing?action=update-conditions",
- #        "conditionStatus": "All Clear",
- #        "conditionColor": "Green",
- #        "conditionDetails": "",
- #        "conditionImg": "https:\/\/cdn.apstatic.com\/img\/conditions\/green.svg",
- #        "conditionDate": "2018-02-01 14:28:02"
-
-
-
-
-
-########TESTS & STUFF##########
-
-# test_list = []
-# test1 = select_three_trails(test_list)
-# print test1
+	if session.get('user_id'):
+		show_logout_button = True
+	else:
+		show_logout_button = False
+	return show_logout_button
