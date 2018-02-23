@@ -25,12 +25,36 @@ def display_trail_form():
 		return render_template('/welcome.html')
 		# This should be complete?
 
+@app.route('/trek', methods=['POST'])
+def get_trail_id():
+	"""Bring trail id of chosen trail to the back end for processing.
+	Return trail deets from trail object, conditions.
+	"""
+	trail_id = request.form.get('chosentrail')
+	trail_conditions = functions.get_trail_conditions(trail_id)
+	print trail_conditions
+	trail_object = functions.get_trail_object_by_id(trail_id)
+	trail_details = functions.extract_relevant_trail_info(trail_object)
+	coordinates = trail_details[0]
+	print coordinates
+
+	trail_deets = [coordinates, trail_conditions, trail_details]
+
+	return jsonify(trail_deets)
+
+@app.route('/dirxns', methods=['POST'])
+def get_dirxns():
+	"""Get dirxns from user inputted dirxns or geolocation"""
+
+	# post request sends over information (address)
+	# OR
+	# no address sent over and the geolocation given
+	# use google maps API to show dirxns to trailhead (yay)
+	pass
+
 @app.route('/trails_asychronous', methods=['POST'])
 def asynchronous_info_load():
 
-	# import pdb; pdb.set_trace()
-
-	print "REQUEST FORM DATA: ", request.form.get("data")
 	city = request.form.get("city")
 	print "CITY: ", city
 	state = request.form.get("state")
@@ -74,8 +98,6 @@ def asynchronous_info_load():
  	selected_trails = functions.select_three_trails(trails)
 		# If selected trails == none, send back STRING which triggers different
 		# in JavaScript
-	print "SELECTED TRAILS OBJECT TYPE: ", type(selected_trails)
-	print
 	lat, lng = coordinates
 	lat = float(lat)
 	lng = float(lng)
@@ -181,14 +203,6 @@ def user_logout():
 	flash("Logged Out.")
 	return redirect("/welcome")
 
-@app.route('/trek', methods=['POST'])
-def show_trail_location():
-	"""Displays trail location on map and more information about the trail."""
-
-	trail_id = request.form.get('chosentrail')
-	print "TRAIL: ", trail_id
-
-	return "boop"
 
 if __name__ == "__main__":
     app.debug = True

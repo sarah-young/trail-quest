@@ -29,20 +29,25 @@ $('#asynchronousClick').on('click', getTrails); // Trail Selector
 
 function getTrek(evt) {
   console.log("***In getTrek function!***");
-  $.ajax({
-    url: "/trek",
-    type: "POST",
-    data:{'chosentrail': $('#chosentrek').data('trailId')},
-    processData: false,
-    cache: true,
-    sucess: function(result) {
+  console.log($('#chosentrek').data('trailId'));
+  $.post('/trek', {'chosentrail' : $('#chosentrek').data('trailId')}, function(result) {
       console.log(result);
       showTrek(result);
-    }, //end of sucess input
-    error: function(error) {
-      console.log(error);
-    } //end of error input
-  }); //end of AJAX element
+    })
+  // $.ajax({
+  //   url: "/trek",
+  //   type: "POST",
+  //   data: JSON.stringify({'chosentrail' : $('#chosentrek').data('trailId')}),
+  //   processData: false,
+  //   cache: true,
+  //   success: function(result) {
+  //     console.log(result);
+  //     showTrek(result);
+  //   }, //end of sucess input
+  //   error: function(error) {
+  //     console.log(error);
+  //   } //end of error input
+  // }); //end of AJAX element
 } //end of getTrek function
 
 function getTrails(evt) {
@@ -153,7 +158,7 @@ function toggleBounce(trailMarker) { //cute BOUNCE when markers drop <3
 	} //end of else
 } //end of toggleBounce function
 
-function bindInfoWindow(trailMarker, map, infoWindow, html) { //infoWindow for each trail; might do away with text outside this!
+function bindInfoWindow(trailMarker, map, infoWindow, html) { 
         google.maps.event.addListener(trailMarker, 'click', function () {
             infoWindow.close();
             infoWindow.setContent(html);

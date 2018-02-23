@@ -13,6 +13,37 @@ satellite_map_api_key =secrets.SATELLITE_MAP_GM_API_KEY
 
 #db = SQLAlchemy()
 
+def extract_relevant_trail_info(trail_object):
+	"""Extract relevant trail info from trail object for use in
+	map on front end."""
+	trail = trail_object
+
+	difficulty = trail_difficulty_conversion(trail.trail_difficulty)
+	alt_delta = trail.trail_high_alt - trail.trail_low_alt
+
+	coordinates = (trail.trailhead_latitude, trail.trailhead_longitude)
+
+	get_dirxns =
+
+	return [coordinates, trail.trail_name, trail.trail_id, difficulty, trail.trail_description, alt_delta, trail.trail_picture]
+
+def get_dirxns(trail_coordinates):
+	"""Return dirxns from Google API based on trail lat/long"""
+
+	dirxns = ""
+
+	return jsonify(dirxns)
+
+def get_trail_object_by_id(trail_id):
+	"""Query database for trail object by trail id."""
+
+	trail_object = model.db.session.query(model.Trail).filter(model.Trail.trail_id==trail_id).first()
+	if trail_id:
+		return trail_object
+
+	else:
+		return None
+
 def add_user_to_database(username, password):
 	"""Check to see if user is in database. If they aren't add them."""
 
@@ -154,14 +185,14 @@ def get_trail_conditions(trail_id):
 	trail_id = str(trail_id)
 	conditions_request = requests.get("https://www.hikingproject.com/data/get-conditions?ids="+trail_id+"&key="+hp_api_key)
 	json_conditions = conditions_request.json()
-	fetch = json_conditions["0"]
-	trail_name_by_id = fetch.get("name")#.values()
+	response = json_conditions["0"]
+	trail_name_by_id = response.get("name")#.values()
 	print "TRAIL NAME BY ID: ", trail_name_by_id
-	trail_status_details =fetch.get("conditionStatus")#.values()
+	trail_status_details =response.get("conditionStatus")#.values()
 	print "TRAIL STATUS DETAILS: ", trail_status_details
-	trail_status_color = fetch.get("conditionColor")#.values()
+	trail_status_color = response.get("conditionColor")#.values()
 	print "TRAIL STATUS COLOR: ", trail_status_color
-	trail_status_date = fetch.get("conditionDate")
+	trail_status_date = response.get("conditionDate")
 
 	if trail_status_date.startswith("1970"):
 	# Checks to see if there's a relevant trail condition report
