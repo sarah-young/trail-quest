@@ -142,7 +142,7 @@ def register_user():
 		return render_template('/login.html')
 	else:
 		flash("User already in database. Please login with credentials.")
-		return render_template('/login.html')
+		return redirect('/login')
 
 @app.route('/login', methods=['POST'])
 def user_login():
@@ -161,11 +161,17 @@ def user_login():
 	if user:
 		flash('Logged in successfully.')
 		session['user_id'] = user.user_id
-		return render_template('/homepage.html')
+		return redirect('/homepage')
 
 	else:
 		flash('Please try your login again.')
-		return render_template('/welcome.html')
+		return redirect('/welcome')
+
+
+@app.route('/homepage')
+def render_homepage():
+
+	return render_template('/homepage.html')
 
 @app.route('/logout', methods=['POST'])
 def user_logout():
@@ -175,16 +181,14 @@ def user_logout():
 	flash("Logged Out.")
 	return redirect("/welcome")
 
-@app.route('/trek')
+@app.route('/trek', methods=['POST'])
 def show_trail_location():
 	"""Displays trail location on map and more information about the trail."""
 
-	# TODO: Refactor so this works with the one-page app format
-	# FIXME: Question: How do I pass the user_id here? JSON???
+	trail_id = request.form.get('chosentrail')
+	print "TRAIL: ", trail_id
 
-
-	pass
-
+	return "boop"
 
 if __name__ == "__main__":
     app.debug = True

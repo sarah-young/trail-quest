@@ -21,19 +21,31 @@ slider2.oninput = function() {
 // REFERENCE: https://www.w3schools.com/howto/howto_js_rangeslider.asp
 
 
+$(document).on('click', '#chosentrek', getTrek);
+// Because button does not exist when the page loads!!!
 
-$('#asynchronousClick').on('click', getTrails);
+$('#asynchronousClick').on('click', getTrails); // Trail Selector
 // When button clicked, trail selected and more information displayed.
 
+function getTrek(evt) {
+  console.log("***In getTrek function!***");
+  $.ajax({
+    url: "/trek",
+    type: "POST",
+    data:{'chosentrail': $('#chosentrek').data('trailId')},
+    processData: false,
+    cache: true,
+    sucess: function(result) {
+      console.log(result);
+      showTrek(result);
+    }, //end of sucess input
+    error: function(error) {
+      console.log(error);
+    } //end of error input
+  }); //end of AJAX element
+} //end of getTrek function
+
 function getTrails(evt) {
-
-		let data = {"city": document.getElementById("cityname"),
-								"state": document.getElementById("statename"),
-								"radius": document.getElementById("radius-selection"),
-								"traillength": document.getElementById("trek_length_selection"),
-								"traildifficulty": document.getElementById("traildifficulty")
-		} // end of data object.
-
 			$.ajax({
 				url: "/trails_asychronous",
 				type: "POST",
@@ -51,6 +63,11 @@ function getTrails(evt) {
 						let noTrails = document.getElementById("map");
 						noTrails.innerHTML = "Hmm, there aren't too many trails in this area. Maybe try a larger radius or different city in the United States?"; // Display the default slider value
 					}
+          else if (response === "FIZZ") {
+            console.log('MISSING CITY SEARCH ERROR');
+            let noCity = document.getElementById("map");
+            noCity.innerHTML = "Please enter a City & State to begin your search."
+          }
 
 					else {
 						initMap(response);
@@ -99,10 +116,13 @@ function initMap(input) {
 			animation: google.maps.Animation.DROP,
 			});
 			// TODO: mock input, and then maybe test to see if the input name (i.e. input[j].name ) is in the text
-			html = ('<div class="window-content">' +
-              '<img src="'+input[j].imgSmall+'" alt="trailimage" style="width:100%;" class="thumbnail">' +
-              '<p><b>Trail name: </b>' + input[j].name + '</p>' + '<p>' + input[j].summary + '</p>' +
-							'<p>'+'<button type="button" id="chosentrail" name="'+ input[j].id + '>Add trail to My Trails</button>' + '</div>');
+			html = ('<div class="window-content">' + '<br>' +
+              '<img src="'+input[j].imgSmall + '" alt="trailimage" style="width:100%;" class="thumbnail">' +
+              '<p><b>Trail name: </b>' + input[j].name + '</p>' + '<p>' +
+              input[j].summary + '</p>' + '<p>' + input[j].length +'</p><p>'+
+
+              '<button type="button" id="chosentrek" name="chosentrek" data-trail-id='
+              + input[j].id +'>Add trail to My Trails</button >' + '</div>');
 			bindInfoWindow(trailMarker, map, infoWindow, html);
 		} // end of trailMarker for loop
 		console.log('Here: radius');
@@ -141,38 +161,12 @@ function bindInfoWindow(trailMarker, map, infoWindow, html) { //infoWindow for e
         });
 } //end of bindInfoWindow function
 
+function showTrek(input) {
+	document.getElementById("trek").innerHTML =
+	(("Testing"));
+} // end of showTrek function
 
-
-// $('#chosentrail').on('click',getTrek);
-
-// function getTrek(evt) {
-//
-// 	let data = {"trail_id":document.getElementByName("chosentrail")} //end of data
-//
-// 	$.ajax({
-// 		url: "/trek",
-// 		type: "POST",
-// 		data: $('#chosentrail').serialize(),
-// 		processData: false,
-// 		cache: true,
-// 		sucess: function(input) {
-// 			console.log(input);
-// 			showTrek(input);
-// 		}, //end of sucess input
-// 		error: function(error) {
-// 			console.log(error);
-// 		} //end of error input
-// 	}); //end of AJAX element
-// } //end of getTrek function
-
-// function showTrek(input) {
-//
-// 	document.getElementById("trek").innerHTML =
-// 	(("Testing"));
-// }
-//
-// 	// =
-// 	// (("Trail Name: " + trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" +
-// 	// 	trailDetails + "<br>" + "<img src=" + trailPicture+ ">"))
-// 	// 	// look at trek info in server.py
-// }
+	// =
+	// (("Trail Name: " + trailName + "<br>" + trailDifficulty + "<br>" + trailLength + "<br>" +
+	// 	trailDetails + "<br>" + "<img src=" + trailPicture+ ">"))
+	// 	// look at trek info in server.py
