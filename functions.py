@@ -16,14 +16,17 @@ satellite_map_api_key =secrets.SATELLITE_MAP_GM_API_KEY
 def extract_relevant_trail_info(trail_object):
 	"""Extract relevant trail info from trail object for use in
 	map on front end."""
+
 	trail = trail_object
 
 	difficulty = trail_difficulty_conversion(trail.trail_difficulty)
+	print "RELEVANT TRAIL INFO PRINT TESTS"
+	print "Difficulty: ", difficulty
 	alt_delta = trail.trail_high_alt - trail.trail_low_alt
-
-	coordinates = (trail.trailhead_latitude, trail.trailhead_longitude)
-
-	get_dirxns =
+	print "Alt Delta: ",alt_delta
+	coordinates = (trail.trailhead_latitude,trail.trailhead_longitude)
+	print coordinates
+	# get_dirxns =
 
 	return [coordinates, trail.trail_name, trail.trail_id, difficulty, trail.trail_description, alt_delta, trail.trail_picture]
 

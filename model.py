@@ -8,7 +8,7 @@ import secrets
 
 db = SQLAlchemy()
 
-############################################################
+#####################################################################
 
 # Trail Quest Database
 
@@ -137,7 +137,7 @@ class Merit(db.Model):
 	users = db.relationship('User')
 
 	def __repr__(self):
-		return "< Merit id: %s Badge: %s User %s >" % (self.merit_id, self.badge_id, self.user_id) 
+		return "< Merit id: %s Badge: %s User %s >" % (self.merit_id, self.badge_id, self.user_id)
 
 
 class TrailBadge(db.Model):
@@ -145,9 +145,9 @@ class TrailBadge(db.Model):
 
 	__tablename__ = "trail_badges"
 
-	tb_id = db.Column(db.Integer, autoincrement=True, primary_key=True) 
+	tb_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	trail_id = db.Column(db.Integer, db.ForeignKey('trails.trail_id'))
-	badge_id = db.Column(db.Integer, db.ForeignKey('badges.badge_id')) 
+	badge_id = db.Column(db.Integer, db.ForeignKey('badges.badge_id'))
 
 	trails = db.relationship('Trail')
 	badges = db.relationship('Badge')
@@ -172,18 +172,3 @@ if __name__ == "__main__":
     connect_to_db(app)
     db.create_all()
     # app.run(host='0.0.0.0')
-
-
-# if __name__ == "__main__":
-#     # As a convenience, if we run this module interactively, it will leave
-#     # you in a state of being able to work with the database directly.
-
-#     from server import app
-#     connect_to_db(app)
-#     print "Connected to DB."
-
-
-
-
-
-

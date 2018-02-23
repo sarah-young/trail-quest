@@ -70,6 +70,8 @@ def asynchronous_info_load():
 	# ***Google Map API gets called here!***
 	print "COORDINATES: ", coordinates
 
+	trek_length = int(trek_length)
+
 	radius_to_meters = int(radius) * 1609.34
 
 	if coordinates == None:
@@ -86,16 +88,16 @@ def asynchronous_info_load():
 
 	trails_to_db = functions.add_trails_to_db(trails)
 	# Adds all trails from hiking project API to database
-	trails = functions.filter_trek_length(trails, trek_length)
+	trails_l = functions.filter_trek_length(trails, trek_length)
 	# filters trail returned by API by user trail length preference
 	print "TRAILS AFTER LENGTH FILTER: ", trails
 
-	trails = functions.filter_trek_difficulty(trails, trail_difficulty)
+	trails_d = functions.filter_trek_difficulty(trails_l, trail_difficulty)
 	# filters trails returned by API for user trail difficulty preference
 
 	print "TRAILS AFTER DIFFICULTY FILTER: ", trails
 
- 	selected_trails = functions.select_three_trails(trails)
+ 	selected_trails = functions.select_three_trails(trails_d)
 		# If selected trails == none, send back STRING which triggers different
 		# in JavaScript
 	lat, lng = coordinates

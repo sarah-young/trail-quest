@@ -122,25 +122,24 @@ function initMap(input) {
 			});
 			// TODO: mock input, and then maybe test to see if the input name (i.e. input[j].name ) is in the text
 			html = ('<div class="window-content">' + '<br>' +
-              '<img src="'+input[j].imgSmall + '" alt="trailimage" style="width:100%;" class="thumbnail">' +
               '<p><b>Trail name: </b>' + input[j].name + '</p>' + '<p>' +
-              input[j].summary + '</p>' + '<p>' + input[j].length +'</p><p>'+
-
+              '<p><b>Trail description: </b>' + input[j].summary + '</p>' + '<p>' +
+              '<p><b>Trail length: </b>' + input[j].length +'</p><p>'+
               '<button type="button" id="chosentrek" name="chosentrek" data-trail-id='
               + input[j].id +'>Add trail to My Trails</button >' + '</div>');
 			bindInfoWindow(trailMarker, map, infoWindow, html);
 		} // end of trailMarker for loop
 		console.log('Here: radius');
-		let circle = new google.maps.Circle({ // circle for user chosen radius on map
-			map: map,
-			radius: input[0].radius_in_meters,
-			fillColor: '#b394d1',
-			strokeWeight: .1
-		}); // end of circle statement
-		circle.bindTo('center', marker, 'position');
+		// let circle = new google.maps.Circle({ // circle for user chosen radius on map
+		// 	map: map,
+		// 	radius: input[0].radius_in_meters,
+		// 	fillColor: '#b394d1',
+		// 	strokeWeight: .1
+		// }); // end of circle statement
+		// circle.bindTo('center', marker, 'position');
 		drop(input);
 		toggleBounce(trailMarker);
-} //end of initMap function
+} //end of initMap function 
 
 function drop(input) { //marker animation for REASONS
   for (let k = 0; k < input.length; k++) {
@@ -158,7 +157,7 @@ function toggleBounce(trailMarker) { //cute BOUNCE when markers drop <3
 	} //end of else
 } //end of toggleBounce function
 
-function bindInfoWindow(trailMarker, map, infoWindow, html) { 
+function bindInfoWindow(trailMarker, map, infoWindow, html) {
         google.maps.event.addListener(trailMarker, 'click', function () {
             infoWindow.close();
             infoWindow.setContent(html);
