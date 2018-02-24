@@ -90,12 +90,12 @@ def asynchronous_info_load():
 	# Adds all trails from hiking project API to database
 	trails_l = functions.filter_trek_length(trails, trek_length)
 	# filters trail returned by API by user trail length preference
-	print "TRAILS AFTER LENGTH FILTER: ", trails
+	# print "TRAILS AFTER LENGTH FILTER: ", trails
 
 	trails_d = functions.filter_trek_difficulty(trails_l, trail_difficulty)
 	# filters trails returned by API for user trail difficulty preference
 
-	print "TRAILS AFTER DIFFICULTY FILTER: ", trails
+	# print "TRAILS AFTER DIFFICULTY FILTER: ", trails
 
  	selected_trails = functions.select_three_trails(trails_d)
 		# If selected trails == none, send back STRING which triggers different
@@ -107,7 +107,7 @@ def asynchronous_info_load():
 	selected_trails[0]["city_lat"] = float(lat)
 	selected_trails[0]["city_long"] = float(lng)
 	selected_trails[0]["radius_in_meters"] = radius_to_meters
-	print "SELECTED TRAILS: ", selected_trails
+	# print "SELECTED TRAILS: ", selected_trails
 	session['radius'] = radius_to_meters
 
 	if selected_trails > 1:
@@ -119,26 +119,26 @@ def asynchronous_info_load():
 		return "STRING"
 
 
-@app.route('/trails')
-def display_selected_trails():
-	"""Display trails selected by select_three_trails"""
-
-	selected_trails = session['selected_trails']
-	print "SELECTED TRAILS: ", selected_trails
-	city, state = session['location']
-	print "CITY/STATE: ", city, state
-
-	google_maps_api_key = secrets.SATELLITE_MAP_GM_API_KEY
-
-	coordinates = session['coordinates'] # lat / long from Google Maps API call
-	lat, lng = coordinates
-	city_latitude = float(lat)
-	city_longitude = float(lng)
-	radius_in_meters = session['radius']
-	# this isn't needed anymore? Or is it??? Maybe this is easier than sending stuff back and forth??? Keep this for now..
-
-	return render_template('/trails.html', selected_trails=selected_trails, city=city, state=state, api_key=google_maps_api_key, city_latitude=lat, city_longitude=lng, radius=radius_in_meters)
-	# passing selected_trails list, city, state, api key for google maps, and lat/long for map
+# @app.route('/trails')
+# def display_selected_trails():
+# 	"""Display trails selected by select_three_trails"""
+#
+# 	selected_trails = session['selected_trails']
+# 	print "SELECTED TRAILS: ", selected_trails
+# 	city, state = session['location']
+# 	print "CITY/STATE: ", city, state
+#
+# 	google_maps_api_key = secrets.SATELLITE_MAP_GM_API_KEY
+#
+# 	coordinates = session['coordinates'] # lat / long from Google Maps API call
+# 	lat, lng = coordinates
+# 	city_latitude = float(lat)
+# 	city_longitude = float(lng)
+# 	radius_in_meters = session['radius']
+# 	# this isn't needed anymore? Or is it??? Maybe this is easier than sending stuff back and forth??? Keep this for now..
+#
+# 	return render_template('/trails.html', selected_trails=selected_trails, city=city, state=state, api_key=google_maps_api_key, city_latitude=lat, city_longitude=lng, radius=radius_in_meters)
+# 	# passing selected_trails list, city, state, api key for google maps, and lat/long for map
 
 
 @app.route('/welcome')

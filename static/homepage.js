@@ -85,6 +85,42 @@ function getTrails(evt) {
 			  } // end of error handling function
 			 }); // end of AJAX deets section
 		}; //end of function getTrails
+// function initMap2(input) {
+//   let trailheadLong = //figure out what this is
+//   let trailheadLat = // figure out what this is
+//   let infoWindow = new google.maps.InfoWindow({
+//     width: 150
+//   });
+//   let html;
+//   let location = {lat: trailheadLat, lng: trailheadLong};
+//   // Lat/Long for trail headhead!
+//   let map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 10,
+//     center: location
+//   }); // end of jQuery statement
+//
+//   let marker = new google.maps.Marker({
+//     position: location,
+//     map: map
+//   }); // end of marker statement
+//     // markerPlacement(input);
+//   let trailheadMarker; // adding marker as a variable in the namespace
+//
+//   trailheadMarker = new google.maps.Marker({
+//   position: new google.maps.LatLng(input[j].latitude, input[j].longitude),
+//   // FIXME: Update this input!
+//   map: map,
+//   title: 'Selected Trek'
+//   icon: '/static/img/hikingIcon.png',
+//   animation: google.maps.Animation.DROP,
+//   });
+//     // TODO: mock input, and then maybe test to see if the input name (i.e. input[j].name ) is in the text
+//     html = ("ALL YOUR LOVELY TRAIL INFO!");
+//     bindInfoWindow(trailheadMarker, map, infoWindow, html);
+//     toggleBounce(trailMarker);
+// } //end of initMap2 function
+
+
 
 function initMap(input) {
 		console.log(input);
@@ -139,7 +175,7 @@ function initMap(input) {
 		// circle.bindTo('center', marker, 'position');
 		drop(input);
 		toggleBounce(trailMarker);
-} //end of initMap function 
+} //end of initMap function
 
 function drop(input) { //marker animation for REASONS
   for (let k = 0; k < input.length; k++) {
@@ -165,8 +201,8 @@ function bindInfoWindow(trailMarker, map, infoWindow, html) {
         });
 } //end of bindInfoWindow function
 
-function showTrek(input) {
-	document.getElementById("trek").innerHTML =
+function showTrek(something) {
+	document.getElementById("map").innerHTML =
 	(("Testing"));
 } // end of showTrek function
 

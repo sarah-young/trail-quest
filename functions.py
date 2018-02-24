@@ -73,7 +73,7 @@ def find_lat_lng(city, state):
 
 	"""
 	try:
-		geocode_request = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address="+city+state+"US&key="+gm_api_key)
+		geocode_request = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address="+city+","+state+"US&key="+gm_api_key)
 		json_geocode = geocode_request.json()
 		lat,lng = json_geocode['results'][0].get('geometry').get('location').values()
 		coordinates = (str(lat),str(lng),)
@@ -153,27 +153,30 @@ def add_trails_to_db(trails):
 	"""Adds user selected trail to db"""
 
 	for trail in trails:
-		print "LENGTH OF TRAILS: ", len(trails)
-		print "TRAIL NAME: ", trail['name']
-		print "TYPE: ", type(trail)
+		# print "LENGTH OF TRAILS: ", len(trails)
+		# print "TRAIL NAME: ", trail['name']
+		# print "TYPE: ", type(trail)
 		trail_difficulty = trail_difficulty_conversion(trail['difficulty'])
 
-		trail_object = model.Trail(trail_id = trail['id'],
-					  trail_name = trail['name'],
-					  trailhead_latitude = trail['latitude'],
-					  trailhead_longitude = trail['longitude'],
-					  trail_length = trail['length'],
-					  trail_difficulty = trail_difficulty,
-					  trail_description = trail['summary'],
-					  trail_high_alt = trail['high'],
-					  trail_low_alt = trail['low'],
-					  trail_location = trail['location'],
-					  trail_picture = trail['imgMedium'])
 
 		#FIXME: Should I move this under the if statement for optimization???
 
 		trail_status = model.db.session.query(model.Trail).filter(model.Trail.trail_id==trail['id']).first()
+
 		if trail_status == None:
+		# If there is no trail with a matching trail id in the database, create new trail_object
+			trail_object = model.Trail(trail_id = trail['id'],
+			trail_name = trail['name'],
+			trailhead_latitude = trail['latitude'],
+			trailhead_longitude = trail['longitude'],
+			trail_length = trail['length'],
+			trail_difficulty = trail_difficulty,
+			trail_description = trail['summary'],
+			trail_high_alt = trail['high'],
+			trail_low_alt = trail['low'],
+			trail_location = trail['location'],
+			trail_picture = trail['imgMedium'])
+
 			model.db.session.add(trail_object)
 			model.db.session.commit()
 			print "<Added trail %s to database>" % trail['id']
