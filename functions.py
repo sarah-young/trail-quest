@@ -24,11 +24,11 @@ def extract_relevant_trail_info(trail_object):
 	print "Difficulty: ", difficulty
 	alt_delta = trail.trail_high_alt - trail.trail_low_alt
 	print "Alt Delta: ",alt_delta
-	coordinates = (trail.trailhead_latitude,trail.trailhead_longitude)
-	print coordinates
-	# get_dirxns =
+	trailhead_lat = trail.trailhead_latitude
+	trailhead_long = trail.trailhead_longitude
+	print trailhead_lat, trailhead_long
 
-	return [coordinates, trail.trail_name, trail.trail_id, difficulty, trail.trail_description, alt_delta, trail.trail_picture]
+	return [trailhead_lat, trailhead_long, trail.trail_name, trail.trail_id, difficulty, trail.trail_description, alt_delta, trail.trail_picture]
 
 def get_dirxns(trail_coordinates):
 	"""Return dirxns from Google API based on trail lat/long"""

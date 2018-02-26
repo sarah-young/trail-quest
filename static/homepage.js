@@ -85,60 +85,58 @@ function getTrails(evt) {
 			  } // end of error handling function
 			 }); // end of AJAX deets section
 		}; //end of function getTrails
-// function initMap2(input) {
-//   let trailheadLong = //figure out what this is
-//   let trailheadLat = // figure out what this is
-//   let infoWindow = new google.maps.InfoWindow({
-//     width: 150
-//   });
-//   let html;
-//   let location = {lat: trailheadLat, lng: trailheadLong};
-//   // Lat/Long for trail headhead!
-//   let map = new google.maps.Map(document.getElementById('map'), {
-//     zoom: 10,
-//     center: location
-//   }); // end of jQuery statement
-//
-//   let marker = new google.maps.Marker({
-//     position: location,
-//     map: map
-//   }); // end of marker statement
-//     // markerPlacement(input);
-//   let trailheadMarker; // adding marker as a variable in the namespace
-//
-//   trailheadMarker = new google.maps.Marker({
-//   position: new google.maps.LatLng(input[j].latitude, input[j].longitude),
-//   // FIXME: Update this input!
-//   map: map,
-//   title: 'Selected Trek'
-//   icon: '/static/img/hikingIcon.png',
-//   animation: google.maps.Animation.DROP,
-//   });
-//     // TODO: mock input, and then maybe test to see if the input name (i.e. input[j].name ) is in the text
-//     html = ("ALL YOUR LOVELY TRAIL INFO!");
-//     bindInfoWindow(trailheadMarker, map, infoWindow, html);
-//     toggleBounce(trailMarker);
-// } //end of initMap2 function
+
+
+function initMap2(input) {
+  console.log(input);
+
+  let trailheadLat = input[0][0];
+  let trailheadLong = input[0][1];
+
+  let infoWindow = new google.maps.InfoWindow({
+    width: 150
+  });
+  let html;
+  let location = {lat: trailheadLat, lng: trailheadLong};
+  let map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 20,
+    center: location,
+    mapTypeId: 'satellite'
+  }); // end of jQuery statement
+
+  // let marker = new google.maps.Marker({ //NOTE: Leaving this out for now. Only trailheadMarker is needed at this time.
+  //   position: location,
+  //   map: map
+  // }); // end of marker statement
+    // markerPlacement(input); NOTE: Does not seem to be needed.
+  let trailheadMarker; // adding marker as a variable in the namespace
+  trailheadMarker = new google.maps.Marker({
+  position: new google.maps.LatLng(trailheadLat, trailheadLong),
+  map: map,
+  title: 'Selected Trek',
+  icon: '/static/img/hikingIcon.png',
+  animation: google.maps.Animation.DROP,
+  });
+    // TODO: mock input, and then maybe test to see if the input name (i.e. input[j].name ) is in the text
+  html = ("Trail info (name, etc)");
+  bindInfoWindow(trailheadMarker, map, infoWindow, html);
+  toggleBounce(trailheadMarker);
+} //end of initMap2 function
 
 
 
 function initMap(input) {
-		console.log(input);
-		console.log("MAP: here");
 		let trailLong = input[0].city_long;
 		let trailLat = input[0].city_lat;
 		let infoWindow = new google.maps.InfoWindow({
         width: 150
 		});
 		let html;
-		console.log(trailLong);
-		console.log(trailLat);
-		// lat and lng are not coming through as integers :(
-	  let location = {lat: trailLat, lng: trailLong};
-		//latitude and longitude for city
+	  let location = {lat: trailLat, lng: trailLong}; //latitude and longitude for city
 	  let map = new google.maps.Map(document.getElementById('map'), {
 	    zoom: 8,
-	    center: location
+	    center: location,
+      mapTypeId: 'satellite'
 		}); // end of jQuery statement
 
 	  let marker = new google.maps.Marker({
@@ -165,7 +163,6 @@ function initMap(input) {
               + input[j].id +'>Add trail to My Trails</button >' + '</div>');
 			bindInfoWindow(trailMarker, map, infoWindow, html);
 		} // end of trailMarker for loop
-		console.log('Here: radius');
 		// let circle = new google.maps.Circle({ // circle for user chosen radius on map
 		// 	map: map,
 		// 	radius: input[0].radius_in_meters,
@@ -201,9 +198,16 @@ function bindInfoWindow(trailMarker, map, infoWindow, html) {
         });
 } //end of bindInfoWindow function
 
-function showTrek(something) {
-	document.getElementById("map").innerHTML =
-	(("Testing"));
+function showTrek(result) {
+  console.log('IN SHOWTREK FUNCTION!');
+	console.log(result);
+
+  let trek_lat, trek_long;
+  trek_lat = result[0];
+  trek_long = result[1];
+  initMap2(result);
+
+
 } // end of showTrek function
 
 	// =

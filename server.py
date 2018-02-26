@@ -35,10 +35,9 @@ def get_trail_id():
 	print trail_conditions
 	trail_object = functions.get_trail_object_by_id(trail_id)
 	trail_details = functions.extract_relevant_trail_info(trail_object)
-	coordinates = trail_details[0]
-	print coordinates
 
-	trail_deets = [coordinates, trail_conditions, trail_details]
+	trail_deets = [ trail_details, trail_conditions]
+	print "TRAIL DEETS: ", trail_deets
 
 	return jsonify(trail_deets)
 
