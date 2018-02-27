@@ -28,14 +28,15 @@ def extract_relevant_trail_info(trail_object):
 	trailhead_long = trail.trailhead_longitude
 	print trailhead_lat, trailhead_long
 
-	return [trailhead_lat, trailhead_long, trail.trail_name, trail.trail_id, difficulty, trail.trail_description, alt_delta, trail.trail_picture]
+	return [trailhead_lat, trailhead_long, trail.trail_name, trail.trail_length, trail.trail_id, difficulty, trail.trail_description, alt_delta, trail.trail_picture]
 
-def get_dirxns(trail_coordinates):
+def get_dirxns(starting_address, trail_coordinates):
 	"""Return dirxns from Google API based on trail lat/long"""
 
-	dirxns = ""
+	dirxns = requests.get("http://maps.googleapis.com/maps/api/directions/json?origin="+starting_address+"&destination="+trail_coordinates+"&key=AIzaSyBZF-t6AgPD_FNUmxTd5M9gITpYKJDOmHs")
 
-	return jsonify(dirxns)
+	return dirxns
+
 
 def get_trail_object_by_id(trail_id):
 	"""Query database for trail object by trail id."""
@@ -129,24 +130,25 @@ def select_three_trails(trails):
 
 	if len(trails) == 0:
 		return None
-
-	elif len(trails) < 4:
-		selected_trails = trails
-		# TODO: give message on route side that states user may want to widen search criteria
-
-		return selected_trails
-
-	elif len(trails) >=4:
-		selected_trails = []
-		random.shuffle(trails)
-		first_trail = trails.pop()
-		selected_trails.append(first_trail)
-		second_trail = trails.pop()
-		selected_trails.append(second_trail)
-		third_trail = trails.pop()
-		selected_trails.append(third_trail)
-
-		return selected_trails
+	else:
+		return trails
+	# elif len(trails) < 4:
+	# 	selected_trails = trails
+	# 	# TODO: give message on route side that states user may want to widen search criteria
+	#
+	# 	return selected_trails
+	#
+	# elif len(trails) >=4:
+	# 	selected_trails = []
+	# 	random.shuffle(trails)
+	# 	first_trail = trails.pop()
+	# 	selected_trails.append(first_trail)
+	# 	second_trail = trails.pop()
+	# 	selected_trails.append(second_trail)
+	# 	third_trail = trails.pop()
+	# 	selected_trails.append(third_trail)
+	#
+	# 	return selected_trails
 
 
 def add_trails_to_db(trails):

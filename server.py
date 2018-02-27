@@ -42,14 +42,21 @@ def get_trail_id():
 	return jsonify(trail_deets)
 
 @app.route('/dirxns', methods=['POST'])
-def get_dirxns():
+def get_info_for_dirxns():
 	"""Get dirxns from user inputted dirxns or geolocation"""
 
-	# post request sends over information (address)
-	# OR
-	# no address sent over and the geolocation given
-	# use google maps API to show dirxns to trailhead (yay)
-	pass
+	# get trail id from fields somehow
+	coordinates = request.form.get('trailhead_coordinates')
+	print coordinates
+	starting_address = request.form.get('startingaddress')
+	print starting_address
+	dirxn_json = get_dirxns(starting_address, coordinates)
+	print "JSON FROM Google Dirxns API call: ", dirxn_json
+	return 'BOOP'
+
+	#
+	# # STRETCHGOAL: Create a conditional & use the google maps geolocation API
+	# return dirxns_json
 
 @app.route('/trails_asychronous', methods=['POST'])
 def asynchronous_info_load():
