@@ -21,7 +21,7 @@ def add_trek_to_users_trails(id_of_trail):
 
 	user_treks = check_user_treks(id_of_trail)
 	print "PRINT USER TREKS: ", user_treks
-	if user_treks == "None":
+	if user_treks == None:
 		print "HERE - NONE"
 
 		trek = model.Trek(user_id = session['user_id'],
@@ -30,8 +30,16 @@ def add_trek_to_users_trails(id_of_trail):
 		model.db.session.commit()
 		return "NEW TRAIL ADDED TO TREK DB."
 
-	elif user_treks != "None":
+	elif user_treks != None:
 		return "TRAIL ALREADY EXISTS IN DATABASE."
+
+def get_all_user_treks():
+	"""Get all user treks from user_trails table by querying database using
+	session['user_id']
+	"""
+	all_user_treks = model.db.session.query(model.Trek).filter(model.Trek.user_id==session['user_id']).all()
+
+	return all_user_treks
 
 def check_user_treks(id_of_trail):
 	"""Query database to see if user has trails.
@@ -41,7 +49,7 @@ def check_user_treks(id_of_trail):
 	# see if a trek that matches the user_id from the session AND the trail_id argument is in the database
 
 	if user_treks == None:
-		return 'None'
+		return None
 	else:
 		return 'Trek in database'
 
@@ -169,7 +177,7 @@ def select_three_trails(trails):
 	else:
 		return trails
 
-	# NOTE: Keeping logic below in case I want to revert 
+	# NOTE: Keeping logic below in case I want to revert
 	# elif len(trails) < 4:
 	# 	selected_trails = trails
 	# 	# TODO: give message on route side that states user may want to widen search criteria

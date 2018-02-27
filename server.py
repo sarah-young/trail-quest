@@ -20,9 +20,11 @@ def show_user_trails():
 
 	Stars will show up when user has marked trails as completed.
 	"""
-	user_treks = functions.check_user_treks()
+	all_user_treks = functions.get_all_user_treks()
+	if len(all_user_treks) == 0:
+		all_user_treks = 0
 
-	return render_template('/mytrails.html', user_treks)
+	return render_template('/mytrails.html', all_user_treks=all_user_treks)
 
 @app.route('/')
 def display_trail_form():
@@ -231,6 +233,7 @@ def user_logout():
 	del session['user_id']
 	flash("Logged Out.")
 	return redirect("/welcome")
+
 
 
 if __name__ == "__main__":
