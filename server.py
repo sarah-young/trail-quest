@@ -47,10 +47,14 @@ def get_info_for_dirxns():
 
 	# get trail id from fields somehow
 	coordinates = request.form.get('trailhead_coordinates')
-	print coordinates
+	print "COORDINATES:", coordinates
 	starting_address = request.form.get('startingaddress')
-	print starting_address
-	dirxn_json = get_dirxns(starting_address, coordinates)
+	print "STARTING ADDRESS: ", starting_address
+	starting_city = request.form.get('startingcity')
+	print starting_city
+	starting_state = request.form.get('startingstate')
+	whole_address = starting_address + starting_city + starting_state
+	dirxn_json = functions.get_dirxns(whole_address, coordinates)
 	print "JSON FROM Google Dirxns API call: ", dirxn_json
 	return 'BOOP'
 

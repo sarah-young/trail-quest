@@ -33,7 +33,10 @@ def extract_relevant_trail_info(trail_object):
 def get_dirxns(starting_address, trail_coordinates):
 	"""Return dirxns from Google API based on trail lat/long"""
 
-	dirxns = requests.get("http://maps.googleapis.com/maps/api/directions/json?origin="+starting_address+"&destination="+trail_coordinates+"&key=AIzaSyBZF-t6AgPD_FNUmxTd5M9gITpYKJDOmHs")
+	dirxns = requests.get("https://maps.googleapis.com/maps/api/directions/json?origin="+starting_address+"&destination="+trail_coordinates+"&key=AIzaSyBZF-t6AgPD_FNUmxTd5M9gITpYKJDOmHs")
+
+	dirxns_post_json = dirxns.json()
+	print dirxns_post_json
 
 	return dirxns
 
@@ -301,11 +304,6 @@ def trail_difficulty_conversion(trail_difficulty_rating):
 
 	return difficulty
 
-
-def get_map(trails, city, state):
-	"""Gets map information based on coordinates"""
-
-	return google_map_object
 
 def show_logout_button():
 	"""Returns logic prompt frontend to show logout button when user is logged in"""

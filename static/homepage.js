@@ -120,19 +120,22 @@ function initMap2(input) {
   animation: google.maps.Animation.DROP,
   });
     // TODO: mock input, and then maybe test to see if the input name (i.e. input[j].name ) is in the text
-  html = ('<div class="window-content">' + '<br>' +
-  '<p><b>Trail name: </b>' + input[0][2] + '</p>' + '<p><b>Trail length: </b>'
-  + input[0][3] + '<b> Trail Difficulty:  </b>' + input[0][5] + '</p><p>' +
-  '<p><b>Trail description: </b>' + input[0][6] + '</p>'
-  + '<p> Starting Address: <input type="text" name="startingaddress" id="startingaddress" required><button type="button" id="getdirxns" name="getdirxns"'
-  +'>Get Directions</button >' + '<input type="hidden" name="trailhead_coordinates" id="trailhead_coordinates" value="' + input[0][0]+input[0][1] + '">' +'</div>');
+  html = ('<div class="window-content">' + '<br>'
+  + '<p><b>Trail name: </b>' + input[0][2] + '</p>' + '<p><b>Trail length: </b>'
+  + input[0][3] + '<b> Trail Difficulty:  </b>' + input[0][5] + '</p><p>'
+  + '<p><b>Trail description: </b>' + input[0][6] + '</p>'
+  + '<p> Starting Address: <input type="text" name="startingaddress" id="startingaddress" placeholder="Address" required>'
+  + '<br><input type="text" name="startingcity" id="startingcity" placeholder="City" required>'
+  + '<input type="text" name="startingstate" id="startingstate" placeholder="State" required>'
+  + '<button type="button" id="getdirxns" name="getdirxns">Get Directions</button >'
+  + '<input type="hidden" name="trailhead_coordinates" id="trailhead_coordinates" value="'
+  + input[0][0]+","+input[0][1] + '">' +'</div>');
 // TODO: Add button to get dirxns for trail
 
 
   bindInfoWindow(trailheadMarker, map, infoWindow, html);
   toggleBounce(trailheadMarker);
 } //end of initMap2 function
-
 
 
 function initMap(input) {
@@ -225,12 +228,20 @@ function getDirxns() {
   if (document.getElementById("startingaddress").value === "") {
     alert("Please enter a valid address.");
     console.log('In alert function');
+
   } // end of if statement
   else {
-    $.post('/dirxns', {'startingaddress' : $('#startingaddress').value, 'trailhead_coordinates': $('#trailhead_coordinates').value }, function(result) {
+    console.log(document.getElementById("startingaddress").value);
+    console.log(document.getElementById("trailhead_coordinates").value);
+    $.post('/dirxns', {'startingaddress' : document.getElementById("startingaddress").value,
+                       'startingcity' : document.getElementById('startingcity').value,
+                       'startingstate': document.getElementById('startingstate').value,
+                       'trailhead_coordinates': document.getElementById("trailhead_coordinates").value },
+      function(result) {
       console.log(result);
       // TODO: put results in a function!
-      })
+      // if zero results...
+    }) //end of post statement
 
   } //end of else statement
 
