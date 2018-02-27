@@ -35,6 +35,7 @@ def display_trail_form():
 		flash("Please login to begin your adventure.")
 		return render_template('/welcome.html')
 
+
 @app.route('/trek', methods=['POST'])
 def get_trail_id():
 	"""Bring trail id of chosen trail to the back end for processing.
@@ -44,11 +45,11 @@ def get_trail_id():
 	trek_add = functions.add_trek_to_users_trails(trail_id)
 	print "TREK ADD RESULT: ",trek_add
 	trail_conditions = functions.get_trail_conditions(trail_id)
-	print trail_conditions
+	# print trail_conditions
 	trail_object = functions.get_trail_object_by_id(trail_id)
 	trail_details = functions.extract_relevant_trail_info(trail_object)
 
-	trail_deets = [ trail_details, trail_conditions]
+	trail_deets = [trail_details, trail_conditions]
 	print "TRAIL DEETS: ", trail_deets
 
 	return jsonify(trail_deets)
@@ -59,19 +60,18 @@ def get_info_for_dirxns():
 
 	# get trail id from fields somehow
 	coordinates = request.form.get('trailhead_coordinates')
-	print "COORDINATES:", coordinates
+	# print "COORDINATES:", coordinates
 	starting_address = request.form.get('startingaddress')
-	print "STARTING ADDRESS: ", starting_address
+	# print "STARTING ADDRESS: ", starting_address
 	starting_city = request.form.get('startingcity')
-	print starting_city
+	# print starting_city
 	starting_state = request.form.get('startingstate')
 	whole_address = starting_address + starting_city + starting_state
 	dirxn_json = functions.get_dirxns(whole_address, coordinates)
-	print "JSON FROM Google Dirxns API call: ", dirxn_json
+	# print "JSON FROM Google Dirxns API call: ", dirxn_json
 	return 'BOOP'
-
-	#
-	# # STRETCHGOAL: Create a conditional & use the google maps geolocation API
+	# TBD on handling of this logic at this time...
+	# STRETCHGOAL: Create a conditional & use the google maps geolocation API???
 	# return dirxns_json
 
 @app.route('/trails_asychronous', methods=['POST'])
@@ -198,9 +198,9 @@ def user_login():
 		flash message.
 	"""
 	username = request.form.get("loginemail")
-	print username
+	# print username
 	password = request.form.get("loginpassword")
-	print password
+	# print password
 	user = functions.check_user_credentials(username, password)
 
 	if user:

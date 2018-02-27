@@ -13,37 +13,42 @@ satellite_map_api_key =secrets.SATELLITE_MAP_GM_API_KEY
 
 #db = SQLAlchemy()
 
-def check_user_treks():
-	"""Query database to see if user has trails.
 
-	"""
-	user_treks = model.db.session.query(model.Trek).filter(model.Trek.user_id==session['user_id']).all()
-	if user_treks == None:
-		return 'None'
-	else:
-		for trek in all_treks:
-			if trek.user_id == session['user_id']:
-				user_treks.append(trek)
-		return user_treks
-
-def add_trek_to_users_trails(trek_id):
+def add_trek_to_users_trails(id_of_trail):
 	"""Check to see if trek is already in user's trails.
 
 	If it isn't, add to Trek database"""
 
-	user_treks = check_user_treks()
-	if user_treks = None:
-		return True
+	user_treks = check_user_treks(id_of_trail)
+	print "PRINT USER TREKS: ", user_treks
+	if user_treks == "None":
+		print "HERE - NONE"
+
+		trek = model.Trek(user_id = session['user_id'],
+					  	trail_id = id_of_trail)
+		model.db.session.add(trek)
+		model.db.session.commit()
+		return "NEW TRAIL ADDED TO TREK DB."
+
+	elif user_treks != "None":
+		return "TRAIL ALREADY EXISTS IN DATABASE."
+
+def check_user_treks(id_of_trail):
+	"""Query database to see if user has trails.
+
+	"""
+	user_treks = model.db.session.query(model.Trek).filter(model.Trek.user_id==session['user_id'], model.Trek.trail_id==id_of_trail).first()
+	# see if a trek that matches the user_id from the session AND the trail_id argument is in the database
+
+	if user_treks == None:
+		return 'None'
 	else:
-		for trek in user_treks:
-			print "TREK in USER_TREKS: ", trek
-			if trek.trail_id == trek_id:
-				print "<Trek %d is already in the user's database>" % trek_id
-			return False
+		return 'Trek in database'
+
 
 def extract_relevant_trail_info(trail_object):
 	"""Extract relevant trail info from trail object for use in
-	map on front end."""
+	map on front end"""
 
 	trail = trail_object
 
@@ -163,6 +168,8 @@ def select_three_trails(trails):
 		return None
 	else:
 		return trails
+
+	# NOTE: Keeping logic below in case I want to revert 
 	# elif len(trails) < 4:
 	# 	selected_trails = trails
 	# 	# TODO: give message on route side that states user may want to widen search criteria
