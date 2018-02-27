@@ -123,11 +123,11 @@ function initMap2(input) {
   html = ('<div class="window-content">' + '<br>'
   + '<p><b>Trail name: </b>' + input[0][2] + '</p>' + '<p><b>Trail length: </b>'
   + input[0][3] + '<b> Trail Difficulty:  </b>' + input[0][5] + '</p><p>'
-  + '<p><b>Trail description: </b>' + input[0][6] + '</p>'
+  + '<p><b>Trail description: </b>' + input[0][6] + '</p><img src=' + '"' + input[0][8]+'"/>'
   + '<p> Starting Address: <input type="text" name="startingaddress" id="startingaddress" placeholder="Address" required>'
   + '<br><input type="text" name="startingcity" id="startingcity" placeholder="City" required>'
   + '<input type="text" name="startingstate" id="startingstate" placeholder="State" required>'
-  + '<button type="button" id="getdirxns" name="getdirxns">Get Directions</button >'
+  + '<button type="button" id="getdirxns" name="getdirxns">Get Directions to Trailhead</button >'
   + '<input type="hidden" name="trailhead_coordinates" id="trailhead_coordinates" value="'
   + input[0][0]+","+input[0][1] + '">' +'</div>');
 // TODO: Add button to get dirxns for trail

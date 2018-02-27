@@ -13,6 +13,34 @@ satellite_map_api_key =secrets.SATELLITE_MAP_GM_API_KEY
 
 #db = SQLAlchemy()
 
+def check_user_treks():
+	"""Query database to see if user has trails.
+
+	"""
+	user_treks = model.db.session.query(model.Trek).filter(model.Trek.user_id==session['user_id']).all()
+	if user_treks == None:
+		return 'None'
+	else:
+		for trek in all_treks:
+			if trek.user_id == session['user_id']:
+				user_treks.append(trek)
+		return user_treks
+
+def add_trek_to_users_trails(trek_id):
+	"""Check to see if trek is already in user's trails.
+
+	If it isn't, add to Trek database"""
+
+	user_treks = check_user_treks()
+	if user_treks = None:
+		return True
+	else:
+		for trek in user_treks:
+			print "TREK in USER_TREKS: ", trek
+			if trek.trail_id == trek_id:
+				print "<Trek %d is already in the user's database>" % trek_id
+			return False
+
 def extract_relevant_trail_info(trail_object):
 	"""Extract relevant trail info from trail object for use in
 	map on front end."""
@@ -33,7 +61,7 @@ def extract_relevant_trail_info(trail_object):
 def get_dirxns(starting_address, trail_coordinates):
 	"""Return dirxns from Google API based on trail lat/long"""
 
-	dirxns = requests.get("https://maps.googleapis.com/maps/api/directions/json?origin="+starting_address+"&destination="+trail_coordinates+"&key=AIzaSyBZF-t6AgPD_FNUmxTd5M9gITpYKJDOmHs")
+	dirxns = requests.get("http://maps.googleapis.com/maps/api/directions/json?origin="+starting_address+"&destination="+trail_coordinates+"&key=AIzaSyBZF-t6AgPD_FNUmxTd5M9gITpYKJDOmHs")
 
 	dirxns_post_json = dirxns.json()
 	print dirxns_post_json

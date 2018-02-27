@@ -20,11 +20,9 @@ def show_user_trails():
 
 	Stars will show up when user has marked trails as completed.
 	"""
-	all_treks = trails = model.Trek.query.all()
-	# next step: filter by user id with if statement
-	# TODO: move this to functions file
+	user_treks = functions.check_user_treks()
 
-	return 'BAR'
+	return render_template('/mytrails.html', user_treks)
 
 @app.route('/')
 def display_trail_form():
@@ -43,6 +41,8 @@ def get_trail_id():
 	Return trail deets from trail object, conditions.
 	"""
 	trail_id = request.form.get('chosentrail')
+	trek_add = functions.add_trek_to_users_trails(trail_id)
+	print "TREK ADD RESULT: ",trek_add
 	trail_conditions = functions.get_trail_conditions(trail_id)
 	print trail_conditions
 	trail_object = functions.get_trail_object_by_id(trail_id)
