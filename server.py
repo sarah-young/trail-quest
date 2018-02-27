@@ -12,6 +12,19 @@ app = Flask(__name__)
 
 app.secret_key = "SECRETSECRETSECRET"
 
+@app.route('/mytrails', methods=['GET'])
+def show_user_trails():
+	"""Show user trails on mytrails.html page.
+
+	Trails will show up as points on a map.
+
+	Stars will show up when user has marked trails as completed.
+	"""
+	all_treks = trails = model.Trek.query.all()
+	# next step: filter by user id with if statement
+	# TODO: move this to functions file
+
+	return 'BAR'
 
 @app.route('/')
 def display_trail_form():
@@ -23,7 +36,6 @@ def display_trail_form():
 	else:
 		flash("Please login to begin your adventure.")
 		return render_template('/welcome.html')
-		# This should be complete?
 
 @app.route('/trek', methods=['POST'])
 def get_trail_id():
