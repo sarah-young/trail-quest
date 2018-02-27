@@ -17,7 +17,7 @@ app.secret_key = "SECRETSECRETSECRET"
 def display_trail_form():
 	"""Displays form that takes in user input"""
 
-	if session.get('username'):
+	if session.get('user_id'):
 	# check to see if username is in the session --if not, login page!
 		return render_template('/homepage.html')
 	else:
@@ -118,7 +118,6 @@ def asynchronous_info_load():
 	selected_trails[0]["city_long"] = float(lng)
 	selected_trails[0]["radius_in_meters"] = radius_to_meters
 	# print "SELECTED TRAILS: ", selected_trails
-	session['radius'] = radius_to_meters
 
 	if selected_trails > 1:
 		return jsonify(selected_trails)
@@ -205,7 +204,13 @@ def user_login():
 @app.route('/homepage')
 def render_homepage():
 
-	return render_template('/homepage.html')
+	if session.get('user_id'):
+	# check to see if username is in the session --if not, login page!
+		return render_template('/homepage.html')
+	else:
+		flash("Please login to begin your adventure.")
+		return render_template('/welcome.html')
+		# This should be complete?
 
 @app.route('/logout', methods=['POST'])
 def user_logout():
